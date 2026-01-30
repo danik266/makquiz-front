@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  --animate-aurora: aurora 10s infinite alternate;
+  @keyframes aurora {
+    0% { opacity: 0.5; transform: scale(1); }
+    100% { opacity: 0.8; transform: scale(1.2); }
+  }
+}
+
+:root {
+  /* Тот же цвет фона, что у тебя, но CSS переменные для удобства */
+  --background: #0B0F17; 
+  --foreground: #ffffff;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  min-height: 100vh;
+  overflow-x: hidden;
+  /* Улучшает рендеринг шрифтов на темном фоне */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Скроллбар: делаем его более "невидимым" и мягким */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Убираем жесткий аутлайн при клике */
+*:focus {
+  outline: none;
+}
