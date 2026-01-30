@@ -119,7 +119,7 @@ const Navbar = () => {
             <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-200 transform group-hover:scale-105 group-hover:rotate-3 transition-all">
               <Brain className="w-5 h-5" />
             </div>
-            <span className="font-black text-xl tracking-tight text-slate-900">
+            <span className="font-black text-xl tracking-tight text-slate-900 hidden md:block">
               Mak<span className="text-indigo-600">quiz</span>
             </span>
           </Link>
