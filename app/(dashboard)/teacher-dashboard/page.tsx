@@ -34,11 +34,11 @@ export default function TeacherDashboard() {
     try {
       const headers = { Authorization: `Bearer ${token}` };
       
-      const decksRes = await fetch("https://makquiz-backend.onrender.com/api/decks/my?limit=50", { headers });
+      const decksRes = await fetch("https://makquiz-back.onrender.com/api/decks/my?limit=50", { headers });
       if (decksRes.ok) setDecks(await decksRes.json());
       
       // Загружаем историю сессий
-      const historyRes = await fetch("https://makquiz-backend.onrender.com/api/live/history", { headers });
+      const historyRes = await fetch("https://makquiz-back.onrender.com/api/live/history", { headers });
       if (historyRes.ok) setSessions(await historyRes.json());
       
     } catch (e) {
@@ -53,7 +53,7 @@ export default function TeacherDashboard() {
     setStartingSession(true);
     
     try {
-      const res = await fetch("https://makquiz-backend.onrender.com/api/live/create", {
+      const res = await fetch("https://makquiz-back.onrender.com/api/live/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

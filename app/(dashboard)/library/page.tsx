@@ -14,7 +14,7 @@ export default function LibraryPage() {
 
   useEffect(() => {
     if (!token) return;
-    fetch("https://makquiz-backend.onrender.com/api/decks/my", {
+    fetch("https://makquiz-back.onrender.com/api/decks/my", {
         headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => res.json())

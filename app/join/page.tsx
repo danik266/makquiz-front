@@ -53,7 +53,7 @@ export default function JoinPage() {
     }
 
     try {
-      const res = await fetch("https://makquiz-backend.onrender.com/api/teacher/join", {
+      const res = await fetch("https://makquiz-back.onrender.com/api/teacher/join", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

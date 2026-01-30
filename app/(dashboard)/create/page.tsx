@@ -13,7 +13,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 
-const API_BASE_URL = "https://makquiz-backend.onrender.com";
+const API_BASE_URL = "https://makquiz-back.onrender.com";
 
 interface Card {
   front: string;

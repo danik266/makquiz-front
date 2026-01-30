@@ -37,7 +37,7 @@ export default function PlayerPage() {
   const joinSession = async () => {
     if (!nickname.trim()) return;
     try {
-      const res = await fetch("https://makquiz-backend.onrender.com/api/live/join", {
+      const res = await fetch("https://makquiz-back.onrender.com/api/live/join", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code, nickname })
       });
@@ -56,7 +56,7 @@ export default function PlayerPage() {
     if (!joined || !sessionId) return;
     
     setLoadingCards(true);
-    fetch(`https://makquiz-backend.onrender.com/api/live/${sessionId}/cards`)
+    fetch(`https://makquiz-back.onrender.com/api/live/${sessionId}/cards`)
       .then(r => r.ok ? r.json() : [])
       .then(data => {
           setCards(data);
@@ -68,7 +68,7 @@ export default function PlayerPage() {
       if (isFinished) return; 
 
       try {
-        const res = await fetch(`https://makquiz-backend.onrender.com/api/live/${sessionId}/status`);
+        const res = await fetch(`https://makquiz-back.onrender.com/api/live/${sessionId}/status`);
         if (res.ok) {
             const data = await res.json();
             if (data.status === "active") setStatus("active");
@@ -104,7 +104,7 @@ export default function PlayerPage() {
     setIsSubmitting(true);
 
     try {
-        const res = await fetch(`https://makquiz-backend.onrender.com/api/live/${sessionId}/answer`, {
+        const res = await fetch(`https://makquiz-back.onrender.com/api/live/${sessionId}/answer`, {
             method: "POST", 
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
