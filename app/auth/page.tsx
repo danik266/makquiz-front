@@ -45,7 +45,7 @@ function AuthForm() {
       : { ...formData, role }; 
 
     try {
-      const res = await fetch(`https://makquiz-backend.onrender.com${endpoint}`, {
+      const res = await fetch(`https://makquiz-back.onrender.com${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
