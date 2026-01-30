@@ -37,7 +37,7 @@ export default function SearchPage() {
     setLoading(true);
     try {
       // Можно добавить параметры фильтрации в URL в будущем
-      const res = await fetch(`http://127.0.0.1:8000/api/decks/search?q=${query}`, {
+      const res = await fetch(`https://makquiz-backend.onrender.com/api/decks/search?q=${query}`, {
          headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();

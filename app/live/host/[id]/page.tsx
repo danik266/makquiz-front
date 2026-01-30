@@ -28,7 +28,7 @@ export default function HostPage() {
   useEffect(() => {
     if (!id) return;
     // Предполагаем, что этот эндпоинт публичный или доступен учителю
-    fetch(`http://127.0.0.1:8000/api/live/${id}/cards`)
+    fetch(`https://makquiz-backend.onrender.com/api/live/${id}/cards`)
         .then(res => res.json())
         .then(data => setCards(data))
         .catch(err => console.error("Ошибка загрузки карт:", err));
@@ -40,7 +40,7 @@ export default function HostPage() {
 
     const interval = setInterval(async () => {
       try {
-        const res = await fetch(`http://127.0.0.1:8000/api/live/${id}/stats`, {
+        const res = await fetch(`https://makquiz-backend.onrender.com/api/live/${id}/stats`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.ok) {
@@ -60,19 +60,19 @@ export default function HostPage() {
   // --- ACTIONS ---
 
   const startGame = async () => {
-    await fetch(`http://127.0.0.1:8000/api/live/${id}/start`, {
+    await fetch(`https://makquiz-backend.onrender.com/api/live/${id}/start`, {
         method: "POST", headers: { Authorization: `Bearer ${token}` }
     });
   };
 
   const startReview = async () => {
-    await fetch(`http://127.0.0.1:8000/api/live/${id}/review`, {
+    await fetch(`https://makquiz-backend.onrender.com/api/live/${id}/review`, {
         method: "POST", headers: { Authorization: `Bearer ${token}` }
     });
   };
 
   const finishGame = async () => {
-    await fetch(`http://127.0.0.1:8000/api/live/${id}/finish`, {
+    await fetch(`https://makquiz-backend.onrender.com/api/live/${id}/finish`, {
         method: "POST", headers: { Authorization: `Bearer ${token}` }
     });
   };

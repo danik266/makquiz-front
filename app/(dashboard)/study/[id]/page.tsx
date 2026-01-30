@@ -104,7 +104,7 @@ export default function StudyPage() {
     setError(null); // Сброс ошибки перед загрузкой
     
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/decks/${deckId}`, {
+      const res = await fetch(`https://makquiz-backend.onrender.com/api/decks/${deckId}`, {
         headers: { 
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"
@@ -124,7 +124,7 @@ export default function StudyPage() {
       });
       
       // Логика загрузки карточек (бывшая fetchCards)
-      const cardsRes = await fetch(`http://127.0.0.1:8000/api/decks/${deckId}/study-session`, {
+      const cardsRes = await fetch(`https://makquiz-backend.onrender.com/api/decks/${deckId}/study-session`, {
         method: "GET",
         headers: { 
           "Authorization": `Bearer ${token}`,
@@ -169,7 +169,7 @@ export default function StudyPage() {
     
     try {
       setLoading(true);
-      const res = await fetch(`http://127.0.0.1:8000/api/decks/${deckId}/reset`, {
+      const res = await fetch(`https://makquiz-backend.onrender.com/api/decks/${deckId}/reset`, {
         method: "POST",
         headers: { 
           "Authorization": `Bearer ${token}`,
@@ -200,7 +200,7 @@ export default function StudyPage() {
     const timeTaken = Math.round((Date.now() - startTimeRef.current) / 1000);
     
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/decks/cards/${cardId}/answer`, {
+      const res = await fetch(`https://makquiz-backend.onrender.com/api/decks/cards/${cardId}/answer`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -224,7 +224,7 @@ export default function StudyPage() {
     const totalDuration = Math.round((Date.now() - sessionStartTimeRef.current) / 1000);
     
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/decks/${deckId}/complete-session`, {
+      const res = await fetch(`https://makquiz-backend.onrender.com/api/decks/${deckId}/complete-session`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -360,7 +360,7 @@ export default function StudyPage() {
     setLoading(true);
     
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/decks/${deckId}/study-session`, {
+      const res = await fetch(`https://makquiz-backend.onrender.com/api/decks/${deckId}/study-session`, {
         method: "GET",
         headers: { 
           "Authorization": `Bearer ${token}`,

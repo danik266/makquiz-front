@@ -58,10 +58,10 @@ export default function Dashboard() {
       try {
         const headers = { Authorization: `Bearer ${token}` };
         
-        const myDecksRes = await fetch("http://127.0.0.1:8000/api/decks/my?limit=50", { headers });
+        const myDecksRes = await fetch("https://makquiz-backend.onrender.com/api/decks/my?limit=50", { headers });
         const myDecksRaw = myDecksRes.ok ? await myDecksRes.json() : [];
 
-        const teacherDecksRes = await fetch("http://127.0.0.1:8000/api/teacher/my-teachers-decks", { headers });
+        const teacherDecksRes = await fetch("https://makquiz-backend.onrender.com/api/teacher/my-teachers-decks", { headers });
         const teacherDecksRaw = teacherDecksRes.ok ? await teacherDecksRes.json() : [];
 
         const normalizeDeck = (d: any, isTeacher: boolean): DeckType => {
@@ -101,7 +101,7 @@ export default function Dashboard() {
 
         setDecks(allDecks);
 
-        const statsRes = await fetch("http://127.0.0.1:8000/api/decks/stats/today", { headers });
+        const statsRes = await fetch("https://makquiz-backend.onrender.com/api/decks/stats/today", { headers });
         if (statsRes.ok) setStats(await statsRes.json());
 
       } catch (e) {

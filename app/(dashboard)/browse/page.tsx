@@ -33,7 +33,7 @@ export default function BrowsePage() {
     setLoading(true);
     try {
       const res = await fetch(
-        `http://127.0.0.1:8000/api/decks/public?skip=${skip}&limit=${limit}&sort_by=${sortBy}`,
+        `https://makquiz-backend.onrender.com/api/decks/public?skip=${skip}&limit=${limit}&sort_by=${sortBy}`,
         { headers: token ? { Authorization: `Bearer ${token}` } : {} }
       );
       const data = await res.json();
@@ -56,7 +56,7 @@ export default function BrowsePage() {
     setLoading(true);
     try {
       const res = await fetch(
-        `http://127.0.0.1:8000/api/decks/search?q=${encodeURIComponent(searchQuery)}`,
+        `https://makquiz-backend.onrender.com/api/decks/search?q=${encodeURIComponent(searchQuery)}`,
         { headers: token ? { Authorization: `Bearer ${token}` } : {} }
       );
       const data = await res.json();

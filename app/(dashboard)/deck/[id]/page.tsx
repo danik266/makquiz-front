@@ -55,7 +55,7 @@ export default function DeckPreviewPage() {
   const loadDeckPreview = async () => {
     try {
       // Загружаем информацию о колоде
-      const deckRes = await fetch(`http://127.0.0.1:8000/api/decks/${deckId}`, {
+      const deckRes = await fetch(`https://makquiz-backend.onrender.com/api/decks/${deckId}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
       
@@ -67,7 +67,7 @@ export default function DeckPreviewPage() {
       setDeck(deckData);
 
       // Загружаем превью карточек (первые 5)
-      const cardsRes = await fetch(`http://127.0.0.1:8000/api/decks/${deckId}/preview`, {
+      const cardsRes = await fetch(`https://makquiz-backend.onrender.com/api/decks/${deckId}/preview`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
       
@@ -90,7 +90,7 @@ export default function DeckPreviewPage() {
 
     setCopying(true);
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/decks/${deckId}/clone`, {
+      const res = await fetch(`https://makquiz-backend.onrender.com/api/decks/${deckId}/clone`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

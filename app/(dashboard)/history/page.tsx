@@ -35,7 +35,7 @@ export default function HistoryPage() {
   const loadData = async () => {
     try {
       const sessionsRes = await fetch(
-        "http://127.0.0.1:8000/api/decks/stats/history",
+        "https://makquiz-backend.onrender.com/api/decks/stats/history",
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
