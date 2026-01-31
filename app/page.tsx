@@ -236,7 +236,7 @@ function HeroSection() {
       </div>
 
       {/* CONTENT */}
-      <div className="relative z-10 min-h-screen flex flex-col justify-center items-center text-center px-4 pt-20 pb-20"> {/* Уменьшил padding для мобилок */}
+      <div className="relative z-10 min-h-screen flex flex-col justify-center items-center text-center px-4 pt-32 pb-20 md:pt-40"> {/* Уменьшил padding для мобилок */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }} 
           animate={{ opacity: 1, y: 0 }} 
