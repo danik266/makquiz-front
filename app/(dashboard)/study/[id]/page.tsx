@@ -1039,7 +1039,6 @@ function StatsCard({ icon: Icon, color, value, label, delay }: any) {
     green: "bg-green-50 text-green-600",
     red: "bg-red-50 text-red-600",
     orange: "bg-orange-50 text-orange-600",
-    orange: "bg-orange-50 text-orange-600",
     purple: "bg-purple-50 text-purple-600"
   };
 

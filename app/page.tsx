@@ -212,13 +212,12 @@ function HeroSection() {
       {/* BACKGROUND */}
       <div className="absolute inset-0 bg-gradient-to-br from-amber-300 via-orange-400 to-red-400" />
       
-      {/* Animated blobs */}
+      {/* Animated blobs (без изменений) */}
       <BlobShape className="w-[500px] h-[500px] top-[-100px] left-[-100px]" color="rgba(255,255,255,0.2)" />
       <BlobShape className="w-[400px] h-[400px] top-[20%] right-[-50px]" color="rgba(255,220,100,0.3)" />
       <BlobShape className="w-[300px] h-[300px] bottom-[20%] left-[10%]" color="rgba(255,100,100,0.2)" />
       
-      {/* Floating elements */}
-      {/* Hidden on very small screens to reduce clutter */}
+      {/* Floating elements (без изменений) */}
       <div className="hidden sm:block">
         <motion.div 
           animate={{ y: [0, -15, 0], rotate: [0, 10, 0] }}
@@ -238,37 +237,41 @@ function HeroSection() {
       </div>
 
       {/* CONTENT */}
-      <div className="relative z-10 min-h-screen flex flex-col justify-center items-center text-center px-4 pt-40 pb-32">
+      <div className="relative z-10 min-h-screen flex flex-col justify-center items-center text-center px-4 pt-32 pb-20 md:pt-40"> {/* Уменьшил padding для мобилок */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto w-full"
+          className="max-w-5xl mx-auto w-full flex flex-col items-center"
         >
-          {/* MAIN HEADLINE - FIXED FOR MOBILE */}
-          <h1 className="flex flex-col md:block items-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight leading-normal md:leading-[1.1] mb-8 text-white drop-shadow-lg">
+          {/* MAIN HEADLINE */}
+          {/* Используем flex-col для общих строк, но внутри каждой строки контролируем поток */}
+          <h1 className="flex flex-col items-center font-black tracking-tight text-white drop-shadow-lg mb-8">
             
-            {/* Первая часть: Текст + Перечеркнутое */}
-            <div className="mb-4 md:mb-0 md:inline">
-              <span className="mr-3">{t.hero.titleStart}</span>
-              <span className="relative inline-block px-1">
-                {/* Text itself - muted/semi-transparent */}
-                <span className="relative z-0 text-white/60">{t.hero.titleStrike}</span>
-                {/* Custom Strikethrough Line - ON TOP */}
-                <span className="absolute left-0 top-1/2 w-full h-[3px] md:h-[5px] bg-white -translate-y-1/2 z-20 rounded-full rotate-[-3deg] shadow-sm" />
-              </span>
+            {/* СТРОКА 1: Stop Memorizing */}
+            {/* flex-wrap позволяет словам оставаться вместе, но переноситься если экран ОЧЕНЬ узкий */}
+            <div className="flex flex-wrap justify-center items-center gap-x-3 gap-y-2 text-5xl sm:text-6xl md:text-7xl xl:text-8xl mb-2 md:mb-4">
+              <span>{t.hero.titleStart}</span>
+              
+              <div className="relative inline-block px-1">
+                {/* Текст (полупрозрачный) */}
+                <span className="relative z-0 text-white/50">{t.hero.titleStrike}</span>
+                {/* Линия зачеркивания */}
+                <span className="absolute left-[-5%] top-1/2 w-[110%] h-[3px] md:h-[6px] bg-white/90 -translate-y-1/2 z-20 rounded-full rotate-[-3deg] shadow-sm" />
+              </div>
             </div>
 
-            <br className="hidden md:block" />
-            
-            {/* Вторая часть: Текст + Карточка */}
-            <div className="mt-2 md:mt-0 md:inline">
-              <span className="mr-3">{t.hero.titleEnd}</span>
-              <span className="relative inline-block mt-3 md:mt-0">
-                <span className="relative z-10 bg-white text-orange-500 px-6 py-2 rounded-2xl shadow-xl transform rotate-2 inline-block border-b-4 border-orange-200">
+            {/* СТРОКА 2: Start Understanding */}
+            {/* Увеличенный margin-top (mt-4), чтобы карточка не наезжала на верхнюю строку */}
+            <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-4 text-5xl sm:text-6xl md:text-7xl xl:text-8xl mt-4 sm:mt-2">
+              <span>{t.hero.titleEnd}</span>
+              
+              {/* Белая плашка */}
+              <div className="relative transform rotate-2 hover:rotate-0 transition-transform duration-300">
+                <span className="relative z-10 bg-white text-orange-500 px-4 py-2 md:px-6 md:py-1 rounded-xl md:rounded-2xl shadow-xl inline-block border-b-4 border-orange-200 whitespace-nowrap">
                   {t.hero.titleHighlight}
                 </span>
-              </span>
+              </div>
             </div>
 
           </h1>
@@ -312,7 +315,7 @@ function HeroSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-16 flex flex-wrap justify-center gap-4 md:gap-12 w-full"
+          className="mt-12 md:mt-16 flex flex-wrap justify-center gap-4 w-full"
         >
           {[
             { value: "50K+", label: t.hero.stats.students, icon: Users },
@@ -337,6 +340,7 @@ function HeroSection() {
     </section>
   );
 }
+
 
 // --- COMPARISON ---
 function ComparisonSection() {
