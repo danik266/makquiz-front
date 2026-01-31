@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { 
   Plus, MoreVertical, PlayCircle, BookOpen, 
   Loader2, Brain, Sparkles, Clock 
@@ -12,6 +13,7 @@ import clsx from "clsx";
 export default function LibraryPage() {
   const router = useRouter();
   const { token } = useAuth();
+  const { t } = useLanguage();
   const [decks, setDecks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -42,18 +44,18 @@ export default function LibraryPage() {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-xl sm:text-2xl font-black text-slate-900">
-                Моя библиотека
+                {t.library.title}
               </h1>
               <p className="text-sm text-slate-500 font-medium">
-                {decks.length} {decks.length === 1 ? 'колода' : 'колод'}
+                {decks.length} {decks.length === 1 ? t.library.deck : t.library.decks}
               </p>
             </div>
-            <button 
-              onClick={() => router.push("/create")} 
+            <button
+              onClick={() => router.push("/create")}
               className="bg-orange-600 text-white px-3 sm:px-4 py-2 rounded-xl font-bold flex items-center gap-2 hover:bg-orange-700 active:scale-95 transition-transform shadow-lg shadow-orange-200"
             >
-              <Plus className="w-5 h-5" /> 
-              <span className="hidden sm:inline">Создать</span>
+              <Plus className="w-5 h-5" />
+              <span className="hidden sm:inline">{t.library.create}</span>
             </button>
           </div>
         </div>
@@ -74,15 +76,15 @@ export default function LibraryPage() {
             <div className="bg-orange-50 w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <BookOpen className="w-7 h-7 sm:w-8 sm:h-8 text-orange-500" />
             </div>
-            <h3 className="text-lg sm:text-xl font-bold text-slate-900">Здесь пока пусто</h3>
+            <h3 className="text-lg sm:text-xl font-bold text-slate-900">{t.library.emptyTitle}</h3>
             <p className="text-slate-500 mt-2 mb-6 px-4">
-              Создайте свою первую колоду, чтобы начать обучение
+              {t.library.emptySubtitle}
             </p>
-            <button 
+            <button
               onClick={() => router.push("/create")}
               className="bg-orange-600 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-orange-700 transition"
             >
-              Создать колоду
+              {t.library.createDeck}
             </button>
           </div>
         )}
@@ -117,7 +119,7 @@ export default function LibraryPage() {
                           : "bg-emerald-50 text-emerald-600"
                       )}>
                         {isQuiz ? <Sparkles className="w-3 h-3" /> : <Brain className="w-3 h-3" />}
-                        {isQuiz ? "Квиз" : "Карточки"}
+                        {isQuiz ? t.library.quiz : t.library.flashcards}
                       </span>
                     </div>
                     <button 
@@ -136,13 +138,13 @@ export default function LibraryPage() {
                     {deck.name}
                   </h3>
                   <p className="text-slate-500 text-sm line-clamp-2 mb-4">
-                    {deck.description || "Нет описания"}
+                    {deck.description || t.library.nodescription}
                   </p>
                   
                   {/* Card Footer */}
                   <div className="flex items-center justify-between pt-3 border-t border-slate-100">
                     <span className="text-xs font-bold text-slate-400">
-                      {deck.total_cards || 0} {isQuiz ? "вопросов" : "карточек"}
+                      {deck.total_cards || 0} {isQuiz ? t.library.questions : t.library.cards}
                     </span>
                     <button 
                       onClick={(e) => {
@@ -152,7 +154,7 @@ export default function LibraryPage() {
                       className="flex items-center gap-1.5 bg-orange-600 hover:bg-orange-700 text-white px-3 py-1.5 rounded-lg font-bold text-sm transition-colors"
                     >
                       <PlayCircle className="w-4 h-4" /> 
-                      <span>Учить</span>
+                      <span>{t.library.learn}</span>
                     </button>
                   </div>
                 </div>

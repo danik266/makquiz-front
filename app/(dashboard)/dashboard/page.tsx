@@ -3,12 +3,19 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   Plus, Loader2, TrendingUp, CheckCircle2,
   Trophy, Sparkles, Brain, Clock, Users, BookOpen
 } from "lucide-react";
 import { motion } from "framer-motion";
 import clsx from "clsx";
+
+// Hook для использования во вложенных компонентах
+const useTranslation = () => {
+  const { t } = useLanguage();
+  return { t };
+};
 
 type DeckType = {
   id: string;
@@ -38,6 +45,7 @@ function pluralizeCards(count: number): string {
 export default function Dashboard() {
   const router = useRouter();
   const { token, user } = useAuth();
+  const { t } = useLanguage();
   
   const [decks, setDecks] = useState<DeckType[]>([]);
   const [stats, setStats] = useState<any>(null);
@@ -155,11 +163,11 @@ export default function Dashboard() {
       {/* HEADER */}
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-900">Привет, {user?.username}! 👋</h1>
+          <h1 className="text-3xl font-black text-slate-900">{t.dashboard.greeting}, {user?.username}! 👋</h1>
           <p className="text-slate-500 font-medium mt-1">
             {todayTasksCount > 0
-              ? `Интервальное повторение: ${todayTasksCount} колод к изучению`
-              : "Все интервальные повторения на сегодня выполнены!"}
+              ? `${t.dashboard.spacedRepetition}: ${todayTasksCount} ${t.dashboard.reviewsToday}`
+              : t.dashboard.allDone}
           </p>
         </div>
 
@@ -168,7 +176,7 @@ export default function Dashboard() {
           className="flex items-center gap-3 bg-white px-4 py-2 rounded-full border border-orange-200 shadow-sm shadow-orange-100 cursor-pointer hover:border-orange-300 hover:shadow-md hover:shadow-orange-200 transition-all group"
         >
           <div className="flex flex-col items-end">
-            <span className="text-[10px] font-bold text-slate-400 uppercase">Изучено сегодня</span>
+            <span className="text-[10px] font-bold text-slate-400 uppercase">{t.dashboard.studiedToday}</span>
             <span className="text-lg font-black text-orange-600 group-hover:scale-105 transition-transform">
               {(stats?.new_cards_learned || 0) + (stats?.cards_reviewed || 0)}
             </span>
@@ -185,20 +193,20 @@ export default function Dashboard() {
           <div className="w-16 h-16 bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-orange-200">
             <Plus className="w-8 h-8 text-white" />
           </div>
-          <h3 className="text-xl font-black text-slate-900 mb-2">Добро пожаловать!</h3>
-          <p className="text-slate-600 mb-6">У вас пока нет курсов. Создайте свою колоду или присоединитесь к колоде учителя по коду.</p>
+          <h3 className="text-xl font-black text-slate-900 mb-2">{t.dashboard.welcomeTitle}</h3>
+          <p className="text-slate-600 mb-6">{t.dashboard.welcomeSubtitle}</p>
           <div className="flex gap-3 justify-center">
             <button
               onClick={() => router.push("/create")}
               className="bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-orange-200 hover:-translate-y-0.5 transition-all"
             >
-              Создать колоду
+              {t.dashboard.empty.action}
             </button>
             <button
               onClick={() => router.push("/join")}
               className="bg-white border-2 border-orange-200 text-orange-600 px-6 py-3 rounded-xl font-bold hover:bg-orange-50 hover:border-orange-300 transition-all"
             >
-              Присоединиться по коду
+              {t.dashboard.joinByCode}
             </button>
           </div>
         </div>
@@ -210,10 +218,10 @@ export default function Dashboard() {
           <div className="flex justify-between items-end mb-6">
             <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
               <Clock className="w-5 h-5 text-orange-600" />
-              Интервальное обучение
+              {t.dashboard.spacedRepetition}
             </h2>
             <span className="text-sm text-slate-400 font-medium">
-              {activeSpaced.length > 0 ? `${activeSpaced.length} к повторению` : "Всё на сегодня!"}
+              {activeSpaced.length > 0 ? `${activeSpaced.length} ${t.dashboard.reviewsToday}` : t.dashboard.allDone}
             </span>
           </div>
 
@@ -233,8 +241,8 @@ export default function Dashboard() {
                 <CheckCircle2 className="w-6 h-6 text-green-600" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-green-900">Отлично! На сегодня всё!</h3>
-                <p className="text-sm text-green-700">Следующие повторения будут доступны завтра.</p>
+                <h3 className="text-base font-bold text-green-900">{t.dashboard.allDone}</h3>
+                <p className="text-sm text-green-700">{t.dashboard.nextReviewsTomorrow}</p>
               </div>
             </div>
           )}
@@ -256,11 +264,11 @@ export default function Dashboard() {
           <div className="flex justify-between items-end mb-6">
             <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-amber-600" />
-              Ваши материалы
+              {t.dashboard.yourMaterials}
             </h2>
           </div>
 
-          {/* Доступные / В процессе */}
+          {/* Available materials */}
           {availableMaterials.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
               {availableMaterials.map((deck) => (
@@ -274,7 +282,7 @@ export default function Dashboard() {
             <>
               <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wide mb-3 flex items-center gap-2">
                 <Trophy className="w-4 h-4" />
-                Пройденные
+                {t.dashboard.completed}
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {completedMaterials.map((deck) => (
@@ -291,6 +299,7 @@ export default function Dashboard() {
 
 // === КОМПОНЕНТ: Интервальная колода ===
 function SpacedDeckCard({ deck, router, isActive }: { deck: DeckType, router: any, isActive: boolean }) {
+  const { t } = useTranslation();
   return (
     <motion.div
       whileHover={{ y: -4, scale: 1.01 }}
@@ -314,7 +323,7 @@ function SpacedDeckCard({ deck, router, isActive }: { deck: DeckType, router: an
           </span>
           {deck.is_assigned && (
             <span className="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-1 rounded-md uppercase flex items-center gap-1">
-              <Users className="w-3 h-3" /> Учитель
+              <Users className="w-3 h-3" /> {t.auth.teacher}
             </span>
           )}
         </div>
@@ -336,7 +345,7 @@ function SpacedDeckCard({ deck, router, isActive }: { deck: DeckType, router: an
       <div className="mt-3">
         <div className="flex justify-between text-xs font-bold mb-1">
           <span className={isActive ? "text-slate-500" : "text-green-600"}>
-            {isActive ? "Прогресс" : "Ждем завтра"}
+            {isActive ? t.dashboard.progress : t.dashboard.waitingTomorrow}
           </span>
           <span className="text-slate-500">{deck.progress}%</span>
         </div>
@@ -350,7 +359,7 @@ function SpacedDeckCard({ deck, router, isActive }: { deck: DeckType, router: an
           />
         </div>
         <p className="text-[10px] text-slate-500 mt-1 text-right">
-          {deck.learned_cards} из {deck.total_cards} выучено
+          {deck.learned_cards} {t.dashboard.of} {deck.total_cards} {t.dashboard.learned}
         </p>
       </div>
     </motion.div>
@@ -359,6 +368,7 @@ function SpacedDeckCard({ deck, router, isActive }: { deck: DeckType, router: an
 
 // === КОМПОНЕНТ: Обычный материал (колода или тест) ===
 function MaterialCard({ deck, router }: { deck: DeckType, router: any }) {
+  const { t } = useTranslation();
   const isQuiz = deck.content_type === "quiz";
   const isStarted = deck.progress > 0;
 
@@ -386,7 +396,7 @@ function MaterialCard({ deck, router }: { deck: DeckType, router: any }) {
           </div>
           {isStarted && (
             <span className="text-[10px] font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded-md">
-              В процессе
+              {t.dashboard.inProgress}
             </span>
           )}
         </div>
@@ -399,7 +409,7 @@ function MaterialCard({ deck, router }: { deck: DeckType, router: any }) {
 
       <div className="mt-4">
         <div className="flex justify-between text-xs font-bold text-slate-500 mb-1">
-          <span>Прогресс</span>
+          <span>{t.dashboard.progress}</span>
           <span>{deck.progress}%</span>
         </div>
         <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
@@ -412,7 +422,7 @@ function MaterialCard({ deck, router }: { deck: DeckType, router: any }) {
           />
         </div>
         <p className="text-[10px] text-slate-500 mt-1 text-right">
-          {deck.learned_cards} из {deck.total_cards} {isQuiz ? "отвечено" : "выучено"}
+          {deck.learned_cards} {t.dashboard.of} {deck.total_cards} {t.dashboard.learned}
         </p>
       </div>
     </motion.div>
@@ -421,6 +431,7 @@ function MaterialCard({ deck, router }: { deck: DeckType, router: any }) {
 
 // === КОМПОНЕНТ: Пройденный материал ===
 function CompletedMaterialCard({ deck, router }: { deck: DeckType, router: any }) {
+  const { t } = useTranslation();
   const isQuiz = deck.content_type === "quiz";
 
   return (
@@ -446,8 +457,8 @@ function CompletedMaterialCard({ deck, router }: { deck: DeckType, router: any }
       <h3 className="font-bold text-sm text-slate-900 line-clamp-2 mb-2">{deck.name}</h3>
 
       <div className="flex justify-between items-center">
-        <span className="text-[10px] font-bold text-green-600 uppercase">Пройдено</span>
-        <span className="text-xs font-bold text-slate-500">{deck.total_cards} {isQuiz ? "вопр." : "карт"}</span>
+        <span className="text-[10px] font-bold text-green-600 uppercase">{t.dashboard.completed}</span>
+        <span className="text-xs font-bold text-slate-500">{deck.total_cards} {isQuiz ? t.browse.questions : t.browse.cards}</span>
       </div>
     </motion.div>
   );

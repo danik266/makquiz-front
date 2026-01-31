@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { 
   ArrowLeft, Loader2, CheckCircle, Users, Book, MonitorPlay
 } from "lucide-react";
@@ -12,6 +13,7 @@ export default function JoinPage() {
   const router = useRouter();
   const params = useParams();
   const { token } = useAuth();
+  const { t } = useLanguage();
   
   const [code, setCode] = useState(
     Array.isArray(params?.code) ? params.code[0] || "" : params?.code || ""
@@ -86,11 +88,11 @@ export default function JoinPage() {
 
       <div className="w-full max-w-md relative z-10">
         <button
-          onClick={handleBack} // Используем новую функцию
+          onClick={handleBack}
           className="mb-6 flex items-center gap-2 text-slate-500 hover:text-orange-600 transition font-bold"
         >
           <ArrowLeft className="w-5 h-5" />
-          Назад
+          {t.general.back}
         </button>
 
         <motion.div
@@ -105,10 +107,10 @@ export default function JoinPage() {
                   <MonitorPlay className="w-8 h-8 text-orange-600" />
                 </div>
                 <h1 className="text-3xl font-black text-slate-900 mb-2">
-                  Вход по коду
+                  {t.join.title}
                 </h1>
                 <p className="text-slate-500 font-medium">
-                  Введите код с экрана учителя
+                  {t.join.subtitle}
                 </p>
               </div>
 
@@ -118,14 +120,14 @@ export default function JoinPage() {
                     type="text"
                     value={code}
                     onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 8))}
-                    placeholder="Код игры"
+                    placeholder={t.join.placeholder}
                     className="w-full px-4 py-6 rounded-2xl border-2 border-slate-200 focus:border-orange-600 focus:ring-4 focus:ring-orange-500/10 outline-none transition text-center text-4xl font-mono font-black text-orange-600 tracking-widest placeholder:text-slate-300 placeholder:tracking-normal placeholder:font-sans placeholder:font-bold placeholder:text-xl"
                     maxLength={8}
                     required
                     autoFocus
                   />
                   <p className="text-center text-xs text-slate-400 mt-3 font-medium">
-                    6 цифр для Live-игры • 8 цифр для колоды
+                    {t.join.hint}
                   </p>
                 </div>
 
@@ -143,11 +145,11 @@ export default function JoinPage() {
                   {loading ? (
                     <>
                       <Loader2 className="animate-spin w-5 h-5" />
-                      Проверка...
+                      {t.join.checking}
                     </>
                   ) : (
                     <>
-                      Подключиться
+                      {t.join.connect}
                     </>
                   )}
                 </button>
@@ -164,13 +166,13 @@ export default function JoinPage() {
               </div>
               
               <h2 className="text-2xl font-black text-slate-900 mb-2">
-                {result.already_joined ? "Вы уже подключены!" : "Успешно!"}
+                {result.already_joined ? t.join.alreadyJoined : t.join.success}
               </h2>
-              
+
               <p className="text-slate-600 font-medium mb-6">
-                {result.already_joined 
-                  ? "У вас уже есть доступ к этой колоде"
-                  : `Вы присоединились к колоде "${result.deck_name}"`
+                {result.already_joined
+                  ? t.join.alreadyHaveAccess
+                  : `${t.join.joinedDeck} "${result.deck_name}"`
                 }
               </p>
 
@@ -178,7 +180,7 @@ export default function JoinPage() {
                 <div className="flex items-center justify-center gap-2 text-sm">
                   <Users className="w-4 h-4 text-orange-600" />
                   <span className="font-bold text-orange-900">
-                    Учитель: {result.teacher_name}
+                    {t.join.teacher}: {result.teacher_name}
                   </span>
                 </div>
               </div>
@@ -188,14 +190,14 @@ export default function JoinPage() {
                 className="w-full bg-orange-600 text-white py-4 rounded-xl font-bold hover:bg-orange-700 transition flex items-center justify-center gap-2"
               >
                 <Book className="w-5 h-5" />
-                Начать изучение
+                {t.join.startStudying}
               </button>
 
               <button
-                onClick={handleBack} // Здесь тоже используем handleBack для удобства
+                onClick={handleBack}
                 className="w-full mt-3 bg-slate-100 text-slate-700 py-4 rounded-xl font-bold hover:bg-slate-200 transition"
               >
-                Вернуться назад
+                {t.join.goBack}
               </button>
             </motion.div>
           )}

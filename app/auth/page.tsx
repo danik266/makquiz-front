@@ -4,6 +4,7 @@ import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   Brain, Lock, Mail, User, Loader2, ArrowLeft, Sparkles,
   GraduationCap, School, CheckCircle2, XCircle, BookOpen, Trophy
@@ -35,6 +36,7 @@ function AuthForm() {
 
   const router = useRouter();
   const { login } = useAuth();
+  const { t } = useLanguage();
   const [role, setRole] = useState<"student" | "teacher">("student");
   const [formData, setFormData] = useState({
     email: "",
@@ -65,7 +67,7 @@ function AuthForm() {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Ошибка сервера");
+      if (!res.ok) throw new Error(data.detail || t.auth.serverError);
 
       if (isLogin) {
         login(data.access_token, data.username, data.role);
@@ -73,7 +75,7 @@ function AuthForm() {
         setIsLogin(true);
         setNotification({
           type: "success",
-          message: "Аккаунт создан! Теперь войдите с вашими данными."
+          message: t.auth.accountCreated
         });
       }
     } catch (err: any) {
@@ -132,7 +134,7 @@ function AuthForm() {
       </motion.div>
 
       <Link href="/" className="absolute top-8 left-8 flex items-center gap-2 text-white/90 hover:text-white transition-colors z-20 font-bold text-sm bg-white/20 px-4 py-2 rounded-full backdrop-blur-sm border border-white/30 hover:border-white/50 hover:bg-white/30">
-        <ArrowLeft className="w-4 h-4" /> На главную
+        <ArrowLeft className="w-4 h-4" /> {t.auth.backHome}
       </Link>
 
       <motion.div
@@ -146,10 +148,10 @@ function AuthForm() {
              <Brain className="w-8 h-8 text-white" />
            </div>
            <h2 className="text-3xl font-black text-center text-slate-900 tracking-tight">
-              {isLogin ? "С возвращением!" : "Создать аккаунт"}
+              {isLogin ? t.auth.welcomeBack : t.auth.createAccount}
            </h2>
            <p className="text-center text-slate-600 text-sm mt-2 font-medium max-w-[280px]">
-              {isLogin ? "Введите данные для входа" : "Выберите роль и заполните данные"}
+              {isLogin ? t.auth.enterDetails : t.auth.selectRole}
            </p>
         </div>
 
@@ -189,7 +191,7 @@ function AuthForm() {
                 className="space-y-5"
               >
                 <div>
-                   <label className={labelClasses}>Я хочу зарегистрироваться как:</label>
+                   <label className={labelClasses}>{t.auth.iWantToRegister}</label>
                    <div className="grid grid-cols-2 gap-3">
                       <button
                         type="button"
@@ -202,7 +204,7 @@ function AuthForm() {
                         )}
                       >
                         <GraduationCap className={clsx("w-7 h-7 mb-1.5", role === "student" && "text-orange-600")} />
-                        <span className="text-xs font-bold">Ученик</span>
+                        <span className="text-xs font-bold">{t.auth.student}</span>
                       </button>
 
                       <button
@@ -216,13 +218,13 @@ function AuthForm() {
                         )}
                       >
                         <School className={clsx("w-7 h-7 mb-1.5", role === "teacher" && "text-orange-600")} />
-                        <span className="text-xs font-bold">Учитель</span>
+                        <span className="text-xs font-bold">{t.auth.teacher}</span>
                       </button>
                    </div>
                 </div>
 
                 <div>
-                   <label className={labelClasses}>Имя пользователя</label>
+                   <label className={labelClasses}>{t.auth.username}</label>
                    <div className="relative">
                      <User className="absolute left-3.5 top-3.5 w-5 h-5 text-slate-400" />
                      <input
@@ -240,7 +242,7 @@ function AuthForm() {
           </AnimatePresence>
 
           <div>
-             <label className={labelClasses}>Email</label>
+             <label className={labelClasses}>{t.auth.email}</label>
             <div className="relative">
               <Mail className="absolute left-3.5 top-3.5 w-5 h-5 text-slate-400" />
               <input
@@ -255,7 +257,7 @@ function AuthForm() {
           </div>
 
           <div>
-             <label className={labelClasses}>Пароль</label>
+             <label className={labelClasses}>{t.auth.password}</label>
             <div className="relative">
               <Lock className="absolute left-3.5 top-3.5 w-5 h-5 text-slate-400" />
               <input
@@ -281,7 +283,7 @@ function AuthForm() {
           >
             {loading ? <Loader2 className="animate-spin w-5 h-5" /> : (
               <>
-                {isLogin ? "Войти" : "Создать аккаунт"}
+                {isLogin ? t.auth.signIn : t.auth.signUp}
                 {!loading && <Sparkles className="w-4 h-4 opacity-80" />}
               </>
             )}
@@ -293,9 +295,9 @@ function AuthForm() {
             onClick={toggleMode}
             className="hover:text-orange-600 transition-colors"
           >
-            {isLogin ? "Впервые здесь? " : "Уже есть аккаунт? "}
+            {isLogin ? t.auth.firstTime : t.auth.haveAccount}
             <span className="text-orange-600 font-bold underline decoration-2 underline-offset-4 decoration-orange-100 hover:decoration-orange-600 transition-all">
-              {isLogin ? "Регистрация" : "Войти"}
+              {isLogin ? t.auth.register : t.auth.login}
             </span>
           </button>
         </div>

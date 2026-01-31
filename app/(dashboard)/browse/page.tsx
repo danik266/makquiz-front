@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { 
   ArrowLeft, Search, TrendingUp, Clock, 
   Eye, PlayCircle, User, Lock, Globe, Loader2,
@@ -16,6 +17,7 @@ type SortBy = "created_at" | "plays_count" | "views_count";
 export default function BrowsePage() {
   const router = useRouter();
   const { token } = useAuth();
+  const { t } = useLanguage();
   
   const [decks, setDecks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -96,10 +98,10 @@ export default function BrowsePage() {
               </button>
               <div>
                 <h1 className="text-2xl font-black text-slate-900">
-                  Каталог
+                  {t.browse.title}
                 </h1>
                 <p className="text-sm text-slate-500 font-medium">
-                  {total} публичных материалов
+                  {t.browse.subtitle}
                 </p>
               </div>
             </div>
@@ -112,7 +114,7 @@ export default function BrowsePage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Поиск по названию, автору или теме..."
+                placeholder={t.browse.searchPlaceholder}
                 className="w-full h-12 pl-12 pr-24 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none font-medium"
               />
               <Search className="absolute left-4 top-3.5 w-5 h-5 text-slate-400" />
@@ -120,7 +122,7 @@ export default function BrowsePage() {
                 type="submit"
                 className="absolute right-2 top-2 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 text-white px-4 py-2 rounded-lg font-bold hover:from-amber-500 hover:via-orange-600 hover:to-red-600 transition shadow-md shadow-orange-200"
               >
-                Найти
+                {t.browse.searchPlaceholder.split('...')[0]}
               </button>
             </form>
 
@@ -129,9 +131,9 @@ export default function BrowsePage() {
               onChange={(e) => setSortBy(e.target.value as SortBy)}
               className="h-12 px-4 rounded-xl border border-slate-200 font-bold text-slate-700 focus:ring-2 focus:ring-orange-500 outline-none bg-white"
             >
-              <option value="created_at">Недавние</option>
-              <option value="plays_count">Популярные</option>
-              <option value="views_count">Просматриваемые</option>
+              <option value="created_at">{t.browse.newest}</option>
+              <option value="plays_count">{t.browse.popular}</option>
+              <option value="views_count">{t.browse.mostViewed}</option>
             </select>
           </div>
         </div>
@@ -148,9 +150,9 @@ export default function BrowsePage() {
             <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Search className="w-8 h-8 text-slate-400" />
             </div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Ничего не найдено</h3>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">{t.browse.noResults}</h3>
             <p className="text-slate-500 font-medium">
-              Попробуйте изменить запрос или фильтры
+              {t.browse.tryAnother}
             </p>
           </div>
         ) : (

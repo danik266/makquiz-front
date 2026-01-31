@@ -135,6 +135,7 @@ const Navbar = () => {
                 className="p-2.5 text-orange-600 bg-orange-50 rounded-full"
               >
                 <Zap className="w-4 h-4" />
+                
             </Link>
 
             <button 
