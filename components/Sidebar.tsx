@@ -27,7 +27,7 @@ export default function Sidebar() {
   const menuItems = [
     { icon: LayoutGrid, label: t.sidebar.home, path: "/dashboard" },
     { icon: FileText, label: t.sidebar.myDecks, path: "/library" },
-    { icon: Globe, label: t.sidebar.catalog, path: "/browse" },
+    { icon: Globe, label: t.sidebar.catalog, path: "/catalog" },
     { icon: BarChart3, label: t.sidebar.stats, path: "/history" },
   ];
 

@@ -386,11 +386,11 @@ function MaterialCard({ deck, router }: { deck: DeckType, router: any }) {
               isQuiz ? "bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700" : "bg-gradient-to-r from-amber-100 to-orange-100 text-orange-700"
             )}>
               {isQuiz ? <Sparkles className="w-3 h-3" /> : <Brain className="w-3 h-3" />}
-              {isQuiz ? "Тест" : "Колода"}
+              {isQuiz ? t.dashboard.quiz : t.dashboard.deck}
             </span>
             {deck.is_assigned && (
               <span className="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-1 rounded-md uppercase flex items-center gap-1">
-                <Users className="w-3 h-3" /> Учитель
+                <Users className="w-3 h-3" /> {t.dashboard.teacher}
               </span>
             )}
           </div>

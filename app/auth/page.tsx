@@ -233,7 +233,7 @@ function AuthForm() {
                        value={formData.username}
                        onChange={(e) => setFormData({...formData, username: e.target.value})}
                        className={inputClasses}
-                       placeholder="Алекс"
+                       placeholder={t.auth.usernamePlaceholder}
                      />
                    </div>
                 </div>

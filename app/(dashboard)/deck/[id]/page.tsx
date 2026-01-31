@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { 
-  ArrowLeft, PlayCircle, Copy, User, Eye, Clock, 
+import { useLanguage } from "@/context/LanguageContext";
+import {
+  ArrowLeft, PlayCircle, Copy, User, Eye, Clock,
   Loader2, Globe, Lock, Brain, Sparkles, Check, AlertCircle
 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -37,6 +38,7 @@ export default function DeckPreviewPage() {
   const router = useRouter();
   const params = useParams();
   const { token, user } = useAuth();
+  const { t } = useLanguage();
   const deckId = params?.id;
 
   const [deck, setDeck] = useState<DeckPreview | null>(null);
@@ -52,19 +54,33 @@ export default function DeckPreviewPage() {
     }
   }, [deckId, token]);
 
-  const loadDeckPreview = async () => {
-    try {
-      // Загружаем информацию о колоде
-      const deckRes = await fetch(`https://makquiz-back.onrender.com/api/decks/${deckId}`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {}
-      });
-      
-      if (!deckRes.ok) {
-        throw new Error("Колода не найдена");
-      }
-      
-      const deckData = await deckRes.json();
-      setDeck(deckData);
+ const loadDeckPreview = async () => {
+  try {
+    const deckRes = await fetch(`https://makquiz-back.onrender.com/api/decks/${deckId}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+
+    if (!deckRes.ok) {
+      let errorMsg = t.deckPreview.deckNotFound;
+      let errorDetail = '';
+      try {
+        const errorData = await deckRes.json();
+        errorDetail = errorData.detail || '';  // "Could not validate credentials"
+        if (deckRes.status === 401) {
+          errorMsg = 'Сессия истекла. Войдите заново.';
+          return;
+        } else if (deckRes.status === 403) {
+          errorMsg = 'Нет доступа к колоде (возможно, приватная).';
+        } else if (deckRes.status === 404) {
+          errorMsg = 'Колода не найдена.';
+        }
+      } catch {}
+      console.log(`Ошибка: Status ${deckRes.status}, Детали: ${errorDetail}`);
+      throw new Error(errorMsg);
+    }
+
+    const deckData = await deckRes.json();
+    setDeck(deckData);
 
       // Загружаем превью карточек (первые 5)
       const cardsRes = await fetch(`https://makquiz-back.onrender.com/api/decks/${deckId}/preview`, {
@@ -100,7 +116,7 @@ export default function DeckPreviewPage() {
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.detail || "Не удалось скопировать");
+        throw new Error(data.detail || t.deckPreview.copyFailed);
       }
 
       const data = await res.json();
@@ -137,13 +153,13 @@ export default function DeckPreviewPage() {
           <div className="w-20 h-20 bg-red-100 rounded-3xl flex items-center justify-center mx-auto mb-6">
             <AlertCircle className="w-10 h-10 text-red-600" />
           </div>
-          <h2 className="text-2xl font-black text-slate-900 mb-2">Ошибка</h2>
-          <p className="text-slate-500 mb-8">{error || "Колода не найдена"}</p>
-          <button 
-            onClick={() => router.push("/browse")} 
+          <h2 className="text-2xl font-black text-slate-900 mb-2">{t.deckPreview.error}</h2>
+          <p className="text-slate-500 mb-8">{error || t.deckPreview.deckNotFound}</p>
+          <button
+            onClick={() => router.push("/catalog")}
             className="bg-orange-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-orange-700 transition"
           >
-            Вернуться в каталог
+            {t.deckPreview.backToCatalog}
           </button>
         </div>
       </div>
@@ -163,7 +179,7 @@ export default function DeckPreviewPage() {
             className="flex items-center gap-2 text-slate-600 hover:text-orange-600 font-bold transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            Назад
+            {t.deckPreview.back}
           </button>
         </div>
       </header>
@@ -182,21 +198,21 @@ export default function DeckPreviewPage() {
               isQuiz ? "bg-purple-100 text-purple-700" : "bg-blue-100 text-blue-700"
             )}>
               {isQuiz ? <Sparkles className="w-3.5 h-3.5" /> : <Brain className="w-3.5 h-3.5" />}
-              {isQuiz ? "Квиз" : "Карточки"}
+              {isQuiz ? t.deckPreview.quiz : t.deckPreview.flashcards}
             </span>
-            
+
             {isSpaced && (
               <span className="bg-orange-100 text-orange-700 text-xs font-bold px-3 py-1.5 rounded-lg uppercase flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" /> Интервальное
+                <Clock className="w-3.5 h-3.5" /> {t.deckPreview.spacedRepetition}
               </span>
             )}
-            
+
             <span className={clsx(
               "text-xs font-bold px-3 py-1.5 rounded-lg uppercase flex items-center gap-1",
               deck.is_public ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-600"
             )}>
               {deck.is_public ? <Globe className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
-              {deck.is_public ? "Публичная" : "Приватная"}
+              {deck.is_public ? t.deckPreview.public : t.deckPreview.private}
             </span>
           </div>
 
@@ -216,41 +232,38 @@ export default function DeckPreviewPage() {
           <div className="flex flex-wrap gap-6 mb-8">
             <div className="flex items-center gap-2 text-slate-500">
               <User className="w-4 h-4" />
-              <span className="font-medium">{deck.author_name || "Аноним"}</span>
+              <span className="font-medium">{deck.author_name || t.deckPreview.anonymous}</span>
             </div>
             <div className="flex items-center gap-2 text-slate-500">
               <Brain className="w-4 h-4" />
-              <span className="font-medium">{deck.total_cards} {isQuiz ? "вопросов" : "карточек"}</span>
+              <span className="font-medium">{deck.total_cards} {isQuiz ? t.deckPreview.questions : t.deckPreview.cards}</span>
             </div>
             <div className="flex items-center gap-2 text-slate-500">
               <PlayCircle className="w-4 h-4" />
-              <span className="font-medium">{deck.plays_count} прохождений</span>
+              <span className="font-medium">{deck.plays_count} {t.deckPreview.plays}</span>
             </div>
             <div className="flex items-center gap-2 text-slate-500">
               <Eye className="w-4 h-4" />
-              <span className="font-medium">{deck.views_count} просмотров</span>
+              <span className="font-medium">{deck.views_count} {t.deckPreview.views}</span>
             </div>
           </div>
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-3">
             {deck.is_author ? (
-              // Если это твоя колода - сразу учить
               <button
                 onClick={handleStudy}
                 className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all"
               >
                 <PlayCircle className="w-5 h-5" />
-                Начать изучение
+                {t.deckPreview.startStudy}
               </button>
             ) : copied ? (
-              // Уже скопировано
               <div className="flex-1 bg-green-100 text-green-700 font-bold py-4 rounded-xl flex items-center justify-center gap-2">
                 <Check className="w-5 h-5" />
-                Добавлено! Переходим...
+                {t.deckPreview.added}
               </div>
             ) : (
-              // Чужая колода - нужно сначала добавить к себе
               <button
                 onClick={handleCopyToMyDecks}
                 disabled={copying}
@@ -261,14 +274,14 @@ export default function DeckPreviewPage() {
                 ) : (
                   <Copy className="w-5 h-5" />
                 )}
-                {copying ? "Копируем..." : "Добавить к себе"}
+                {copying ? t.deckPreview.copying : t.deckPreview.addToLibrary}
               </button>
             )}
           </div>
 
           {!deck.is_author && !copied && (
             <p className="text-center text-sm text-slate-400 mt-3">
-              Колода будет скопирована в ваши материалы
+              {t.deckPreview.willBeCopied}
             </p>
           )}
         </motion.div>
@@ -277,7 +290,7 @@ export default function DeckPreviewPage() {
         {cards.length > 0 && (
           <div>
             <h2 className="text-xl font-black text-slate-900 mb-4">
-              Превью {isQuiz ? "вопросов" : "карточек"}
+              {t.deckPreview.preview} {isQuiz ? t.deckPreview.questions : t.deckPreview.cards}
             </h2>
             
             <div className="space-y-3">
@@ -329,7 +342,7 @@ export default function DeckPreviewPage() {
 
             {deck.total_cards > cards.length && (
               <p className="text-center text-sm text-slate-400 mt-4">
-                И ещё {deck.total_cards - cards.length} {isQuiz ? "вопросов" : "карточек"}...
+                {t.deckPreview.andMore} {deck.total_cards - cards.length} {isQuiz ? t.deckPreview.questions : t.deckPreview.cards}...
               </p>
             )}
           </div>

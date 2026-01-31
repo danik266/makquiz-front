@@ -494,7 +494,7 @@ export default function HistoryPage() {
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
                       <h3 className="font-black text-slate-900 text-lg mb-1">
-                        {session.deck_name || "Без названия"}
+                        {session.deck_name || t.history.noTitle}
                       </h3>
                       <p className="text-sm text-slate-500 font-medium">
                         {parseDate(session.completed_at).toLocaleString("ru", {

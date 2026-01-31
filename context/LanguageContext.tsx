@@ -7,13 +7,13 @@ type Language = "en" | "ru";
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: typeof translations.ru;
+  t: typeof translations.en;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("ru");
+  const [language, setLanguageState] = useState<Language>("en");
 
   useEffect(() => {
     const saved = localStorage.getItem("app_lang") as Language;
@@ -25,8 +25,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("app_lang", newLang);
   };
 
-  // Выбираем переводы, гарантируя, что объект t всегда существует
-  const t = translations[language] || translations["ru"];
+  // Select translations, ensuring t object always exists
+  const t = translations[language] || translations["en"];
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>

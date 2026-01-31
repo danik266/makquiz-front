@@ -150,14 +150,14 @@ export default function PlayerPage() {
   if (!joined) {
     return (
       <div className="min-h-screen bg-orange-600 flex items-center justify-center p-4">
-        <div className="bg-white p-8 rounded-3xl w-full max-w-md shadow-2xl text-center">
-          <h1 className="text-2xl font-black text-slate-900 mb-6">{t.live.enterSession}</h1>
+        <div className="bg-white p-6 sm:p-8 rounded-3xl w-full max-w-md shadow-2xl text-center">
+          <h1 className="text-xl sm:text-2xl font-black text-slate-900 mb-6">{t.live.enterSession}</h1>
           <input
             value={nickname} onChange={e => setNickname(e.target.value)}
             placeholder={t.live.yourName}
-            className="w-full border-2 text-orange-600 border-slate-200 rounded-xl px-4 py-4 text-xl font-bold text-center mb-4 focus:border-orange-600 outline-none"
+            className="w-full border-2 text-orange-600 border-slate-200 rounded-xl px-4 py-3 sm:py-4 text-lg sm:text-xl font-bold text-center mb-4 focus:border-orange-600 outline-none"
           />
-          <button onClick={joinSession} className="w-full bg-orange-600 text-white py-4 rounded-xl font-bold text-xl hover:bg-orange-700 transition">
+          <button onClick={joinSession} className="w-full bg-orange-600 text-white py-3 sm:py-4 rounded-xl font-bold text-lg sm:text-xl hover:bg-orange-700 transition">
             {t.live.enter}
           </button>
         </div>
@@ -168,11 +168,11 @@ export default function PlayerPage() {
   // Ожидание старта
   if (status === "waiting") {
     return (
-      <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center text-white text-center p-6">
-        <Loader2 className="w-16 h-16 animate-spin text-orange-400 mb-6" />
-        <h2 className="text-3xl font-black mb-2">{t.live.waitingForStart}</h2>
-        <p className="text-slate-400 text-xl mb-8">{t.live.teacherWillStartSoon}</p>
-        <div className="bg-slate-800 px-8 py-3 rounded-full font-bold text-2xl text-orange-300 border border-orange-500/30">
+      <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center text-white text-center p-4 sm:p-6">
+        <Loader2 className="w-12 sm:w-16 h-12 sm:h-16 animate-spin text-orange-400 mb-6" />
+        <h2 className="text-2xl sm:text-3xl font-black mb-2">{t.live.waitingForStart}</h2>
+        <p className="text-slate-400 text-lg sm:text-xl mb-8">{t.live.teacherWillStartSoon}</p>
+        <div className="bg-slate-800 px-6 sm:px-8 py-3 rounded-full font-bold text-xl sm:text-2xl text-orange-300 border border-orange-500/30">
             {nickname}
         </div>
         {loadingCards && <p className="mt-4 text-sm text-slate-500">{t.general.loading}</p>}
@@ -183,7 +183,7 @@ export default function PlayerPage() {
   // Финиш
   if (isFinished) {
     return (
-      <div className="min-h-screen bg-orange-600 flex flex-col items-center justify-center text-white text-center p-6 overflow-hidden relative">
+      <div className="min-h-screen bg-orange-600 flex flex-col items-center justify-center text-white text-center p-4 sm:p-6 overflow-hidden relative">
         {/* Фоновые звезды */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
             <Star className="absolute top-10 left-10 w-12 h-12 text-white animate-pulse" />
@@ -196,21 +196,21 @@ export default function PlayerPage() {
             animate={{ scale: 1, rotate: 0 }}
             transition={{ type: "spring", stiffness: 200 }}
         >
-            <Trophy className="w-32 h-32 text-yellow-300 mb-8 drop-shadow-lg" fill="currentColor" />
+            <Trophy className="w-24 sm:w-32 h-24 sm:h-32 text-yellow-300 mb-8 drop-shadow-lg" fill="currentColor" />
         </motion.div>
 
-        <h1 className="text-4xl font-black mb-6">{t.live.gameOver}</h1>
+        <h1 className="text-3xl sm:text-4xl font-black mb-6">{t.live.gameOver}</h1>
 
         <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="bg-white/10 p-8 rounded-3xl backdrop-blur-md border border-white/20 shadow-2xl min-w-[300px]"
+            className="bg-white/10 p-6 sm:p-8 rounded-3xl backdrop-blur-md border border-white/20 shadow-2xl min-w-[300px]"
         >
-            <p className="text-sm uppercase font-bold tracking-widest text-orange-200 mb-2">{t.live.yourFinalScore}</p>
+            <p className="text-xs sm:text-sm uppercase font-bold tracking-widest text-orange-200 mb-2">{t.live.yourFinalScore}</p>
             <div className="flex items-baseline justify-center gap-2">
-                <span className="text-7xl font-black text-white drop-shadow-sm">{score}</span>
-                <span className="text-3xl font-bold text-orange-200">{t.live.pts}</span>
+                <span className="text-5xl sm:text-7xl font-black text-white drop-shadow-sm">{score}</span>
+                <span className="text-2xl sm:text-3xl font-bold text-orange-200">{t.live.pts}</span>
             </div>
         </motion.div>
 
@@ -220,9 +220,9 @@ export default function PlayerPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1 }}
             onClick={() => router.push("/")}
-            className="mt-12 bg-white text-orange-600 px-8 py-4 rounded-2xl font-black text-xl hover:bg-orange-50 transition shadow-lg flex items-center gap-2"
+            className="mt-12 bg-white text-orange-600 px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-black text-lg sm:text-xl hover:bg-orange-50 transition shadow-lg flex items-center gap-2"
         >
-            <Home className="w-6 h-6" /> {t.live.exitToMenu}
+            <Home className="w-5 sm:w-6 h-5 sm:h-6" /> {t.live.exitToMenu}
         </motion.button>
       </div>
     );
@@ -238,25 +238,25 @@ export default function PlayerPage() {
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col p-4">
        {/* Верхняя панель */}
-       <div className="flex justify-between items-center mb-4 font-bold text-slate-500 bg-white p-4 rounded-2xl shadow-sm">
+       <div className="flex justify-between items-center mb-4 font-bold text-slate-500 bg-white p-3 sm:p-4 rounded-2xl shadow-sm">
           <div className="flex items-center gap-2">
-              <span className="bg-slate-100 px-3 py-1 rounded-lg text-slate-900">
+              <span className="bg-slate-100 px-2 sm:px-3 py-1 rounded-lg text-slate-900 text-sm sm:text-base">
                   {currentIndex + 1} / {cards.length}
               </span>
           </div>
           <div className="flex items-center gap-2 text-orange-600">
-              <Zap className="w-5 h-5 fill-orange-600" />
-              <span>{score}</span>
+              <Zap className="w-4 sm:w-5 h-4 sm:h-5 fill-orange-600" />
+              <span className="text-sm sm:text-base">{score}</span>
           </div>
        </div>
 
        <div className="flex-1 flex flex-col items-center justify-center max-w-2xl mx-auto w-full pb-32">
           
-          <div className="w-full relative perspective-1000 mb-6" style={{ minHeight: '250px' }}>
+          <div className="w-full relative perspective-1000 mb-6" style={{ minHeight: '200px' }}>
              
              {isQuiz ? (
-                 <div className="bg-white w-full p-8 rounded-3xl shadow-lg text-center min-h-[250px] flex flex-col items-center justify-center border-b-4 border-slate-200">
-                    <h2 className="text-2xl md:text-3xl font-black text-slate-900 leading-tight">
+                 <div className="bg-white w-full p-4 sm:p-8 rounded-3xl shadow-lg text-center min-h-[200px] flex flex-col items-center justify-center border-b-4 border-slate-200">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 leading-tight">
                         {card.question}
                     </h2>
                  </div>
@@ -266,21 +266,21 @@ export default function PlayerPage() {
                     animate={{ rotateY: isFlipped ? 180 : 0 }}
                     transition={{ duration: 0.6, type: "spring" }}
                     style={{ transformStyle: "preserve-3d" }}
-                    className="relative w-full h-full min-h-[250px]"
+                    className="relative w-full h-full min-h-[200px]"
                  >
-                    <div className="absolute inset-0 bg-white p-8 rounded-3xl shadow-lg text-center flex flex-col items-center justify-center border-b-4 border-slate-200 backface-hidden">
+                    <div className="absolute inset-0 bg-white p-4 sm:p-8 rounded-3xl shadow-lg text-center flex flex-col items-center justify-center border-b-4 border-slate-200 backface-hidden">
                         <p className="text-xs font-bold text-slate-400 uppercase mb-4 tracking-widest">{t.live.question}</p>
-                        <h2 className="text-2xl md:text-3xl font-black text-slate-900 leading-tight">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 leading-tight">
                             {card.front}
                         </h2>
                     </div>
 
                     <div
-                        className="absolute inset-0 bg-orange-900 p-8 rounded-3xl shadow-lg text-center flex flex-col items-center justify-center border-b-4 border-orange-950 backface-hidden"
+                        className="absolute inset-0 bg-orange-900 p-4 sm:p-8 rounded-3xl shadow-lg text-center flex flex-col items-center justify-center border-b-4 border-orange-950 backface-hidden"
                         style={{ transform: "rotateY(180deg)" }}
                     >
                         <p className="text-xs font-bold text-orange-300 uppercase mb-4 tracking-widest">{t.live.answer}</p>
-                        <h2 className="text-xl md:text-2xl font-bold text-white leading-tight">
+                        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight">
                             {card.back}
                         </h2>
                     </div>
@@ -295,7 +295,7 @@ export default function PlayerPage() {
                      key={i} 
                      onClick={() => setSelectedOptionIndex(i)}
                      className={clsx(
-                        "p-5 rounded-xl font-bold text-lg transition text-left shadow-sm active:scale-95 border-2",
+                        "p-4 sm:p-5 rounded-xl font-bold text-base sm:text-lg transition text-left shadow-sm active:scale-95 border-2",
                         selectedOptionIndex === i 
                             ? "bg-orange-600 text-white border-orange-600 ring-4 ring-orange-200" 
                             : "bg-white text-slate-700 border-orange-100 hover:border-orange-300"
@@ -310,33 +310,33 @@ export default function PlayerPage() {
                 {!isFlipped ? (
                     <button
                         onClick={() => setIsFlipped(true)}
-                        className="w-full bg-white border-2 border-orange-200 text-orange-600 py-6 rounded-2xl font-bold text-xl hover:bg-orange-50 transition shadow-sm flex items-center justify-center gap-2"
+                        className="w-full bg-white border-2 border-orange-200 text-orange-600 py-5 sm:py-6 rounded-2xl font-bold text-lg sm:text-xl hover:bg-orange-50 transition shadow-sm flex items-center justify-center gap-2"
                     >
-                        <Eye className="w-6 h-6" /> {t.live.showAnswer}
+                        <Eye className="w-5 sm:w-6 h-5 sm:h-6" /> {t.live.showAnswer}
                     </button>
                 ) : (
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <button
                                 onClick={() => setFlashcardChoice(false)}
                                 className={clsx(
-                                    "py-6 rounded-2xl font-black text-xl flex flex-col items-center transition border-4 active:scale-95",
+                                    "py-5 sm:py-6 rounded-2xl font-black text-lg sm:text-xl flex flex-col items-center transition border-4 active:scale-95",
                                     flashcardChoice === false
                                         ? "bg-red-600 text-white border-red-600 ring-4 ring-red-200"
                                         : "bg-white text-red-600 border-red-100 hover:bg-red-50"
                                 )}
                         >
-                            <X className="mb-2 w-8 h-8"/> {t.live.didntKnow}
+                            <X className="mb-2 w-6 sm:w-8 h-6 sm:h-8"/> {t.live.didntKnow}
                         </button>
                         <button
                                 onClick={() => setFlashcardChoice(true)}
                                 className={clsx(
-                                    "py-6 rounded-2xl font-black text-xl flex flex-col items-center transition border-4 active:scale-95",
+                                    "py-5 sm:py-6 rounded-2xl font-black text-lg sm:text-xl flex flex-col items-center transition border-4 active:scale-95",
                                     flashcardChoice === true
                                         ? "bg-green-600 text-white border-green-600 ring-4 ring-green-200"
                                         : "bg-white text-green-600 border-green-100 hover:bg-green-50"
                                 )}
                         >
-                            <Check className="mb-2 w-8 h-8"/> {t.live.knew}
+                            <Check className="mb-2 w-6 sm:w-8 h-6 sm:h-8"/> {t.live.knew}
                         </button>
                     </div>
                 )}
@@ -350,12 +350,12 @@ export default function PlayerPage() {
                    <button
                      onClick={submitAnswer}
                      disabled={isSubmitting}
-                     className="w-full bg-orange-600 text-white py-4 rounded-2xl font-bold text-xl hover:bg-orange-700 transition flex items-center justify-center gap-2 shadow-lg shadow-orange-200"
+                     className="w-full bg-orange-600 text-white py-4 rounded-2xl font-bold text-lg sm:text-xl hover:bg-orange-700 transition flex items-center justify-center gap-2 shadow-lg shadow-orange-200"
                    >
                      {isSubmitting ? (
-                         <Loader2 className="w-6 h-6 animate-spin" />
+                         <Loader2 className="w-5 sm:w-6 h-5 sm:h-6 animate-spin" />
                      ) : (
-                         <>{t.live.next} <Send className="w-5 h-5" /></>
+                         <>{t.live.next} <Send className="w-4 sm:w-5 h-4 sm:h-5" /></>
                      )}
                    </button>
                </div>

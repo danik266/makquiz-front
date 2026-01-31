@@ -67,7 +67,7 @@ export default function JoinPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.detail || "Ошибка при присоединении");
+        throw new Error(data.detail || t.join.joinError);
       }
 
       setResult(data);

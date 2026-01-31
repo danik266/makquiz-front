@@ -7,7 +7,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { 
   ArrowLeft, Search, TrendingUp, Clock, 
   Eye, PlayCircle, User, Lock, Globe, Loader2,
-  Brain, Sparkles
+  Brain, Sparkles, ChevronDown
 } from "lucide-react";
 import { motion } from "framer-motion";
 import clsx from "clsx";
@@ -23,6 +23,7 @@ export default function BrowsePage() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortBy>("created_at");
+  const [isSortOpen, setIsSortOpen] = useState(false);
   const [skip, setSkip] = useState(0);
   const [total, setTotal] = useState(0);
   const limit = 12;
@@ -32,28 +33,28 @@ export default function BrowsePage() {
   }, [sortBy, skip]);
 
   const loadDecks = async () => {
-  setLoading(true);
-  try {
-    const res = await fetch(
-      `https://makquiz-back.onrender.com/api/decks/public?skip=${skip}&limit=${limit}&sort_by=${sortBy}`,
-      { headers: token ? { Authorization: `Bearer ${token}` } : {} }
-    );
-    const data = await res.json();
-    
-    // Исправление: проверяем формат ответа
-    if (Array.isArray(data)) {
-      setDecks(data);
-      setTotal(data.length);
-    } else {
-      setDecks(data.decks || []);
-      setTotal(data.total || 0);
+    setLoading(true);
+    try {
+      const res = await fetch(
+        `https://makquiz-back.onrender.com/api/decks/public?skip=${skip}&limit=${limit}&sort_by=${sortBy}`,
+        { headers: token ? { Authorization: `Bearer ${token}` } : {} }
+      );
+      const data = await res.json();
+      
+      // Исправление: проверяем формат ответа
+      if (Array.isArray(data)) {
+        setDecks(data);
+        setTotal(data.length);
+      } else {
+        setDecks(data.decks || []);
+        setTotal(data.total || 0);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
     }
-  } catch (e) {
-    console.error(e);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,6 +84,14 @@ export default function BrowsePage() {
     router.push(`/deck/${deckId}`);
   };
 
+  const sortOptions = [
+    { value: "created_at" as SortBy, label: t.browse.newest },
+    { value: "plays_count" as SortBy, label: t.browse.popular },
+    { value: "views_count" as SortBy, label: t.browse.mostViewed },
+  ];
+
+  const currentSortLabel = sortOptions.find((opt) => opt.value === sortBy)?.label || t.browse.newest;
+
   return (
     <div className="min-h-screen bg-[#F8F9FC]">
       {/* Header */}
@@ -109,32 +118,60 @@ export default function BrowsePage() {
 
           {/* Search and Filters */}
           <div className="flex flex-col md:flex-row gap-4">
-            <form onSubmit={handleSearch} className="flex-1 relative">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={t.browse.searchPlaceholder}
-                className="w-full h-12 pl-12 pr-24 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none font-medium"
-              />
-              <Search className="absolute left-4 top-3.5 w-5 h-5 text-slate-400" />
-              <button
-                type="submit"
-                className="absolute right-2 top-2 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 text-white px-4 py-2 rounded-lg font-bold hover:from-amber-500 hover:via-orange-600 hover:to-red-600 transition shadow-md shadow-orange-200"
-              >
-                {t.browse.searchPlaceholder.split('...')[0]}
-              </button>
+            <form onSubmit={handleSearch} className="flex-1">
+              <div className="flex rounded-xl border border-slate-200 focus-within:ring-2 focus-within:ring-orange-500 overflow-hidden">
+                <div className="relative flex-1">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={t.browse.searchPlaceholder}
+                    className="w-full h-12 pl-12 pr-4 border-none outline-none font-medium bg-transparent"
+                  />
+                  <Search className="absolute left-4 top-3.5 w-5 h-5 text-slate-400" />
+                </div>
+                <button
+                  type="submit"
+                  className="h-12 px-6 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 text-white font-bold hover:from-amber-500 hover:via-orange-600 hover:to-red-600 transition shadow-md shadow-orange-200"
+                >
+                  {t.browse.searchPlaceholder.split('...')[0]}
+                </button>
+              </div>
             </form>
 
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as SortBy)}
-              className="h-12 px-4 rounded-xl border border-slate-200 font-bold text-slate-700 focus:ring-2 focus:ring-orange-500 outline-none bg-white"
-            >
-              <option value="created_at">{t.browse.newest}</option>
-              <option value="plays_count">{t.browse.popular}</option>
-              <option value="views_count">{t.browse.mostViewed}</option>
-            </select>
+            <div className="relative">
+              <button
+                onClick={() => setIsSortOpen(!isSortOpen)}
+                className="h-12 px-4 rounded-xl border border-slate-200 font-bold text-slate-700 outline-none bg-white flex items-center justify-between w-full min-w-[160px] hover:bg-slate-50 transition"
+              >
+                <span>{currentSortLabel}</span>
+                <ChevronDown className="w-5 h-5 text-slate-400 ml-2" />
+              </button>
+              {isSortOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="absolute z-10 mt-1 w-full bg-white rounded-xl border border-slate-200 shadow-lg overflow-hidden"
+                >
+                  {sortOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      onClick={() => {
+                        setSortBy(option.value);
+                        setIsSortOpen(false);
+                      }}
+                      className={clsx(
+                        "w-full px-4 py-3 text-left font-bold text-slate-700 hover:bg-slate-50 transition",
+                        option.value === sortBy && "bg-slate-100"
+                      )}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </div>
           </div>
         </div>
       </header>
@@ -181,7 +218,7 @@ export default function BrowsePage() {
                           <Lock className="w-4 h-4 text-slate-400" />
                         )}
                         <span className="text-xs font-bold text-slate-400 uppercase">
-                          {deck.total_cards || 0} {isQuiz ? "вопр." : "карт."}
+                          {deck.total_cards || 0} {isQuiz ? t.browse.questionsShort : t.browse.cardsShort}
                         </span>
                       </div>
                       
@@ -197,7 +234,7 @@ export default function BrowsePage() {
                           isQuiz ? "bg-purple-50 text-purple-600" : "bg-emerald-50 text-emerald-600"
                         )}>
                           {isQuiz ? <Sparkles className="w-3 h-3" /> : <Brain className="w-3 h-3" />}
-                          {isQuiz ? "Квиз" : "Колода"}
+                          {isQuiz ? t.browse.quiz : t.browse.deck}
                         </span>
                       </div>
                     </div>
@@ -207,14 +244,14 @@ export default function BrowsePage() {
                       {deck.name}
                     </h3>
                     <p className="text-sm text-slate-500 font-medium line-clamp-2 mb-4">
-                      {deck.description || "Без описания"}
+                      {deck.description || t.browse.noDescription}
                     </p>
 
                     {/* Footer */}
                     <div className="flex items-center justify-between pt-4 border-t border-slate-100">
                       <div className="flex items-center gap-2 text-xs font-bold text-slate-400">
                         <User className="w-3.5 h-3.5" />
-                        {deck.author_name || "Аноним"}
+                        {deck.author_name || t.browse.anonymous}
                       </div>
                       <div className="flex items-center gap-3 text-xs font-bold text-slate-400">
                         <div className="flex items-center gap-1">

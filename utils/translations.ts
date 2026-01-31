@@ -18,7 +18,7 @@ export const translations = {
     sidebar: {
       home: "Dashboard",
       myDecks: "My Library",
-      catalog: "Browse",
+      catalog: "Catalog",
       search: "Search",
       stats: "Analytics",
       create: "Create",
@@ -83,7 +83,7 @@ export const translations = {
       },
       mobile: { 
         title: "Study anywhere", 
-        desc: "Native mobile apps for iOS and Android. Offline mode included." 
+        desc: "Native mobile apps for iOS and Android." 
       },
       teachers: { 
         title: "Teacher dashboard", 
@@ -193,7 +193,7 @@ export const translations = {
       empty: {
         title: "No decks yet",
         subtitle: "Create your first deck with AI or manually",
-        action: "Create Deck"
+        action: "Create something"
       },
       spacedRepetition: "Spaced Repetition",
       reviewsToday: "to review",
@@ -210,7 +210,10 @@ export const translations = {
       welcomeTitle: "Welcome!",
       welcomeSubtitle: "You don't have any courses yet. Create your deck or join teacher's deck by code.",
       joinByCode: "Join by code",
-      studiedToday: "Studied today"
+      studiedToday: "Studied today",
+      quiz: "Quiz",
+      deck: "Deck",
+      teacher: "Teacher"
     },
     create: {
       title: "Create Deck with AI",
@@ -305,7 +308,8 @@ export const translations = {
       totalCards: "Total Cards",
       sessionHistory: "Session History",
       review: "Review",
-      weeklyProgress: "Weekly Progress"
+      weeklyProgress: "Weekly Progress",
+      noTitle: "No title"
     },
     footer: {
       rights: "© 2026 Makquiz Inc. All rights reserved.",
@@ -341,6 +345,7 @@ export const translations = {
       student: "Student",
       teacher: "Teacher",
       username: "Username",
+      usernamePlaceholder: "Alex",
       email: "Email",
       password: "Password",
       signIn: "Sign In",
@@ -366,12 +371,13 @@ export const translations = {
       joinedDeck: "You joined the deck",
       teacher: "Teacher",
       startStudying: "Start Studying",
-      goBack: "Go Back"
+      goBack: "Go Back",
+      joinError: "Error joining"
     },
     browse: {
       title: "Catalog",
       subtitle: "Public decks from the community",
-      searchPlaceholder: "Search decks...",
+      searchPlaceholder: "Search...",
       sortBy: "Sort by",
       newest: "Newest",
       popular: "Most Popular",
@@ -383,7 +389,13 @@ export const translations = {
       cards: "cards",
       public: "Public",
       private: "Private",
-      questions: "questions"
+      questions: "questions",
+      quiz: "Quiz",
+      deck: "Deck",
+      noDescription: "No description",
+      anonymous: "Anonymous",
+      questionsShort: "q.",
+      cardsShort: "cards"
     },
     library: {
       title: "My Library",
@@ -392,7 +404,7 @@ export const translations = {
       create: "Create",
       emptyTitle: "Nothing here yet",
       emptySubtitle: "Create your first deck to start learning",
-      createDeck: "Create Deck",
+      createDeck: "Create Something",
       quiz: "Quiz",
       flashcards: "Flashcards",
       spaced: "Spaced",
@@ -485,11 +497,11 @@ export const translations = {
       optionLabel: "Option"
     },
     teacherDashboard: {
-      title: "Teacher Dashboard 👨‍🏫",
+      title: "Teacher Dashboard",
       greeting: "Hello",
       subtitle: "Manage materials and run live sessions",
       myDecks: "My Decks",
-      createDeck: "Create Deck",
+      createDeck: "Create Something",
       activeSessions: "Active Sessions",
       students: "Students",
       noDecks: "No decks yet",
@@ -553,7 +565,40 @@ export const translations = {
       plays: "plays",
       views: "views",
       questions: "questions",
-      cards: "cards"
+      cards: "cards",
+      back: "Back",
+      error: "Error",
+      deckNotFound: "Deck not found",
+      backToCatalog: "Back to catalog",
+      quiz: "Quiz",
+      flashcards: "Flashcards",
+      spacedRepetition: "Spaced",
+      public: "Public",
+      private: "Private",
+      anonymous: "Anonymous",
+      startStudy: "Start Learning",
+      copyFailed: "Failed to copy",
+      copying: "Copying...",
+      added: "Added! Redirecting...",
+      preview: "Preview",
+      andMore: "And more"
+    },
+    quizEditor: {
+      questionNumber: "Question",
+      deleteQuestion: "Delete question",
+      question: "Question",
+      enterQuestion: "Enter your question...",
+      answerOptions: "Answer options (mark correct ones)",
+      markAsCorrect: "Mark as correct answer",
+      option: "Option",
+      deleteOption: "Delete option",
+      addOption: "Add option",
+      explanation: "Explanation (optional)",
+      explainAnswer: "Explain why this is the correct answer...",
+      imageQuery: "Image search query (optional)",
+      imageQueryPlaceholder: "e.g.: python programming",
+      correctAnswers: "Correct answers",
+      mustHaveCorrect: "There must be at least one correct answer!"
     }
   },
   ru: {
@@ -640,7 +685,7 @@ export const translations = {
       },
       mobile: { 
         title: "Учись где угодно", 
-        desc: "Нативные приложения для iOS и Android. Офлайн режим включён." 
+        desc: "Нативные приложения для iOS и Android." 
       },
       teachers: { 
         title: "Панель учителя", 
@@ -750,7 +795,7 @@ export const translations = {
       empty: {
         title: "Колод пока нет",
         subtitle: "Создайте первую колоду с AI или вручную",
-        action: "Создать колоду"
+        action: "Создать что то"
       },
       spacedRepetition: "Интервальное обучение",
       reviewsToday: "к повторению",
@@ -767,7 +812,10 @@ export const translations = {
       welcomeTitle: "Добро пожаловать!",
       welcomeSubtitle: "У вас пока нет курсов. Создайте свою колоду или присоединитесь к колоде учителя по коду.",
       joinByCode: "Присоединиться по коду",
-      studiedToday: "Изучено сегодня"
+      studiedToday: "Изучено сегодня",
+      quiz: "Тест",
+      deck: "Колода",
+      teacher: "Учитель"
     },
     create: {
       title: "Создать колоду через AI",
@@ -862,7 +910,8 @@ export const translations = {
       totalCards: "Всего карточек",
       sessionHistory: "История прохождений",
       review: "Повторить",
-      weeklyProgress: "За неделю"
+      weeklyProgress: "За неделю",
+      noTitle: "Без названия"
     },
     footer: {
       rights: "© 2026 Makquiz Inc. Все права защищены.",
@@ -898,6 +947,7 @@ export const translations = {
       student: "Ученик",
       teacher: "Учитель",
       username: "Имя пользователя",
+      usernamePlaceholder: "Алекс",
       email: "Email",
       password: "Пароль",
       signIn: "Войти",
@@ -923,12 +973,13 @@ export const translations = {
       joinedDeck: "Вы присоединились к колоде",
       teacher: "Учитель",
       startStudying: "Начать изучение",
-      goBack: "Вернуться назад"
+      goBack: "Вернуться назад",
+      joinError: "Ошибка при присоединении"
     },
     browse: {
       title: "Каталог",
       subtitle: "Публичные колоды от сообщества",
-      searchPlaceholder: "Поиск колод...",
+      searchPlaceholder: "Поиск...",
       sortBy: "Сортировать",
       newest: "Новые",
       popular: "Популярные",
@@ -940,7 +991,13 @@ export const translations = {
       cards: "карт",
       public: "Публичная",
       private: "Приватная",
-      questions: "вопросов"
+      questions: "вопросов",
+      quiz: "Квиз",
+      deck: "Колода",
+      noDescription: "Без описания",
+      anonymous: "Аноним",
+      questionsShort: "вопр.",
+      cardsShort: "карт."
     },
     library: {
       title: "Моя библиотека",
@@ -949,7 +1006,7 @@ export const translations = {
       create: "Создать",
       emptyTitle: "Здесь пока пусто",
       emptySubtitle: "Создайте свою первую колоду, чтобы начать обучение",
-      createDeck: "Создать колоду",
+      createDeck: "Создать что то",
       quiz: "Тест",
       flashcards: "Карточки",
       spaced: "Интервал",
@@ -1042,11 +1099,11 @@ export const translations = {
       optionLabel: "Вариант"
     },
     teacherDashboard: {
-      title: "Панель учителя 👨‍🏫",
+      title: "Панель учителя",
       greeting: "Привет",
       subtitle: "Управляйте материалами и проводите живые сессии",
       myDecks: "Мои колоды",
-      createDeck: "Создать колоду",
+      createDeck: "Создать что то",
       activeSessions: "Активные сессии",
       students: "Учеников",
       noDecks: "Колод пока нет",
@@ -1110,7 +1167,40 @@ export const translations = {
       plays: "прохождений",
       views: "просмотров",
       questions: "вопросов",
-      cards: "карт"
+      cards: "карт",
+      back: "Назад",
+      error: "Ошибка",
+      deckNotFound: "Колода не найдена",
+      backToCatalog: "Вернуться в каталог",
+      quiz: "Квиз",
+      flashcards: "Карточки",
+      spacedRepetition: "Интервальное",
+      public: "Публичная",
+      private: "Приватная",
+      anonymous: "Аноним",
+      startStudy: "Начать изучение",
+      copyFailed: "Не удалось скопировать",
+      copying: "Копируем...",
+      added: "Добавлено! Переходим...",
+      preview: "Превью",
+      andMore: "И ещё"
+    },
+    quizEditor: {
+      questionNumber: "Вопрос",
+      deleteQuestion: "Удалить вопрос",
+      question: "Вопрос",
+      enterQuestion: "Введите вопрос...",
+      answerOptions: "Варианты ответов (отметьте правильные)",
+      markAsCorrect: "Отметить как правильный ответ",
+      option: "Вариант",
+      deleteOption: "Удалить вариант",
+      addOption: "Добавить вариант",
+      explanation: "Объяснение (необязательно)",
+      explainAnswer: "Объясните почему это правильный ответ...",
+      imageQuery: "Поисковый запрос для изображения (необязательно)",
+      imageQueryPlaceholder: "например: python programming",
+      correctAnswers: "Правильные ответы",
+      mustHaveCorrect: "Должен быть хотя бы один правильный ответ!"
     }
   }
 };

@@ -3,7 +3,7 @@ import { useRef, useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext"; 
 import Link from "next/link";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence, useReducedMotion } from "framer-motion";
 import { 
   Brain, ArrowRight, Sparkles, PlayCircle, CheckCircle2, XCircle, 
   FileText, BarChart3, UploadCloud, GraduationCap, Smartphone, 
@@ -28,17 +28,20 @@ const WaveDivider = ({ color = "#fff", flip = false, className = "" }: { color?:
   </div>
 );
 
-const BlobShape = ({ className = "", color = "rgba(255,200,87,0.3)" }: { className?: string; color?: string }) => (
-  <motion.div
-    animate={{ 
-      scale: [1, 1.1, 1],
-      rotate: [0, 10, 0],
-    }}
-    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-    className={`absolute rounded-[40%_60%_70%_30%/40%_50%_60%_50%] blur-3xl ${className}`}
-    style={{ background: color }}
-  />
-);
+const BlobShape = ({ className = "", color = "rgba(255,200,87,0.3)" }: { className?: string; color?: string }) => {
+  const reducedMotion = useReducedMotion();
+  return (
+    <motion.div
+      animate={reducedMotion ? { scale: 1, rotate: 0 } : { 
+        scale: [1, 1.05, 1],
+        rotate: [0, 5, 0],
+      }}
+      transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+      className={`absolute rounded-[40%_60%_70%_30%/40%_50%_60%_50%] blur-3xl ${className}`}
+      style={{ background: color }}
+    />
+  );
+};
 
 // --- NAVBAR ---
 const Navbar = () => {
@@ -206,30 +209,31 @@ const Navbar = () => {
 // --- HERO ---
 function HeroSection() {
   const { t } = useLanguage();
+  const reducedMotion = useReducedMotion();
 
   return (
     <section className="relative min-h-screen overflow-hidden">
       {/* BACKGROUND */}
       <div className="absolute inset-0 bg-gradient-to-br from-amber-300 via-orange-400 to-red-400" />
       
-      {/* Animated blobs (без изменений) */}
+      {/* Animated blobs */}
       <BlobShape className="w-[500px] h-[500px] top-[-100px] left-[-100px]" color="rgba(255,255,255,0.2)" />
       <BlobShape className="w-[400px] h-[400px] top-[20%] right-[-50px]" color="rgba(255,220,100,0.3)" />
       <BlobShape className="w-[300px] h-[300px] bottom-[20%] left-[10%]" color="rgba(255,100,100,0.2)" />
       
-      {/* Floating elements (без изменений) */}
+      {/* Floating elements */}
       <div className="hidden sm:block">
         <motion.div 
-          animate={{ y: [0, -15, 0], rotate: [0, 10, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          animate={reducedMotion ? { y: 0, rotate: 0 } : { y: [0, -15, 0], rotate: [0, 10, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-32 left-[15%] w-16 h-16 bg-white/90 rounded-2xl shadow-xl flex items-center justify-center"
         >
           <BookOpen className="w-8 h-8 text-orange-500" />
         </motion.div>
         
         <motion.div 
-          animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          animate={reducedMotion ? { y: 0, rotate: 0 } : { y: [0, 20, 0], rotate: [0, -10, 0] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           className="absolute top-48 right-[12%] w-14 h-14 bg-white/90 rounded-2xl shadow-xl flex items-center justify-center"
         >
           <Trophy className="w-7 h-7 text-amber-500" />
@@ -970,6 +974,7 @@ function TestimonialsSection() {
 // --- CTA ---
 function CTASection() {
   const { t } = useLanguage();
+  const reducedMotion = useReducedMotion();
 
   return (
     <section className="py-20 md:py-32 px-4 relative z-10">
@@ -986,8 +991,8 @@ function CTASection() {
           
           <div className="relative z-10">
             <motion.div
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              animate={reducedMotion ? { rotate: 0 } : { rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
               className="inline-block mb-6"
             >
               <Rocket className="w-16 h-16 text-white" />
