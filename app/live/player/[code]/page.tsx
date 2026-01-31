@@ -5,10 +5,12 @@ import { useParams, useRouter } from "next/navigation"; // 1. Добавил use
 import { Loader2, Check, X, Trophy, Send, Zap, RotateCcw, Eye, Star, Home } from "lucide-react";
 import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function PlayerPage() {
   const { code } = useParams();
   const router = useRouter(); // 2. Инициализация роутера
+  const { t } = useLanguage();
   
   // Состояния подключения
   const [nickname, setNickname] = useState("");
@@ -149,14 +151,14 @@ export default function PlayerPage() {
     return (
       <div className="min-h-screen bg-orange-600 flex items-center justify-center p-4">
         <div className="bg-white p-8 rounded-3xl w-full max-w-md shadow-2xl text-center">
-          <h1 className="text-2xl font-black text-slate-900 mb-6">Вход в сессию</h1>
-          <input 
-            value={nickname} onChange={e => setNickname(e.target.value)} 
-            placeholder="Ваше имя"
+          <h1 className="text-2xl font-black text-slate-900 mb-6">{t.live.enterSession}</h1>
+          <input
+            value={nickname} onChange={e => setNickname(e.target.value)}
+            placeholder={t.live.yourName}
             className="w-full border-2 text-orange-600 border-slate-200 rounded-xl px-4 py-4 text-xl font-bold text-center mb-4 focus:border-orange-600 outline-none"
           />
           <button onClick={joinSession} className="w-full bg-orange-600 text-white py-4 rounded-xl font-bold text-xl hover:bg-orange-700 transition">
-            Войти
+            {t.live.enter}
           </button>
         </div>
       </div>
@@ -168,12 +170,12 @@ export default function PlayerPage() {
     return (
       <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center text-white text-center p-6">
         <Loader2 className="w-16 h-16 animate-spin text-orange-400 mb-6" />
-        <h2 className="text-3xl font-black mb-2">Ожидание...</h2>
-        <p className="text-slate-400 text-xl mb-8">Учитель скоро начнет</p>
+        <h2 className="text-3xl font-black mb-2">{t.live.waitingForStart}</h2>
+        <p className="text-slate-400 text-xl mb-8">{t.live.teacherWillStartSoon}</p>
         <div className="bg-slate-800 px-8 py-3 rounded-full font-bold text-2xl text-orange-300 border border-orange-500/30">
             {nickname}
         </div>
-        {loadingCards && <p className="mt-4 text-sm text-slate-500">Подгружаем вопросы...</p>}
+        {loadingCards && <p className="mt-4 text-sm text-slate-500">{t.general.loading}</p>}
       </div>
     );
   }
@@ -189,7 +191,7 @@ export default function PlayerPage() {
             <Star className="absolute top-1/2 left-20 w-4 h-4 text-white animate-bounce" />
         </div>
 
-        <motion.div 
+        <motion.div
             initial={{ scale: 0, rotate: -10 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ type: "spring", stiffness: 200 }}
@@ -197,18 +199,18 @@ export default function PlayerPage() {
             <Trophy className="w-32 h-32 text-yellow-300 mb-8 drop-shadow-lg" fill="currentColor" />
         </motion.div>
 
-        <h1 className="text-4xl font-black mb-6">Игра окончена!</h1>
-        
-        <motion.div 
+        <h1 className="text-4xl font-black mb-6">{t.live.gameOver}</h1>
+
+        <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3 }}
             className="bg-white/10 p-8 rounded-3xl backdrop-blur-md border border-white/20 shadow-2xl min-w-[300px]"
         >
-            <p className="text-sm uppercase font-bold tracking-widest text-orange-200 mb-2">Ваш итоговый счет</p>
+            <p className="text-sm uppercase font-bold tracking-widest text-orange-200 mb-2">{t.live.yourFinalScore}</p>
             <div className="flex items-baseline justify-center gap-2">
                 <span className="text-7xl font-black text-white drop-shadow-sm">{score}</span>
-                <span className="text-3xl font-bold text-orange-200">PTS</span>
+                <span className="text-3xl font-bold text-orange-200">{t.live.pts}</span>
             </div>
         </motion.div>
 
@@ -220,7 +222,7 @@ export default function PlayerPage() {
             onClick={() => router.push("/")}
             className="mt-12 bg-white text-orange-600 px-8 py-4 rounded-2xl font-black text-xl hover:bg-orange-50 transition shadow-lg flex items-center gap-2"
         >
-            <Home className="w-6 h-6" /> Выйти в меню
+            <Home className="w-6 h-6" /> {t.live.exitToMenu}
         </motion.button>
       </div>
     );
@@ -267,17 +269,17 @@ export default function PlayerPage() {
                     className="relative w-full h-full min-h-[250px]"
                  >
                     <div className="absolute inset-0 bg-white p-8 rounded-3xl shadow-lg text-center flex flex-col items-center justify-center border-b-4 border-slate-200 backface-hidden">
-                        <p className="text-xs font-bold text-slate-400 uppercase mb-4 tracking-widest">Вопрос</p>
+                        <p className="text-xs font-bold text-slate-400 uppercase mb-4 tracking-widest">{t.live.question}</p>
                         <h2 className="text-2xl md:text-3xl font-black text-slate-900 leading-tight">
                             {card.front}
                         </h2>
                     </div>
 
-                    <div 
+                    <div
                         className="absolute inset-0 bg-orange-900 p-8 rounded-3xl shadow-lg text-center flex flex-col items-center justify-center border-b-4 border-orange-950 backface-hidden"
                         style={{ transform: "rotateY(180deg)" }}
                     >
-                        <p className="text-xs font-bold text-orange-300 uppercase mb-4 tracking-widest">Ответ</p>
+                        <p className="text-xs font-bold text-orange-300 uppercase mb-4 tracking-widest">{t.live.answer}</p>
                         <h2 className="text-xl md:text-2xl font-bold text-white leading-tight">
                             {card.back}
                         </h2>
@@ -306,35 +308,35 @@ export default function PlayerPage() {
           ) : (
              <div className="w-full">
                 {!isFlipped ? (
-                    <button 
+                    <button
                         onClick={() => setIsFlipped(true)}
                         className="w-full bg-white border-2 border-orange-200 text-orange-600 py-6 rounded-2xl font-bold text-xl hover:bg-orange-50 transition shadow-sm flex items-center justify-center gap-2"
                     >
-                        <Eye className="w-6 h-6" /> Показать ответ
+                        <Eye className="w-6 h-6" /> {t.live.showAnswer}
                     </button>
                 ) : (
                     <div className="grid grid-cols-2 gap-4">
-                        <button 
-                                onClick={() => setFlashcardChoice(false)} 
+                        <button
+                                onClick={() => setFlashcardChoice(false)}
                                 className={clsx(
                                     "py-6 rounded-2xl font-black text-xl flex flex-col items-center transition border-4 active:scale-95",
-                                    flashcardChoice === false 
+                                    flashcardChoice === false
                                         ? "bg-red-600 text-white border-red-600 ring-4 ring-red-200"
                                         : "bg-white text-red-600 border-red-100 hover:bg-red-50"
                                 )}
                         >
-                            <X className="mb-2 w-8 h-8"/> Не знал
+                            <X className="mb-2 w-8 h-8"/> {t.live.didntKnow}
                         </button>
-                        <button 
-                                onClick={() => setFlashcardChoice(true)} 
+                        <button
+                                onClick={() => setFlashcardChoice(true)}
                                 className={clsx(
                                     "py-6 rounded-2xl font-black text-xl flex flex-col items-center transition border-4 active:scale-95",
-                                    flashcardChoice === true 
+                                    flashcardChoice === true
                                         ? "bg-green-600 text-white border-green-600 ring-4 ring-green-200"
                                         : "bg-white text-green-600 border-green-100 hover:bg-green-50"
                                 )}
                         >
-                            <Check className="mb-2 w-8 h-8"/> Знал
+                            <Check className="mb-2 w-8 h-8"/> {t.live.knew}
                         </button>
                     </div>
                 )}
@@ -353,7 +355,7 @@ export default function PlayerPage() {
                      {isSubmitting ? (
                          <Loader2 className="w-6 h-6 animate-spin" />
                      ) : (
-                         <>Следующий <Send className="w-5 h-5" /></>
+                         <>{t.live.next} <Send className="w-5 h-5" /></>
                      )}
                    </button>
                </div>

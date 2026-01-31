@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   ArrowLeft, TrendingUp, Clock, Target, Calendar,
   Award, BarChart3, CheckCircle, Loader2, Filter,
@@ -15,6 +16,7 @@ type TimeFilter = "today" | "week" | "month" | "all";
 export default function HistoryPage() {
   const router = useRouter();
   const { token } = useAuth();
+  const { t } = useLanguage();
 
   const [sessions, setSessions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -214,10 +216,10 @@ export default function HistoryPage() {
       </button>
       <div className="flex-1">
         <h1 className="text-xl sm:text-2xl font-black text-slate-900">
-          Моя статистика
+          {t.history.title}
         </h1>
         <p className="text-sm text-slate-500 font-medium">
-          История обучения и прогресс
+          {t.history.subtitle}
         </p>
       </div>
     </div>
@@ -230,10 +232,10 @@ export default function HistoryPage() {
           {/* Time Filter */}
           <div className="flex gap-2">
             {[
-              { value: "today", label: "Сегодня" },
-              { value: "week", label: "Неделя" },
-              { value: "month", label: "Месяц" },
-              { value: "all", label: "Все время" }
+              { value: "today", label: t.history.today },
+              { value: "week", label: t.history.week },
+              { value: "month", label: t.history.month },
+              { value: "all", label: t.history.allTime }
             ].map((filter) => (
               <button
                 key={filter.value}
@@ -261,7 +263,7 @@ export default function HistoryPage() {
                 }`}
               >
                 <Filter className="w-4 h-4" />
-                {selectedDeck === "all" ? "Все колоды" : selectedDeck}
+                {selectedDeck === "all" ? t.history.allDecks : selectedDeck}
                 <ChevronDown className={`w-4 h-4 transition-transform ${showDeckFilter ? "rotate-180" : ""}`} />
               </button>
 
@@ -284,7 +286,7 @@ export default function HistoryPage() {
                           : "text-slate-700 hover:bg-slate-50"
                       }`}
                     >
-                      Все колоды
+                      {t.history.allDecks}
                     </button>
                     {deckNames.map((deck) => (
                       <button
@@ -313,7 +315,7 @@ export default function HistoryPage() {
         <div className="mb-8">
           <h2 className="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
             <Calendar className="w-5 h-5 text-orange-600" />
-            Общая статистика
+            {t.history.overallStats}
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-6 rounded-2xl text-white shadow-lg shadow-orange-200">
@@ -324,7 +326,7 @@ export default function HistoryPage() {
                 {stats.total_sessions}
               </p>
               <p className="text-xs font-bold opacity-80 uppercase">
-                Сессий
+                {t.history.sessions}
               </p>
             </div>
 
@@ -336,7 +338,7 @@ export default function HistoryPage() {
                 {stats.total_cards}
               </p>
               <p className="text-xs font-bold text-slate-400 uppercase">
-                Карточек
+                {t.history.cards}
               </p>
             </div>
 
@@ -348,7 +350,7 @@ export default function HistoryPage() {
                 {stats.correct}
               </p>
               <p className="text-xs font-bold text-slate-400 uppercase">
-                Запомнил
+                {t.history.memorized}
               </p>
             </div>
 
@@ -360,7 +362,7 @@ export default function HistoryPage() {
                 {Math.round(stats.avg_accuracy)}%
               </p>
               <p className="text-xs font-bold text-slate-400 uppercase">
-                Успешность
+                {t.history.accuracy}
               </p>
             </div>
 
@@ -372,7 +374,7 @@ export default function HistoryPage() {
                 {formatDuration(stats.total_time)}
               </p>
               <p className="text-xs font-bold text-slate-400 uppercase">
-                Время
+                {t.history.time}
               </p>
             </div>
           </div>
@@ -383,7 +385,7 @@ export default function HistoryPage() {
           <div className="mb-8">
             <h2 className="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
               <BarChart3 className="w-5 h-5 text-orange-600" />
-              Активность
+              {t.history.activity}
             </h2>
             <div className="bg-white p-6 rounded-2xl border border-slate-200">
               {/* Stats Row */}
@@ -393,7 +395,7 @@ export default function HistoryPage() {
                     {Math.round(stats.avg_accuracy)}%
                   </p>
                   <p className="text-xs font-bold text-slate-400 uppercase mt-1">
-                    Средняя успешность
+                    {t.history.avgAccuracy}
                   </p>
                 </div>
                 <div className="text-center">
@@ -401,7 +403,7 @@ export default function HistoryPage() {
                     {stats.total_cards}
                   </p>
                   <p className="text-xs font-bold text-slate-400 uppercase mt-1">
-                    Всего карточек
+                    {t.history.totalCards}
                   </p>
                 </div>
                 <div className="text-center">
@@ -409,7 +411,7 @@ export default function HistoryPage() {
                     {stats.correct}
                   </p>
                   <p className="text-xs font-bold text-slate-400 uppercase mt-1">
-                    Запомнил
+                    {t.history.memorized}
                   </p>
                 </div>
               </div>
@@ -465,7 +467,7 @@ export default function HistoryPage() {
         <div>
           <h2 className="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
             <Award className="w-5 h-5 text-orange-600" />
-            История прохождений
+            {t.history.sessionHistory}
             <span className="text-sm font-medium text-slate-400">
               ({filteredSessions.length})
             </span>
@@ -477,7 +479,7 @@ export default function HistoryPage() {
                 <Award className="w-8 h-8 text-slate-400" />
               </div>
               <p className="text-slate-500 font-medium">
-                Нет сессий для выбранного фильтра
+                {t.live.noSessionsForFilter}
               </p>
             </div>
           ) : (
@@ -516,7 +518,7 @@ export default function HistoryPage() {
                         {Math.round(session.accuracy || 0)}%
                       </div>
                       <p className="text-xs font-bold text-slate-400 uppercase">
-                        Успешность
+                        {t.history.accuracy}
                       </p>
                     </div>
                   </div>
@@ -527,7 +529,7 @@ export default function HistoryPage() {
                         {session.total_cards || 0}
                       </p>
                       <p className="text-xs font-bold text-slate-400 uppercase">
-                        Карточек
+                        {t.history.cards}
                       </p>
                     </div>
                     <div className="text-center">
@@ -535,7 +537,7 @@ export default function HistoryPage() {
                         {session.correct || 0}
                       </p>
                       <p className="text-xs font-bold text-slate-400 uppercase">
-                        Запомнил
+                        {t.history.memorized}
                       </p>
                     </div>
                     <div className="text-center">
@@ -551,7 +553,7 @@ export default function HistoryPage() {
                         {formatDuration(session.duration_seconds || 0)}
                       </p>
                       <p className="text-xs font-bold text-slate-400 uppercase">
-                        Время
+                        {t.history.time}
                       </p>
                     </div>
                   </div>

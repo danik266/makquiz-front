@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   Brain, Upload, Sparkles, Loader2,
   Plus, X, Edit3, ArrowLeft,
@@ -43,6 +44,7 @@ const AUTOSAVE_INTERVAL = 10000;
 export default function CreateDeck() {
   const router = useRouter();
   const { token } = useAuth();
+  const { t } = useLanguage();
   const [step, setStep] = useState<"setup" | "input" | "preview" | "edit">("setup");
   const [loading, setLoading] = useState(false);
 
@@ -497,7 +499,7 @@ export default function CreateDeck() {
             className="flex items-center gap-2 text-slate-600 hover:text-orange-600 font-bold transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            Назад
+            {t.general.back}
           </button>
           
           <div className="flex items-center gap-2">
@@ -545,21 +547,21 @@ export default function CreateDeck() {
                 <div className="w-20 h-20 bg-gradient-to-br from-orange-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-orange-200">
                   <Settings className="w-10 h-10 text-orange-600" />
                 </div>
-                <h1 className="text-4xl font-black text-slate-900 mb-3">Настройте генерацию</h1>
-                <p className="text-slate-500 font-medium text-lg">Выберите режим создания</p>
+                <h1 className="text-4xl font-black text-slate-900 mb-3">{t.createPage.configureGeneration}</h1>
+                <p className="text-slate-500 font-medium text-lg">{t.createPage.selectCreationMode}</p>
               </div>
 
               {/* Generation Mode */}
               <div className="mb-8">
                 <label className="block text-sm font-bold text-slate-700 mb-4">
-                  Как создать {contentType === "quiz" ? "тест" : "карточки"}?
+                  {t.createPage.howToCreate} {contentType === "quiz" ? t.createPage.quiz.toLowerCase() : t.library.cards.toLowerCase()}?
                 </label>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                   {[
-                    { mode: "file" as const, icon: Upload, title: "Файл", desc: "PDF, DOCX, TXT" },
-                    { mode: "text" as const, icon: FileText, title: "Текст", desc: "Вставить вручную" },
-                    { mode: "topic" as const, icon: Lightbulb, title: "Тема", desc: "AI создаст" },
-                    { mode: "manual" as const, icon: Edit3, title: "Вручную", desc: "Самостоятельно" },
+                    { mode: "file" as const, icon: Upload, title: t.createPage.file, desc: t.createPage.fileUpload },
+                    { mode: "text" as const, icon: FileText, title: t.createPage.text, desc: t.createPage.pasteManually },
+                    { mode: "topic" as const, icon: Lightbulb, title: t.createPage.topic, desc: t.createPage.aiWillCreate },
+                    { mode: "manual" as const, icon: Edit3, title: t.createPage.manual, desc: t.createPage.yourself },
                   ].map(({ mode, icon: Icon, title, desc }) => (
                     <button
                       key={mode}
@@ -581,11 +583,11 @@ export default function CreateDeck() {
 
               {/* Content Type */}
               <div className="mb-8">
-                <label className="block text-sm font-bold text-slate-700 mb-4">Тип контента</label>
+                <label className="block text-sm font-bold text-slate-700 mb-4">{t.createPage.contentType}</label>
                 <div className="grid grid-cols-2 gap-4">
                   {[
-                    { type: "flashcards" as const, icon: Brain, title: "Флеш-карточки", desc: "Вопрос и ответ" },
-                    { type: "quiz" as const, icon: Sparkles, title: "Тест", desc: "Multiple choice" },
+                    { type: "flashcards" as const, icon: Brain, title: t.createPage.flashcards, desc: t.createPage.questionAndAnswer },
+                    { type: "quiz" as const, icon: Sparkles, title: t.createPage.quiz, desc: t.createPage.multipleChoice },
                   ].map(({ type, icon: Icon, title, desc }) => (
                     <button
                       key={type}
@@ -607,11 +609,11 @@ export default function CreateDeck() {
 
               {/* Learning Mode */}
               <div className="mb-8">
-                <label className="block text-sm font-bold text-slate-700 mb-4">Режим обучения</label>
+                <label className="block text-sm font-bold text-slate-700 mb-4">{t.createPage.learningMode}</label>
                 <div className="grid grid-cols-2 gap-4">
                   {[
-                    { mode: "all_at_once" as const, icon: BookOpen, title: "Все сразу", desc: "Быстрое изучение" },
-                    { mode: "spaced" as const, icon: Calendar, title: "Интервальное", desc: "Каждый день" },
+                    { mode: "all_at_once" as const, icon: BookOpen, title: t.createPage.allAtOnce, desc: t.createPage.quickStudy },
+                    { mode: "spaced" as const, icon: Calendar, title: t.createPage.spaced, desc: t.createPage.everyday },
                   ].map(({ mode, icon: Icon, title, desc }) => (
                     <button
                       key={mode}
@@ -634,7 +636,7 @@ export default function CreateDeck() {
               {/* Card Count */}
               <div className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-2xl p-6 mb-8">
                 <label className="block text-sm font-bold text-slate-700 mb-4">
-                  Количество: <span className="text-orange-600">{totalCards}</span>
+                  {t.createPage.numberOfCards}: <span className="text-orange-600">{totalCards}</span>
                 </label>
                 <input
                   type="range"
@@ -648,7 +650,7 @@ export default function CreateDeck() {
               {learningMode === "spaced" && (
                 <div className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-2xl p-6 mb-8">
                   <label className="block text-sm font-bold text-slate-700 mb-4">
-                    В день: <span className="text-orange-600">{cardsPerDay}</span>
+                    {t.createPage.cardsPerDay}: <span className="text-orange-600">{cardsPerDay}</span>
                   </label>
                   <input
                     type="range"
@@ -659,7 +661,7 @@ export default function CreateDeck() {
                   />
                   <p className="text-xs text-slate-500 mt-3 flex items-center gap-2">
                     <Clock className="w-4 h-4" />
-                    План: {Math.ceil(totalCards / cardsPerDay)} дней
+                    {t.createPage.plan}: {Math.ceil(totalCards / cardsPerDay)} {t.createPage.days}
                   </p>
                 </div>
               )}
@@ -670,7 +672,7 @@ export default function CreateDeck() {
                 onClick={() => setStep(generationMode === "manual" ? "preview" : "input")}
                 className="w-full bg-gradient-to-r from-orange-600 to-purple-600 hover:from-orange-700 hover:to-purple-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-200 flex items-center justify-center gap-2"
               >
-                {generationMode === "manual" ? "Создать" : "Продолжить"}
+                {generationMode === "manual" ? t.createPage.create : t.createPage.continue}
                 <ArrowLeft className="w-5 h-5 rotate-180" />
               </motion.button>
             </motion.div>
@@ -689,9 +691,9 @@ export default function CreateDeck() {
                   <Wand2 className="w-10 h-10 text-violet-600" />
                 </div>
                 <h1 className="text-4xl font-black text-slate-900 mb-3">
-                  {generationMode === "file" && "Загрузите файл"}
-                  {generationMode === "text" && "Вставьте текст"}
-                  {generationMode === "topic" && "Укажите тему"}
+                  {generationMode === "file" && t.createPage.uploadFile}
+                  {generationMode === "text" && t.createPage.pasteText}
+                  {generationMode === "topic" && t.createPage.enterTopic}
                 </h1>
               </div>
 
@@ -716,7 +718,7 @@ export default function CreateDeck() {
                 <textarea
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
-                  placeholder="Вставьте текст..."
+                  placeholder={t.createPage.pasteTextPlaceholder}
                   className="w-full h-80 bg-white border border-slate-200 rounded-2xl p-6 mb-6 resize-none font-medium focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400 outline-none"
                 />
               )}
@@ -726,14 +728,14 @@ export default function CreateDeck() {
                   type="text"
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
-                  placeholder="Например: История России, Английский B2..."
+                  placeholder={t.createPage.topicPlaceholder}
                   className="w-full bg-white border text-slate-600 border-slate-200 rounded-2xl py-4 px-6 mb-6 font-bold text-lg focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400 outline-none"
                 />
               )}
 
               <div className="flex gap-3">
                 <button onClick={() => setStep("setup")} className="px-6 py-4 bg-white border-2 border-slate-200 rounded-xl font-bold text-slate-700 hover:bg-slate-50">
-                  Назад
+                  {t.general.back}
                 </button>
                 <motion.button
                   whileHover={{ scale: 1.01 }}
@@ -742,7 +744,7 @@ export default function CreateDeck() {
                   disabled={loading || (generationMode === "text" && !inputText) || (generationMode === "topic" && !topic) || (generationMode === "file" && !uploadedFile)}
                   className="flex-1 bg-gradient-to-r from-orange-600 to-purple-600 disabled:from-slate-300 disabled:to-slate-400 text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2"
                 >
-                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Sparkles className="w-5 h-5" /> Сгенерировать</>}
+                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Sparkles className="w-5 h-5" /> {t.createPage.generateCards}</>}
                 </motion.button>
               </div>
             </motion.div>
@@ -758,10 +760,10 @@ export default function CreateDeck() {
             >
               <div className="mb-8">
                 <h1 className="text-3xl font-black text-slate-900 mb-2">
-                  {contentType === "quiz" ? "Проверьте вопросы" : "Проверьте карточки"}
+                  {contentType === "quiz" ? t.createPage.reviewQuestions : t.createPage.reviewCards}
                 </h1>
                 <p className="text-slate-500 font-medium">
-                  {cards.length > 0 ? `${cards.length} элементов` : "Добавьте элементы"}
+                  {cards.length > 0 ? `${cards.length} ${t.createPage.elements}` : t.createPage.addElements}
                 </p>
               </div>
 
@@ -769,33 +771,33 @@ export default function CreateDeck() {
               <div className="bg-white/80 border border-slate-200 rounded-2xl p-6 mb-6">
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 mb-2 uppercase">Название</label>
+                    <label className="block text-xs font-bold text-slate-500 mb-2 uppercase">{t.createPage.deckName}</label>
                     <input
                       type="text"
                       value={deckName}
                       onChange={(e) => setDeckName(e.target.value)}
-                      placeholder="Название..."
+                      placeholder={t.createPage.namePlaceholder}
                       className="w-full bg-white border text-slate-700 border-slate-200 rounded-xl py-3 px-4 font-bold focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400 outline-none"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 mb-2 uppercase">Описание</label>
+                    <label className="block text-xs font-bold text-slate-500 mb-2 uppercase">{t.createPage.description}</label>
                     <input
                       type="text"
                       value={deckDescription}
                       onChange={(e) => setDeckDescription(e.target.value)}
-                      placeholder="Описание..."
+                      placeholder={t.createPage.descriptionPlaceholder}
                       className="w-full bg-white border text-slate-700 border-slate-200 rounded-xl py-3 px-4 font-medium focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400 outline-none"
                     />
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" checked={isPublic} onChange={(e) => setIsPublic(e.target.checked)} className="sr-only peer" />
                     <div className="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:bg-orange-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
                   </label>
-                  <span className="font-bold text-slate-700">{isPublic ? "Публичный" : "Приватный"}</span>
+                  <span className="font-bold text-slate-700">{isPublic ? t.createPage.makePublic : t.createPage.makePrivate}</span>
                 </div>
               </div>
 

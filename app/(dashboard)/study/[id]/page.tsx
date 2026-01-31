@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { 
   ArrowLeft, RotateCcw, Check, X, Eye, Brain,
   Target, Award, BarChart3, BookOpen, Loader2, AlertCircle, Trophy, Clock
@@ -58,6 +59,7 @@ export default function StudyPage() {
   const router = useRouter();
   const params = useParams();
   const { token } = useAuth();
+  const { t } = useLanguage();
   const deckId = params?.id;
 
   const [cards, setCards] = useState<ContentItem[]>([]);
@@ -111,7 +113,7 @@ export default function StudyPage() {
         }
       });
       
-      if (!res.ok) throw new Error("Не удалось загрузить информацию о колоде");
+      if (!res.ok) throw new Error(t.study.errorLoading);
       
       const data = await res.json();
       setDeckStats({
@@ -165,7 +167,7 @@ export default function StudyPage() {
 
   // Сброс прогресса - ТОЛЬКО для обычных колод/тестов
   const resetProgress = async () => {
-    if (!confirm("Вы уверены? Весь прогресс изучения будет сброшен.")) return;
+    if (!confirm(t.general.confirm)) return;
     
     try {
       setLoading(true);
@@ -191,7 +193,7 @@ export default function StudyPage() {
       
     } catch (e) {
       console.error(e);
-      alert("Не удалось сбросить прогресс");
+      alert(t.study.errorLoading);
       setLoading(false);
     }
   };
@@ -393,7 +395,7 @@ export default function StudyPage() {
       
     } catch (error: any) {
       console.error("Reset study error:", error);
-      setError(error.message || "Не удалось загрузить карточки");
+      setError(error.message || t.study.errorLoading);
     } finally {
       setLoading(false);
     }
@@ -406,7 +408,7 @@ export default function StudyPage() {
         <div className="text-center">
           <Loader2 className="w-10 h-10 text-orange-600 animate-spin mx-auto mb-4" />
           <p className="text-slate-500 font-medium">
-            {isQuiz ? "Подбираем вопросы..." : "Подбираем карточки..."}
+            {isQuiz ? t.study.pickingQuestions : t.study.pickingCards}
           </p>
         </div>
       </div>
@@ -421,20 +423,20 @@ export default function StudyPage() {
           <div className="w-20 h-20 bg-red-100 rounded-3xl flex items-center justify-center mx-auto mb-6">
             <AlertCircle className="w-10 h-10 text-red-600" />
           </div>
-          <h2 className="text-2xl font-black text-slate-900 mb-2">Ошибка загрузки</h2>
+          <h2 className="text-2xl font-black text-slate-900 mb-2">{t.study.errorLoading}</h2>
           <p className="text-slate-500 mb-4">{error}</p>
           <div className="flex gap-3">
-            <button 
+            <button
               onClick={() => { setLoading(true); setError(null); fetchDeckInfo(); }}
               className="flex-1 bg-orange-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-orange-700 transition"
             >
-              Повторить
+              {t.study.retry}
             </button>
-            <button 
-              onClick={() => router.push("/dashboard")} 
+            <button
+              onClick={() => router.push("/dashboard")}
               className="flex-1 bg-white text-slate-900 px-6 py-3 rounded-xl font-bold border-2 border-slate-200 hover:bg-slate-50 transition"
             >
-              На главную
+              {t.study.home}
             </button>
           </div>
         </div>
@@ -451,19 +453,19 @@ export default function StudyPage() {
             <AlertCircle className="w-10 h-10 text-orange-600" />
           </div>
           <h2 className="text-2xl font-black text-slate-900 mb-2">
-            {isQuiz ? "Квиз пуст" : "Колода пуста"}
+            {isQuiz ? t.study.quizEmpty : t.study.deckEmpty}
           </h2>
           <p className="text-slate-500 mb-8">
             {isQuiz
-              ? "В этом квизе нет вопросов. Добавьте вопросы, чтобы начать!"
-              : "В этой колоде нет карточек. Добавьте карточки, чтобы начать!"
+              ? t.study.noQuestionsAdd
+              : t.study.noCardsAdd
             }
           </p>
-          <button 
-            onClick={() => router.push("/dashboard")} 
+          <button
+            onClick={() => router.push("/dashboard")}
             className="bg-orange-600 text-white px-6 py-3 rounded-xl font-bold w-full hover:bg-orange-700 transition"
           >
-            На главную
+            {t.study.home}
           </button>
         </div>
       </div>
@@ -473,7 +475,7 @@ export default function StudyPage() {
   // === ВСЁ ПРОЙДЕНО (карточек нет, но колода не пустая) ===
   if (!loading && cards.length === 0 && showResults && deckStats && deckStats.total_cards > 0) {
     return (
-      <div className="min-h-screen bg-[#F8F9FC] relative overflow-hidden">
+      <div className="h-[100dvh] bg-[#F8F9FC] relative overflow-hidden flex flex-col">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px]" />
         </div>
@@ -499,30 +501,30 @@ export default function StudyPage() {
             </div>
 
             <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-3">
-              {isSpaced 
-                ? "На сегодня всё! ✨" 
-                : (isQuiz ? "Квиз пройден! 🎉" : "Колода пройдена! 🎉")
+              {isSpaced
+                ? t.study.allDone
+                : (isQuiz ? t.study.quizPassed : t.study.passed)
               }
             </h1>
 
             <p className="text-xl text-slate-600 mb-2">
               {isSpaced ? (
-                <>Вы повторили все карточки на сегодня</>
+                <>{t.study.completedForToday}</>
               ) : (
                 <>
-                  Вы {isQuiz ? "ответили на" : "выучили"} все{" "}
+                  {t.study.learnedAll}{" "}
                   <span className="font-black text-green-600">{deckStats.total_cards}</span>{" "}
-                  {isQuiz ? "вопросов" : "карточек"}
+                  {isQuiz ? t.study.questions : t.study.totalCards}
                 </>
               )}
             </p>
 
             <p className="text-slate-500">
-              {isSpaced 
-                ? "Следующие карточки будут доступны завтра по алгоритму интервального повторения."
-                : (isQuiz 
-                    ? "Вы можете пройти тест заново или вернуться к другим материалам." 
-                    : "Вы можете пройти колоду заново или вернуться к другим материалам."
+              {isSpaced
+                ? t.study.nextCardsAvailableTomorrow
+                : (isQuiz
+                    ? t.study.canRetake
+                    : t.study.canRetakeDeck
                   )
               }
             </p>
@@ -540,7 +542,7 @@ export default function StudyPage() {
                 <Trophy className="w-6 h-6 text-green-600" />
               </div>
               <p className="text-3xl font-black text-green-600 mb-1">{deckStats.learned_cards}</p>
-              <p className="text-sm text-slate-500 font-bold uppercase">Выучено</p>
+              <p className="text-sm text-slate-500 font-bold uppercase">{t.study.learned}</p>
             </motion.div>
 
             <motion.div
@@ -554,7 +556,7 @@ export default function StudyPage() {
               </div>
               <p className="text-3xl font-black text-orange-600 mb-1">{deckStats.total_cards}</p>
               <p className="text-sm text-slate-500 font-bold uppercase">
-                {isQuiz ? "Всего вопросов" : "Всего карточек"}
+                {isQuiz ? t.study.totalQuestions : t.study.totalCards}
               </p>
             </motion.div>
 
@@ -570,7 +572,7 @@ export default function StudyPage() {
               <p className="text-3xl font-black text-purple-600 mb-1">
                 {Math.round((deckStats.learned_cards / deckStats.total_cards) * 100)}%
               </p>
-              <p className="text-sm text-slate-500 font-bold uppercase">Прогресс</p>
+              <p className="text-sm text-slate-500 font-bold uppercase">{t.study.progress}</p>
             </motion.div>
           </div>
 
@@ -583,19 +585,19 @@ export default function StudyPage() {
               className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-200 flex items-center justify-center gap-2 transition-all"
             >
               <BookOpen className="w-5 h-5" />
-              Вернуться в дашборд
+              {t.study.backToDashboard}
             </motion.button>
           </div>
 
           {/* Кнопка сброса - ТОЛЬКО для обычных колод/тестов, НЕ для интервальных */}
           {!isSpaced && (
             <div className="mt-6 text-center">
-              <button 
+              <button
                 onClick={resetProgress}
                 className="text-slate-400 text-sm font-bold hover:text-red-600 transition-colors flex items-center justify-center gap-2 mx-auto"
               >
                 <RotateCcw className="w-4 h-4" />
-                Сбросить прогресс и пройти заново
+                {t.study.resetAndRetake}
               </button>
             </div>
           )}
@@ -617,23 +619,23 @@ export default function StudyPage() {
 
     let performance = "";
     let performanceColor = "";
-    
+
     if (accuracy >= 90) {
-      performance = "Превосходно! 🔥";
+      performance = t.study.excellent;
       performanceColor = "text-green-600";
     } else if (accuracy >= 70) {
-      performance = "Хорошая работа! 💪";
+      performance = t.study.goodWork;
       performanceColor = "text-orange-600";
     } else if (accuracy >= 50) {
-      performance = "Неплохо, продолжай! 👍";
+      performance = t.study.notBad;
       performanceColor = "text-orange-600";
     } else {
-      performance = "Повторим еще раз? 📚";
+      performance = t.study.repeatAgain;
       performanceColor = "text-slate-600";
     }
 
     return (
-      <div className="min-h-screen bg-[#F8F9FC] relative overflow-hidden">
+      <div className="h-[100dvh] bg-[#F8F9FC] relative overflow-hidden flex flex-col">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px]" />
         </div>
@@ -648,7 +650,7 @@ export default function StudyPage() {
               <Award className="w-12 h-12 text-white" />
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-3">
-              Сессия завершена!
+              {t.study.results.title}
             </h1>
             <p className={clsx("text-2xl font-bold mb-6", performanceColor)}>
               {performance}
@@ -660,28 +662,28 @@ export default function StudyPage() {
               icon={Check}
               color="green"
               value={session.correct}
-              label={isQuiz ? "Правильно" : "С первого раза"}
+              label={isQuiz ? t.study.correct : t.study.fromFirstTime}
               delay={0}
             />
             <StatsCard
               icon={RotateCcw}
               color="orange"
               value={failedCardsIds.current.size}
-              label={isQuiz ? "Ошибок" : "Повторено"}
+              label={isQuiz ? t.live.errors : t.study.repeated}
               delay={0.1}
             />
             <StatsCard
               icon={Brain}
               color="orange"
               value={`${accuracy}%`}
-              label="Точность"
+              label={t.study.results.accuracy}
               delay={0.2}
             />
             <StatsCard
               icon={BarChart3}
               color="purple"
               value={effort}
-              label="Среднее усилие"
+              label={t.study.avgEffort}
               delay={0.3}
             />
           </div>
@@ -696,7 +698,7 @@ export default function StudyPage() {
                 className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-200 flex items-center justify-center gap-2 transition-all"
               >
                 <RotateCcw className="w-5 h-5" />
-                {isQuiz ? "Пройти заново" : "Учить еще"}
+                {isQuiz ? t.study.results.actions.tryAgain : t.study.results.actions.tryAgain}
               </motion.button>
             )}
             
@@ -712,19 +714,19 @@ export default function StudyPage() {
               )}
             >
               <BookOpen className="w-5 h-5" />
-              В дашборд
+              {t.study.results.actions.backToDecks}
             </motion.button>
           </div>
           
           {/* Кнопка сброса - ТОЛЬКО для обычных колод/тестов */}
           {!isSpaced && deckStats && deckStats.learned_cards === deckStats.total_cards && (
             <div className="mt-6 text-center">
-              <button 
+              <button
                 onClick={resetProgress}
                 className="text-slate-400 text-sm font-bold hover:text-red-600 transition-colors flex items-center justify-center gap-2 mx-auto"
               >
                 <RotateCcw className="w-4 h-4" />
-                Сбросить весь прогресс и начать заново
+                {t.study.resetAndRetake}
               </button>
             </div>
           )}
@@ -739,7 +741,7 @@ export default function StudyPage() {
       <div className="min-h-screen bg-[#F8F9FC] flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-10 h-10 text-orange-600 animate-spin mx-auto mb-4" />
-          <p className="text-slate-500 font-medium">Подождите, сессия завершается...</p>
+          <p className="text-slate-500 font-medium">{t.study.loading}</p>
         </div>
       </div>
     );
@@ -766,16 +768,16 @@ export default function StudyPage() {
               className="flex items-center gap-2 text-slate-600 hover:text-orange-600 font-bold transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
-              <span className="hidden sm:inline">Выход</span>
+              <span className="hidden sm:inline">{t.study.exit}</span>
             </button>
             <div className="flex items-center gap-4 text-sm font-bold">
               {/* Бейдж типа */}
               <span className={clsx(
                 "hidden sm:inline-block px-2 py-0.5 rounded text-xs uppercase tracking-wide",
-                isQuiz ? "bg-purple-100 text-purple-700" : 
+                isQuiz ? "bg-purple-100 text-purple-700" :
                 isSpaced ? "bg-orange-100 text-orange-700" : "bg-emerald-100 text-emerald-700"
               )}>
-                {isQuiz ? "Квиз" : isSpaced ? "Интервал" : "Колода"}
+                {isQuiz ? t.study.quiz : isSpaced ? t.study.interval : t.study.deck}
               </span>
               <div className="flex items-center gap-1.5 text-green-600">
                 <Check className="w-4 h-4" /> {session.correct}
@@ -818,13 +820,14 @@ export default function StudyPage() {
           >
             {/* Quiz Mode UI */}
             {isQuiz && currentCard && isQuizQuestion(currentCard) ? (
-              <div className="bg-white border-2 border-slate-200 rounded-3xl p-8 md:p-12 shadow-xl min-h-[450px] flex flex-col">
-                <div className="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center mb-6 text-purple-600 mx-auto">
-                  <Target className="w-7 h-7" />
-                </div>
+              <div className="p-4 md:p-6 pb-2 shrink-0 text-center bg-white z-10">
+      {/* Иконку можно скрыть на маленьких экранах для экономии места */}
+      <div className="hidden xs:flex w-10 h-10 md:w-12 md:h-12 bg-purple-50 rounded-xl items-center justify-center mb-3 text-purple-600 mx-auto">
+        <Target className="w-5 h-5 md:w-6 md:h-6" />
+      </div>
 
                 <h2 className="text-2xl md:text-3xl font-black text-slate-900 text-center mb-8">
-                  {currentCard.question || "Загрузка..."} {/* FIX: Проверка на пустое поле */}
+                  {currentCard.question || t.general.loading} {/* FIX: Проверка на пустое поле */}
                 </h2>
 
                 {currentCard.image_url && (
@@ -899,7 +902,7 @@ export default function StudyPage() {
                       "text-sm font-semibold mb-2",
                       isQuizAnswerCorrect ? "text-green-800" : "text-orange-800"
                     )}>
-                      {isQuizAnswerCorrect ? "Правильно!" : "Объяснение:"}
+                      {isQuizAnswerCorrect ? t.study.correct : t.study.explanation}
                     </p>
                     <p className="text-slate-700">{currentCard.explanation}</p>
                   </motion.div>
@@ -910,7 +913,6 @@ export default function StudyPage() {
               <div
                 onClick={() => setIsFlipped(!isFlipped)}
                 className="relative cursor-pointer group perspective-1000 w-full"
-                style={{ minHeight: "450px" }}
               >
                 <motion.div
                   animate={{ rotateY: isFlipped ? 180 : 0 }}
@@ -932,10 +934,10 @@ export default function StudyPage() {
                       <Brain className="w-7 h-7" />
                     </div>
                     <h2 className="text-2xl md:text-4xl font-black text-slate-800 leading-tight mb-8 overflow-y-auto max-h-[250px] scrollbar-hide">
-                      {currentCard && (isQuizQuestion(currentCard) ? currentCard.question : (currentCard as Card).front) || "Загрузка..."} {/* FIX: Проверка на пустое поле */}
+                      {currentCard && (isQuizQuestion(currentCard) ? currentCard.question : (currentCard as Card).front) || t.general.loading} {/* FIX: Проверка на пустое поле */}
                     </h2>
                     <p className="text-slate-400 font-bold text-xs uppercase tracking-widest mt-auto">
-                      Нажмите, чтобы перевернуть
+                      {t.study.tapToFlip}
                     </p>
                   </div>
 
@@ -954,7 +956,7 @@ export default function StudyPage() {
                       />
                     )}
                     <p className="text-white text-xl md:text-2xl font-bold leading-relaxed overflow-y-auto max-h-[300px] scrollbar-hide">
-                      {currentCard && (isQuizQuestion(currentCard) ? currentCard.explanation || "Правильно!" : (currentCard as Card).back) || "Загрузка..."} {/* FIX: Проверка на пустое поле */}
+                      {currentCard && (isQuizQuestion(currentCard) ? currentCard.explanation || t.study.correct : (currentCard as Card).back) || t.general.loading} {/* FIX: Проверка на пустое поле */}
                     </p>
                   </div>
                 </motion.div>
@@ -964,7 +966,7 @@ export default function StudyPage() {
         </AnimatePresence>
 
         {/* ANSWER BUTTONS */}
-        <div className="w-full mt-8 h-24">
+        <div className="w-full mt-3 md:mt-6 h-16 md:h-24 shrink-0">
           {isQuiz && currentCard && isQuizQuestion(currentCard) ? (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -977,7 +979,7 @@ export default function StudyPage() {
                   disabled={selectedOptions.length === 0}
                   className="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-2xl transition-all active:scale-95 disabled:bg-slate-300 disabled:cursor-not-allowed"
                 >
-                  Проверить
+                  {t.study.checkAnswer}
                 </button>
               ) : (
                 <button
@@ -985,7 +987,7 @@ export default function StudyPage() {
                   className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold rounded-2xl transition-all active:scale-95 flex items-center justify-center gap-2"
                 >
                   <Check className="w-5 h-5" />
-                  Далее
+                  {t.study.next}
                 </button>
               )}
             </motion.div>
@@ -995,7 +997,7 @@ export default function StudyPage() {
               animate={{ opacity: 1 }}
               className="text-center text-slate-400 font-medium text-sm flex items-center justify-center h-full"
             >
-              Подумайте над ответом, затем переверните карту
+              {t.study.flipHint}
             </motion.div>
           ) : (
             <motion.div
@@ -1008,7 +1010,7 @@ export default function StudyPage() {
                 className="bg-red-100 hover:bg-red-200 text-red-700 border-2 border-red-200 rounded-2xl flex flex-col items-center justify-center transition-all active:scale-95"
               >
                 <X className="w-6 h-6 mb-1" />
-                <span className="font-bold text-sm">Забыл</span>
+                <span className="font-bold text-sm">{t.study.buttons.incorrect}</span>
               </button>
 
               <button
@@ -1016,7 +1018,7 @@ export default function StudyPage() {
                 className="bg-orange-100 hover:bg-orange-200 text-orange-700 border-2 border-orange-200 rounded-2xl flex flex-col items-center justify-center transition-all active:scale-95"
               >
                 <Eye className="w-6 h-6 mb-1" />
-                <span className="font-bold text-sm">Смутно</span>
+                <span className="font-bold text-sm">{t.study.buttons.notSure}</span>
               </button>
 
               <button
@@ -1024,7 +1026,7 @@ export default function StudyPage() {
                 className="bg-green-100 hover:bg-green-200 text-green-700 border-2 border-green-200 rounded-2xl flex flex-col items-center justify-center transition-all active:scale-95"
               >
                 <Check className="w-6 h-6 mb-1" />
-                <span className="font-bold text-sm">Знаю</span>
+                <span className="font-bold text-sm">{t.study.buttons.correct}</span>
               </button>
             </motion.div>
           )}

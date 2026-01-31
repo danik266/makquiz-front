@@ -3,10 +3,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 import QRCode from "react-qr-code";
-import { 
-  Loader2, Users, Play, StopCircle, Crown, Medal, 
-  Trophy, Star, BookOpen, ArrowRight, Check, Zap 
+import {
+  Loader2, Users, Play, StopCircle, Crown, Medal,
+  Trophy, Star, BookOpen, ArrowRight, Check, Zap
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
@@ -14,6 +15,7 @@ import clsx from "clsx";
 export default function HostPage() {
   const { id } = useParams();
   const { token } = useAuth();
+  const { t } = useLanguage();
   const router = useRouter();
   
   const [sessionData, setSessionData] = useState<any>(null);
@@ -94,15 +96,15 @@ export default function HostPage() {
           
           {/* Левая часть: QR и Код */}
           <div className="flex-1 flex flex-col items-center justify-center text-center border-r border-white/10 pr-12">
-            <h1 className="text-4xl font-black mb-2 tracking-tight">Присоединяйтесь!</h1>
-            <p className="text-orange-200 mb-8 font-medium text-lg">Сканируйте QR или введите код</p>
+            <h1 className="text-4xl font-black mb-2 tracking-tight">{t.live.joinUs}</h1>
+            <p className="text-orange-200 mb-8 font-medium text-lg">{t.live.scanQrOrEnterCode}</p>
             
             <div className="bg-white p-4 rounded-3xl mb-8 shadow-xl transform hover:scale-105 transition duration-300">
                <QRCode value={`${window.location.origin}/join`} size={220} />
             </div>
             
             <div className="bg-orange-600/20 border border-orange-400/30 rounded-2xl p-6 w-full max-w-sm">
-                <p className="text-orange-200 font-bold text-xs uppercase tracking-widest mb-2">Код игры</p>
+                <p className="text-orange-200 font-bold text-xs uppercase tracking-widest mb-2">{t.live.gameCode}</p>
                 <div className="text-7xl font-mono font-black text-white tracking-[0.15em] drop-shadow-lg">
                 {sessionData?.code || "..."}
                 </div>
@@ -113,8 +115,8 @@ export default function HostPage() {
           <div className="flex-1 flex flex-col">
             <div className="flex items-center justify-between mb-6">
                 <h2 className="text-3xl font-bold flex items-center gap-3">
-                    <Users className="w-8 h-8 text-orange-400" /> 
-                    Участники 
+                    <Users className="w-8 h-8 text-orange-400" />
+                    {t.live.participants}
                     <span className="bg-white text-orange-900 px-4 py-1 rounded-full text-xl font-black shadow-lg">
                         {participants.length}
                     </span>
@@ -125,7 +127,7 @@ export default function HostPage() {
                 {participants.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center text-slate-400 min-h-[200px]">
                         <Loader2 className="w-10 h-10 animate-spin mb-4 opacity-30" />
-                        <p className="text-lg">Ждем первых игроков...</p>
+                        <p className="text-lg">{t.live.waitingForPlayers}</p>
                     </div>
                 ) : (
                     <div className="flex flex-wrap gap-3">
@@ -146,12 +148,12 @@ export default function HostPage() {
                 )}
             </div>
 
-            <button 
-                onClick={startGame} 
+            <button
+                onClick={startGame}
                 disabled={participants.length === 0}
                 className="w-full bg-gradient-to-r from-orange-500 to-purple-600 hover:from-orange-400 hover:to-purple-500 disabled:opacity-50 disabled:cursor-not-allowed text-white py-5 rounded-2xl font-black text-2xl transition flex items-center justify-center gap-4 shadow-xl shadow-orange-900/50"
             >
-               <Play className="w-8 h-8 fill-current" /> НАЧАТЬ ИГРУ
+               <Play className="w-8 h-8 fill-current" /> {t.live.startGame}
             </button>
           </div>
         </div>
@@ -176,49 +178,49 @@ export default function HostPage() {
                   {/* Status Badges */}
                   {status === "active" && (
                       <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-bold mb-2 animate-pulse">
-                          <div className="w-2 h-2 bg-green-600 rounded-full" /> LIVE
+                          <div className="w-2 h-2 bg-green-600 rounded-full" /> {t.live.live}
                       </div>
                   )}
                   {status === "review" && (
                       <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-bold mb-2">
-                          <BookOpen className="w-4 h-4" /> REVIEW
+                          <BookOpen className="w-4 h-4" /> {t.live.review}
                       </div>
                   )}
                   {status === "completed" && (
                       <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-bold mb-2">
-                          <Crown className="w-4 h-4" /> FINISH
+                          <Crown className="w-4 h-4" /> {t.live.finish}
                       </div>
                   )}
                   
                   <h1 className="text-3xl font-black text-slate-900 leading-none">
-                      {status === "active" ? "Таблица лидеров" : 
-                       status === "review" ? "Разбор вопросов" : "Победители"}
+                      {status === "active" ? t.live.leaderboard :
+                       status === "review" ? t.live.reviewQuestions : t.live.winners}
                   </h1>
               </div>
               
               {/* Controls */}
               <div className="flex gap-3">
                   {status === "active" && (
-                      <button 
-                        onClick={startReview} 
+                      <button
+                        onClick={startReview}
                         className="bg-white border-2 border-orange-100 text-orange-600 hover:bg-orange-50 px-6 py-3 rounded-xl font-bold transition flex items-center gap-2"
                       >
-                          <StopCircle className="w-5 h-5" /> Завершить и разобрать
+                          <StopCircle className="w-5 h-5" /> {t.live.stopAndReview}
                       </button>
                   )}
                   
                   {status === "review" && (
-                      <button 
-                        onClick={finishGame} 
+                      <button
+                        onClick={finishGame}
                         className="bg-orange-600 text-white hover:bg-orange-700 px-8 py-3 rounded-xl font-bold transition flex items-center gap-2 shadow-lg shadow-orange-200"
                       >
-                          К награждению <ArrowRight className="w-5 h-5" />
+                          {t.live.toAwards} <ArrowRight className="w-5 h-5" />
                       </button>
                   )}
 
                   {status === "completed" && (
                       <button onClick={() => router.push("/teacher-dashboard")} className="bg-slate-800 text-white hover:bg-slate-900 px-6 py-3 rounded-xl font-bold transition">
-                           Выйти в меню
+                           {t.live.exitToMenu}
                       </button>
                   )}
               </div>
@@ -265,7 +267,7 @@ export default function HostPage() {
                                     ) : (
                                         // Если это флеш-карта
                                         <div className="col-span-2 bg-green-50 border-2 border-green-200 p-6 rounded-2xl">
-                                            <p className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">Правильный ответ</p>
+                                            <p className="text-xs font-bold text-green-600 uppercase tracking-widest mb-2">{t.live.correctAnswer}</p>
                                             <p className="text-xl font-bold text-green-900">{card.back}</p>
                                         </div>
                                     )}
@@ -410,8 +412,8 @@ export default function HostPage() {
                                       <div className="h-full bg-red-400 transition-all duration-700 ease-out" style={{ width: `${(r.incorrect / Math.max(total, 1)) * 100}%` }} />
                                   </div>
                                   <div className="flex justify-between mt-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                                      <span>{r.correct} Верно</span>
-                                      <span>{r.incorrect} Ошибок</span>
+                                      <span>{r.correct} {t.live.correct}</span>
+                                      <span>{r.incorrect} {t.live.errors}</span>
                                   </div>
                               </div>
                           </motion.div>
