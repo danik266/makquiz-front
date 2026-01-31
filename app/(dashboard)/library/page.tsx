@@ -3,84 +3,163 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { ArrowLeft, Plus, MoreVertical, PlayCircle } from "lucide-react";
-// Импортируем компонент Sidebar (проверьте путь, если он отличается)
-import Sidebar from "@/components/Sidebar"; 
+import { 
+  Plus, MoreVertical, PlayCircle, BookOpen, 
+  Loader2, Brain, Sparkles, Clock 
+} from "lucide-react";
+import clsx from "clsx";
 
 export default function LibraryPage() {
   const router = useRouter();
   const { token } = useAuth();
   const [decks, setDecks] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!token) return;
+    
+    setLoading(true);
+    
     fetch("https://makquiz-back.onrender.com/api/decks/my", {
         headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => res.json())
-    .then(data => setDecks(data));
+    .then(data => {
+        setDecks(Array.isArray(data) ? data : []);
+        setLoading(false);
+    })
+    .catch(err => {
+        console.error(err);
+        setLoading(false);
+    });
   }, [token]);
 
   return (
-    // 1. Делаем flex-контейнер для расположения Сайдбара и Контента рядом
-    <div className="flex min-h-screen bg-[#F8F9FC]">
-      
-      {/* 2. Вставляем Сайдбар */}
-      <Sidebar />
-
-      {/* 3. Оборачиваем основной контент в main */}
-      {/* w-full flex-1: занимает всю оставшуюся ширину */}
-      {/* pt-20: отступ сверху на мобилках (чтобы не заезжало под шапку) */}
-      {/* md:pt-8: на десктопе отступ сверху обычный */}
-      <main className="w-full flex-1 p-6 md:p-8 pt-20 md:pt-8">
-        <div className="max-w-5xl mx-auto">
-          <header className="flex justify-between items-center mb-8">
-            <div className="flex items-center gap-4">
-                <button onClick={() => router.push("/dashboard")}>
-                    <ArrowLeft className="text-slate-500" />
-                </button>
-                <h1 className="text-3xl font-black text-slate-900">Моя библиотека</h1>
+    <div className="min-h-screen bg-[#F8F9FC]">
+      {/* Header - фиксированный на мобильных */}
+      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-slate-200">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-xl sm:text-2xl font-black text-slate-900">
+                Моя библиотека
+              </h1>
+              <p className="text-sm text-slate-500 font-medium">
+                {decks.length} {decks.length === 1 ? 'колода' : 'колод'}
+              </p>
             </div>
             <button 
-                onClick={() => router.push("/create")} 
-                className="bg-indigo-600 text-white px-4 py-2 rounded-xl font-bold flex items-center gap-2 hover:bg-indigo-700 active:scale-95 transition-transform"
+              onClick={() => router.push("/create")} 
+              className="bg-orange-600 text-white px-3 sm:px-4 py-2 rounded-xl font-bold flex items-center gap-2 hover:bg-orange-700 active:scale-95 transition-transform shadow-lg shadow-orange-200"
             >
-                <Plus className="w-5 h-5" /> 
-                <span className="hidden sm:inline">Создать</span>
+              <Plus className="w-5 h-5" /> 
+              <span className="hidden sm:inline">Создать</span>
             </button>
-          </header>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {decks.map(deck => (
-                <div key={String(deck._id || deck.id)} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between h-48 hover:shadow-md transition-shadow">
-                    <div>
-                        <div className="flex justify-between items-start mb-2">
-                            <div className="flex gap-2">
-                                <span className="bg-indigo-50 text-indigo-600 text-xs font-bold px-2 py-1 rounded-md">Моя колода</span>
-                                {deck.content_type === "quiz" ? (
-                                    <span className="bg-green-50 text-green-600 text-xs font-bold px-2 py-1 rounded-md">Квиз</span>
-                                ) : (
-                                    <span className="bg-blue-50 text-blue-600 text-xs font-bold px-2 py-1 rounded-md">Карточки</span>
-                                )}
-                            </div>
-                            <button className="p-1 hover:bg-slate-50 rounded-full transition-colors">
-                                <MoreVertical className="w-5 h-5 text-slate-300" />
-                            </button>
-                        </div>
-                        <h3 className="text-xl font-bold text-slate-900 line-clamp-2">{deck.name}</h3>
-                        <p className="text-slate-500 text-sm mt-1 line-clamp-1">{deck.description}</p>
-                    </div>
-                    
-                    <button 
-                        onClick={() => router.push(`/study/${deck._id || deck.id}`)}
-                        className="w-full mt-4 flex items-center justify-center gap-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 py-3 rounded-xl font-bold transition-colors"
-                    >
-                        <PlayCircle className="w-5 h-5" /> Учить
-                    </button>
-                </div>
-            ))}
           </div>
         </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
+        {/* Loading State */}
+        {loading && (
+          <div className="flex justify-center items-center py-20">
+            <Loader2 className="w-8 h-8 text-orange-600 animate-spin" />
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!loading && decks.length === 0 && (
+          <div className="text-center py-16 sm:py-20 bg-white rounded-2xl sm:rounded-3xl border border-dashed border-slate-300">
+            <div className="bg-orange-50 w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <BookOpen className="w-7 h-7 sm:w-8 sm:h-8 text-orange-500" />
+            </div>
+            <h3 className="text-lg sm:text-xl font-bold text-slate-900">Здесь пока пусто</h3>
+            <p className="text-slate-500 mt-2 mb-6 px-4">
+              Создайте свою первую колоду, чтобы начать обучение
+            </p>
+            <button 
+              onClick={() => router.push("/create")}
+              className="bg-orange-600 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-orange-700 transition"
+            >
+              Создать колоду
+            </button>
+          </div>
+        )}
+
+        {/* Grid Content - адаптивная сетка */}
+        {!loading && decks.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {decks.map(deck => {
+              const deckId = deck._id || deck.id;
+              const isQuiz = deck.content_type === "quiz";
+              const isSpaced = deck.learning_mode === "spaced";
+              
+              return (
+                <div 
+                  key={String(deckId)} 
+                  className="bg-white p-4 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-100 hover:border-orange-200 hover:shadow-lg transition-all cursor-pointer group"
+                  onClick={() => router.push(`/deck/${deckId}`)}
+                >
+                  {/* Card Header */}
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex flex-wrap gap-1.5">
+                      {isSpaced && (
+                        <span className="bg-amber-50 text-amber-600 text-[10px] sm:text-xs font-bold px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          <span className="hidden sm:inline">Интервальное</span>
+                        </span>
+                      )}
+                      <span className={clsx(
+                        "text-[10px] sm:text-xs font-bold px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md flex items-center gap-1",
+                        isQuiz 
+                          ? "bg-purple-50 text-purple-600" 
+                          : "bg-emerald-50 text-emerald-600"
+                      )}>
+                        {isQuiz ? <Sparkles className="w-3 h-3" /> : <Brain className="w-3 h-3" />}
+                        {isQuiz ? "Квиз" : "Карточки"}
+                      </span>
+                    </div>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // TODO: открыть меню
+                      }}
+                      className="p-1.5 hover:bg-slate-100 rounded-full transition-colors"
+                    >
+                      <MoreVertical className="w-4 h-4 sm:w-5 sm:h-5 text-slate-300 group-hover:text-slate-500" />
+                    </button>
+                  </div>
+                  
+                  {/* Card Content */}
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 line-clamp-2 leading-tight mb-1">
+                    {deck.name}
+                  </h3>
+                  <p className="text-slate-500 text-sm line-clamp-2 mb-4">
+                    {deck.description || "Нет описания"}
+                  </p>
+                  
+                  {/* Card Footer */}
+                  <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                    <span className="text-xs font-bold text-slate-400">
+                      {deck.total_cards || 0} {isQuiz ? "вопросов" : "карточек"}
+                    </span>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(`/study/${deckId}`);
+                      }}
+                      className="flex items-center gap-1.5 bg-orange-600 hover:bg-orange-700 text-white px-3 py-1.5 rounded-lg font-bold text-sm transition-colors"
+                    >
+                      <PlayCircle className="w-4 h-4" /> 
+                      <span>Учить</span>
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </main>
     </div>
   );

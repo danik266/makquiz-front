@@ -494,7 +494,7 @@ export default function CreateDeck() {
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <button
             onClick={() => router.push("/dashboard")}
-            className="flex items-center gap-2 text-slate-600 hover:text-indigo-600 font-bold transition-colors"
+            className="flex items-center gap-2 text-slate-600 hover:text-orange-600 font-bold transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
             Назад
@@ -522,7 +522,7 @@ export default function CreateDeck() {
                 <div key={s} className={clsx(
                   "h-2 rounded-full transition-all",
                   (step === s || (s === "preview" && step === "edit"))
-                    ? "bg-indigo-600 w-6" 
+                    ? "bg-orange-600 w-6" 
                     : "bg-slate-300 w-2"
                 )} />
               ))}
@@ -542,8 +542,8 @@ export default function CreateDeck() {
               exit={{ opacity: 0, y: -20 }}
             >
               <div className="text-center mb-12">
-                <div className="w-20 h-20 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-indigo-200">
-                  <Settings className="w-10 h-10 text-indigo-600" />
+                <div className="w-20 h-20 bg-gradient-to-br from-orange-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-orange-200">
+                  <Settings className="w-10 h-10 text-orange-600" />
                 </div>
                 <h1 className="text-4xl font-black text-slate-900 mb-3">Настройте генерацию</h1>
                 <p className="text-slate-500 font-medium text-lg">Выберите режим создания</p>
@@ -567,11 +567,11 @@ export default function CreateDeck() {
                       className={clsx(
                         "p-5 rounded-2xl border-2 transition-all text-left hover:scale-[1.02]",
                         generationMode === mode
-                          ? "border-indigo-500 bg-indigo-50 shadow-lg shadow-indigo-100"
-                          : "border-slate-200 bg-white hover:border-indigo-300"
+                          ? "border-orange-500 bg-orange-50 shadow-lg shadow-orange-100"
+                          : "border-slate-200 bg-white hover:border-orange-300"
                       )}
                     >
-                      <Icon className={clsx("w-7 h-7 mb-2", generationMode === mode ? "text-indigo-600" : "text-slate-400")} />
+                      <Icon className={clsx("w-7 h-7 mb-2", generationMode === mode ? "text-orange-600" : "text-slate-400")} />
                       <h3 className="font-black text-slate-900">{title}</h3>
                       <p className="text-xs text-slate-500 font-medium">{desc}</p>
                     </button>
@@ -593,11 +593,11 @@ export default function CreateDeck() {
                       className={clsx(
                         "p-5 rounded-2xl border-2 transition-all text-left hover:scale-[1.02]",
                         contentType === type
-                          ? "border-indigo-500 bg-indigo-50 shadow-lg shadow-indigo-100"
-                          : "border-slate-200 bg-white hover:border-indigo-300"
+                          ? "border-orange-500 bg-orange-50 shadow-lg shadow-orange-100"
+                          : "border-slate-200 bg-white hover:border-orange-300"
                       )}
                     >
-                      <Icon className={clsx("w-7 h-7 mb-2", contentType === type ? "text-indigo-600" : "text-slate-400")} />
+                      <Icon className={clsx("w-7 h-7 mb-2", contentType === type ? "text-orange-600" : "text-slate-400")} />
                       <h3 className="font-black text-slate-900">{title}</h3>
                       <p className="text-xs text-slate-500 font-medium">{desc}</p>
                     </button>
@@ -619,11 +619,11 @@ export default function CreateDeck() {
                       className={clsx(
                         "p-5 rounded-2xl border-2 transition-all text-left hover:scale-[1.02]",
                         learningMode === mode
-                          ? "border-indigo-500 bg-indigo-50 shadow-lg shadow-indigo-100"
-                          : "border-slate-200 bg-white hover:border-indigo-300"
+                          ? "border-orange-500 bg-orange-50 shadow-lg shadow-orange-100"
+                          : "border-slate-200 bg-white hover:border-orange-300"
                       )}
                     >
-                      <Icon className={clsx("w-7 h-7 mb-2", learningMode === mode ? "text-indigo-600" : "text-slate-400")} />
+                      <Icon className={clsx("w-7 h-7 mb-2", learningMode === mode ? "text-orange-600" : "text-slate-400")} />
                       <h3 className="font-black text-slate-900">{title}</h3>
                       <p className="text-xs text-slate-500 font-medium">{desc}</p>
                     </button>
@@ -634,28 +634,28 @@ export default function CreateDeck() {
               {/* Card Count */}
               <div className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-2xl p-6 mb-8">
                 <label className="block text-sm font-bold text-slate-700 mb-4">
-                  Количество: <span className="text-indigo-600">{totalCards}</span>
+                  Количество: <span className="text-orange-600">{totalCards}</span>
                 </label>
                 <input
                   type="range"
                   min="5" max="100" step="5"
                   value={totalCards}
                   onChange={(e) => setTotalCards(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-orange-600"
                 />
               </div>
 
               {learningMode === "spaced" && (
                 <div className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-2xl p-6 mb-8">
                   <label className="block text-sm font-bold text-slate-700 mb-4">
-                    В день: <span className="text-indigo-600">{cardsPerDay}</span>
+                    В день: <span className="text-orange-600">{cardsPerDay}</span>
                   </label>
                   <input
                     type="range"
                     min="1" max="20"
                     value={cardsPerDay}
                     onChange={(e) => setCardsPerDay(Number(e.target.value))}
-                    className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                    className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-orange-600"
                   />
                   <p className="text-xs text-slate-500 mt-3 flex items-center gap-2">
                     <Clock className="w-4 h-4" />
@@ -668,7 +668,7 @@ export default function CreateDeck() {
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 onClick={() => setStep(generationMode === "manual" ? "preview" : "input")}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-200 flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-orange-600 to-purple-600 hover:from-orange-700 hover:to-purple-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-200 flex items-center justify-center gap-2"
               >
                 {generationMode === "manual" ? "Создать" : "Продолжить"}
                 <ArrowLeft className="w-5 h-5 rotate-180" />
@@ -696,10 +696,10 @@ export default function CreateDeck() {
               </div>
 
               {generationMode === "file" && (
-                <div className="bg-white/80 border-2 border-dashed border-slate-200 rounded-3xl p-12 mb-6 hover:border-indigo-300 transition-all">
+                <div className="bg-white/80 border-2 border-dashed border-slate-200 rounded-3xl p-12 mb-6 hover:border-orange-300 transition-all">
                   <input type="file" id="file-upload" accept=".txt,.pdf,.doc,.docx" onChange={handleFileUpload} className="hidden" />
                   <label htmlFor="file-upload" className="cursor-pointer flex flex-col items-center">
-                    <Upload className="w-12 h-12 text-indigo-400 mb-4" />
+                    <Upload className="w-12 h-12 text-orange-400 mb-4" />
                     {uploadedFile ? (
                       <>
                         <p className="font-black text-slate-900">{uploadedFile.name}</p>
@@ -717,7 +717,7 @@ export default function CreateDeck() {
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   placeholder="Вставьте текст..."
-                  className="w-full h-80 bg-white border border-slate-200 rounded-2xl p-6 mb-6 resize-none font-medium focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 outline-none"
+                  className="w-full h-80 bg-white border border-slate-200 rounded-2xl p-6 mb-6 resize-none font-medium focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400 outline-none"
                 />
               )}
 
@@ -727,7 +727,7 @@ export default function CreateDeck() {
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
                   placeholder="Например: История России, Английский B2..."
-                  className="w-full bg-white border text-slate-600 border-slate-200 rounded-2xl py-4 px-6 mb-6 font-bold text-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 outline-none"
+                  className="w-full bg-white border text-slate-600 border-slate-200 rounded-2xl py-4 px-6 mb-6 font-bold text-lg focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400 outline-none"
                 />
               )}
 
@@ -740,7 +740,7 @@ export default function CreateDeck() {
                   whileTap={{ scale: 0.99 }}
                   onClick={generateCards}
                   disabled={loading || (generationMode === "text" && !inputText) || (generationMode === "topic" && !topic) || (generationMode === "file" && !uploadedFile)}
-                  className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 disabled:from-slate-300 disabled:to-slate-400 text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2"
+                  className="flex-1 bg-gradient-to-r from-orange-600 to-purple-600 disabled:from-slate-300 disabled:to-slate-400 text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2"
                 >
                   {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Sparkles className="w-5 h-5" /> Сгенерировать</>}
                 </motion.button>
@@ -775,7 +775,7 @@ export default function CreateDeck() {
                       value={deckName}
                       onChange={(e) => setDeckName(e.target.value)}
                       placeholder="Название..."
-                      className="w-full bg-white border text-slate-700 border-slate-200 rounded-xl py-3 px-4 font-bold focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 outline-none"
+                      className="w-full bg-white border text-slate-700 border-slate-200 rounded-xl py-3 px-4 font-bold focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400 outline-none"
                     />
                   </div>
                   <div>
@@ -785,7 +785,7 @@ export default function CreateDeck() {
                       value={deckDescription}
                       onChange={(e) => setDeckDescription(e.target.value)}
                       placeholder="Описание..."
-                      className="w-full bg-white border text-slate-700 border-slate-200 rounded-xl py-3 px-4 font-medium focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 outline-none"
+                      className="w-full bg-white border text-slate-700 border-slate-200 rounded-xl py-3 px-4 font-medium focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400 outline-none"
                     />
                   </div>
                 </div>
@@ -793,7 +793,7 @@ export default function CreateDeck() {
                 <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" checked={isPublic} onChange={(e) => setIsPublic(e.target.checked)} className="sr-only peer" />
-                    <div className="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:bg-indigo-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+                    <div className="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:bg-orange-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
                   </label>
                   <span className="font-bold text-slate-700">{isPublic ? "Публичный" : "Приватный"}</span>
                 </div>
@@ -836,7 +836,7 @@ export default function CreateDeck() {
                                 type="text"
                                 value={flashcard.front}
                                 onChange={(e) => updateCard(index, "front", e.target.value)}
-                                className="w-full bg-white border text-slate-700 border-slate-200 rounded-xl py-3 px-4 font-bold focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 outline-none"
+                                className="w-full bg-white border text-slate-700 border-slate-200 rounded-xl py-3 px-4 font-bold focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400 outline-none"
                               />
                             </div>
                             <div>
@@ -845,7 +845,7 @@ export default function CreateDeck() {
                                 value={flashcard.back}
                                 onChange={(e) => updateCard(index, "back", e.target.value)}
                                 rows={3}
-                                className="w-full bg-white text-slate-700 border border-slate-200 rounded-xl py-3 px-4 font-medium resize-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 outline-none"
+                                className="w-full bg-white text-slate-700 border border-slate-200 rounded-xl py-3 px-4 font-medium resize-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400 outline-none"
                               />
                             </div>
                             
@@ -854,7 +854,7 @@ export default function CreateDeck() {
                             <div className="flex gap-2 pt-2">
                               <button
                                 onClick={() => setEditingIndex(null)}
-                                className="flex-1 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2"
+                                className="flex-1 bg-gradient-to-r from-orange-500 to-purple-500 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2"
                               >
                                 <Check className="w-4 h-4" /> Готово
                               </button>
@@ -877,15 +877,15 @@ export default function CreateDeck() {
                                 }}
                               />
                             ) : (
-                              <div className="w-10 h-10 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-xl flex items-center justify-center">
-                                <span className="text-sm font-black text-indigo-600">{index + 1}</span>
+                              <div className="w-10 h-10 bg-gradient-to-br from-orange-100 to-purple-100 rounded-xl flex items-center justify-center">
+                                <span className="text-sm font-black text-orange-600">{index + 1}</span>
                               </div>
                             )}
                             <div className="flex-1 min-w-0">
                               <p className="font-black text-slate-900 truncate">{flashcard.front || "—"}</p>
                               <p className="text-sm text-slate-500 truncate">{flashcard.back || "—"}</p>
                             </div>
-                            <button onClick={() => setEditingIndex(index)} className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg">
+                            <button onClick={() => setEditingIndex(index)} className="p-2 text-slate-400 hover:text-orange-600 hover:bg-orange-50 rounded-lg">
                               <Edit3 className="w-4 h-4" />
                             </button>
                           </div>
@@ -898,7 +898,7 @@ export default function CreateDeck() {
 
               <button
                 onClick={addCard}
-                className="w-full border-2 border-dashed border-slate-200 rounded-2xl py-4 hover:border-indigo-300 hover:bg-indigo-50/50 transition-all flex items-center justify-center gap-2 text-slate-500 hover:text-indigo-600 font-bold mb-6"
+                className="w-full border-2 border-dashed border-slate-200 rounded-2xl py-4 hover:border-orange-300 hover:bg-orange-50/50 transition-all flex items-center justify-center gap-2 text-slate-500 hover:text-orange-600 font-bold mb-6"
               >
                 <Plus className="w-5 h-5" />
                 Добавить
@@ -909,7 +909,7 @@ export default function CreateDeck() {
                 whileTap={{ scale: 0.99 }}
                 onClick={saveDeck}
                 disabled={!deckName.trim() || cards.length === 0 || loading}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 disabled:from-slate-300 disabled:to-slate-400 text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-orange-600 to-purple-600 hover:from-orange-700 hover:to-purple-700 disabled:from-slate-300 disabled:to-slate-400 text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2"
               >
                 {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Save className="w-5 h-5" /> Сохранить</>}
               </motion.button>

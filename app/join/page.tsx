@@ -87,7 +87,7 @@ export default function JoinPage() {
       <div className="w-full max-w-md relative z-10">
         <button
           onClick={handleBack} // Используем новую функцию
-          className="mb-6 flex items-center gap-2 text-slate-500 hover:text-indigo-600 transition font-bold"
+          className="mb-6 flex items-center gap-2 text-slate-500 hover:text-orange-600 transition font-bold"
         >
           <ArrowLeft className="w-5 h-5" />
           Назад
@@ -96,13 +96,13 @@ export default function JoinPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/80 backdrop-blur-xl border border-white shadow-2xl shadow-indigo-100 p-8 rounded-3xl"
+          className="bg-white/80 backdrop-blur-xl border border-white shadow-2xl shadow-orange-100 p-8 rounded-3xl"
         >
           {!result ? (
             <>
               <div className="text-center mb-8">
-                <div className="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-indigo-100">
-                  <MonitorPlay className="w-8 h-8 text-indigo-600" />
+                <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-orange-100">
+                  <MonitorPlay className="w-8 h-8 text-orange-600" />
                 </div>
                 <h1 className="text-3xl font-black text-slate-900 mb-2">
                   Вход по коду
@@ -119,7 +119,7 @@ export default function JoinPage() {
                     value={code}
                     onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 8))}
                     placeholder="Код игры"
-                    className="w-full px-4 py-6 rounded-2xl border-2 border-slate-200 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-500/10 outline-none transition text-center text-4xl font-mono font-black text-indigo-600 tracking-widest placeholder:text-slate-300 placeholder:tracking-normal placeholder:font-sans placeholder:font-bold placeholder:text-xl"
+                    className="w-full px-4 py-6 rounded-2xl border-2 border-slate-200 focus:border-orange-600 focus:ring-4 focus:ring-orange-500/10 outline-none transition text-center text-4xl font-mono font-black text-orange-600 tracking-widest placeholder:text-slate-300 placeholder:tracking-normal placeholder:font-sans placeholder:font-bold placeholder:text-xl"
                     maxLength={8}
                     required
                     autoFocus
@@ -138,7 +138,7 @@ export default function JoinPage() {
                 <button
                   type="submit"
                   disabled={loading || code.length < 6}
-                  className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-lg shadow-lg shadow-indigo-200"
+                  className="w-full bg-orange-600 text-white py-4 rounded-xl font-bold hover:bg-orange-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-lg shadow-lg shadow-orange-200"
                 >
                   {loading ? (
                     <>
@@ -174,10 +174,10 @@ export default function JoinPage() {
                 }
               </p>
 
-              <div className="bg-indigo-50 p-4 rounded-xl mb-6">
+              <div className="bg-orange-50 p-4 rounded-xl mb-6">
                 <div className="flex items-center justify-center gap-2 text-sm">
-                  <Users className="w-4 h-4 text-indigo-600" />
-                  <span className="font-bold text-indigo-900">
+                  <Users className="w-4 h-4 text-orange-600" />
+                  <span className="font-bold text-orange-900">
                     Учитель: {result.teacher_name}
                   </span>
                 </div>
@@ -185,7 +185,7 @@ export default function JoinPage() {
 
               <button
                 onClick={() => router.push(`/study/${result.deck_id}`)}
-                className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition flex items-center justify-center gap-2"
+                className="w-full bg-orange-600 text-white py-4 rounded-xl font-bold hover:bg-orange-700 transition flex items-center justify-center gap-2"
               >
                 <Book className="w-5 h-5" />
                 Начать изучение

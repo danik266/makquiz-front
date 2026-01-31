@@ -28,7 +28,6 @@ export default function Sidebar() {
     { icon: LayoutGrid, label: t.sidebar.home, path: "/dashboard" },
     { icon: FileText, label: t.sidebar.myDecks, path: "/library" },
     { icon: Globe, label: t.sidebar.catalog, path: "/browse" },
-    { icon: Search, label: t.sidebar.search, path: "/search" },
     { icon: BarChart3, label: t.sidebar.stats, path: "/history" },
   ];
 
@@ -36,11 +35,11 @@ export default function Sidebar() {
   const SidebarContent = () => (
     <>
       <div>
-        <div 
+        <div
           onClick={() => router.push("/dashboard")}
-          className="h-20 flex items-center justify-center lg:justify-start lg:px-8 border-b border-slate-100 cursor-pointer"
+          className="h-20 flex items-center justify-center lg:justify-start lg:px-8 border-b border-slate-100 cursor-pointer group"
         >
-          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center mr-3 shrink-0">
+          <div className="w-8 h-8 bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 rounded-lg flex items-center justify-center mr-3 shrink-0 shadow-md shadow-orange-200 group-hover:scale-110 group-hover:rotate-6 transition-all">
             <Brain className="text-white w-5 h-5" />
           </div>
           <span className="font-black text-xl lg:block tracking-tight text-slate-900">Makquiz</span>
@@ -49,7 +48,7 @@ export default function Sidebar() {
         <div className="p-4 pb-0">
           <button
             onClick={() => router.push("/create")}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-indigo-200 transition-all active:scale-95 group"
+            className="w-full bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 hover:from-amber-500 hover:via-orange-600 hover:to-red-600 text-white p-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-orange-200 hover:shadow-xl hover:shadow-orange-300 transition-all hover:-translate-y-0.5 active:scale-95 group"
           >
             <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" />
             <span className="lg:block">{t.sidebar.create}</span>
@@ -64,11 +63,11 @@ export default function Sidebar() {
               className={clsx(
                 "w-full flex items-center p-3 rounded-xl transition-all font-bold",
                 pathname === item.path
-                  ? "bg-indigo-50 text-indigo-600 shadow-sm"
+                  ? "bg-gradient-to-r from-amber-50 to-orange-50 text-orange-600 shadow-sm border border-orange-100"
                   : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
               )}
             >
-              <item.icon className={clsx("w-5 h-5 shrink-0", pathname === item.path ? "text-indigo-600" : "text-slate-400")} />
+              <item.icon className={clsx("w-5 h-5 shrink-0", pathname === item.path ? "text-orange-600" : "text-slate-400")} />
               <span className="ml-3 lg:block">{item.label}</span>
             </button>
           ))}
@@ -78,19 +77,19 @@ export default function Sidebar() {
       <div className="p-4 border-t border-slate-100 space-y-4">
         {/* Переключатель языка */}
         <div className="flex bg-slate-100 p-1 rounded-xl">
-          <button 
+          <button
             onClick={() => setLanguage('ru')}
-            className={clsx("flex-1 text-[10px] font-bold py-1.5 rounded-lg transition-all", language === 'ru' ? "bg-white shadow-sm text-indigo-600" : "text-slate-400")}
+            className={clsx("flex-1 text-[10px] font-bold py-1.5 rounded-lg transition-all", language === 'ru' ? "bg-white shadow-sm text-orange-600" : "text-slate-400")}
           >RU</button>
-          <button 
+          <button
             onClick={() => setLanguage('en')}
-            className={clsx("flex-1 text-[10px] font-bold py-1.5 rounded-lg transition-all", language === 'en' ? "bg-white shadow-sm text-indigo-600" : "text-slate-400")}
+            className={clsx("flex-1 text-[10px] font-bold py-1.5 rounded-lg transition-all", language === 'en' ? "bg-white shadow-sm text-orange-600" : "text-slate-400")}
           >EN</button>
         </div>
-        
+
         <button
           onClick={() => { logout(); router.push("/auth"); }}
-          className="w-full flex items-center p-3 rounded-xl text-slate-500 hover:text-red-600 hover:bg-red-50 transition font-medium"
+          className="w-full flex items-center p-3 rounded-xl text-slate-500 hover:text-red-600 hover:bg-red-50 transition-all font-medium"
         >
           <LogOut className="w-5 h-5 shrink-0" />
           <span className="ml-3 lg:block">{t.sidebar.logout}</span>
@@ -102,16 +101,16 @@ export default function Sidebar() {
   return (
     <>
       {/* --- МОБИЛЬНАЯ ШАПКА (Видна только на md:hidden) --- */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-slate-200 z-50 flex items-center justify-between px-4">
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-xl border-b border-orange-100 z-50 flex items-center justify-between px-4 shadow-sm">
         <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 rounded-lg flex items-center justify-center shrink-0 shadow-md shadow-orange-200">
                 <Brain className="text-white w-5 h-5" />
             </div>
             <span className="font-black text-xl tracking-tight text-slate-900">Makquiz</span>
         </div>
-        <button 
+        <button
           onClick={() => setIsMobileMenuOpen(true)}
-          className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg"
+          className="p-2 text-slate-600 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition-colors"
         >
           <Menu className="w-6 h-6" />
         </button>
@@ -144,7 +143,7 @@ export default function Sidebar() {
       </aside>
 
       {/* --- ДЕСКТОПНЫЙ САЙДБАР (Оригинальный, скрыт на mobile) --- */}
-      <aside className="hidden md:flex w-20 lg:w-64 bg-white/80 backdrop-blur-xl border-r border-slate-200 z-50 flex-col justify-between sticky top-0 h-screen">
+      <aside className="hidden md:flex w-20 lg:w-64 bg-white/95 backdrop-blur-xl border-r border-orange-100 shadow-sm z-50 flex-col justify-between sticky top-0 h-screen">
         <SidebarContent />
       </aside>
     </>

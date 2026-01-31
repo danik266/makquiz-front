@@ -125,7 +125,7 @@ export default function DeckPreviewPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#F8F9FC] flex items-center justify-center">
-        <Loader2 className="w-10 h-10 text-indigo-600 animate-spin" />
+        <Loader2 className="w-10 h-10 text-orange-600 animate-spin" />
       </div>
     );
   }
@@ -141,7 +141,7 @@ export default function DeckPreviewPage() {
           <p className="text-slate-500 mb-8">{error || "Колода не найдена"}</p>
           <button 
             onClick={() => router.push("/browse")} 
-            className="bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-indigo-700 transition"
+            className="bg-orange-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-orange-700 transition"
           >
             Вернуться в каталог
           </button>
@@ -160,7 +160,7 @@ export default function DeckPreviewPage() {
         <div className="max-w-4xl mx-auto px-6 py-4">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-2 text-slate-600 hover:text-indigo-600 font-bold transition-colors"
+            className="flex items-center gap-2 text-slate-600 hover:text-orange-600 font-bold transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
             Назад
@@ -186,7 +186,7 @@ export default function DeckPreviewPage() {
             </span>
             
             {isSpaced && (
-              <span className="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1.5 rounded-lg uppercase flex items-center gap-1">
+              <span className="bg-orange-100 text-orange-700 text-xs font-bold px-3 py-1.5 rounded-lg uppercase flex items-center gap-1">
                 <Clock className="w-3.5 h-3.5" /> Интервальное
               </span>
             )}
@@ -238,7 +238,7 @@ export default function DeckPreviewPage() {
               // Если это твоя колода - сразу учить
               <button
                 onClick={handleStudy}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all"
+                className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all"
               >
                 <PlayCircle className="w-5 h-5" />
                 Начать изучение
@@ -254,7 +254,7 @@ export default function DeckPreviewPage() {
               <button
                 onClick={handleCopyToMyDecks}
                 disabled={copying}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all disabled:bg-indigo-400"
+                className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all disabled:bg-orange-400"
               >
                 {copying ? (
                   <Loader2 className="w-5 h-5 animate-spin" />

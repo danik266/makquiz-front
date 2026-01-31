@@ -404,7 +404,7 @@ export default function StudyPage() {
     return (
       <div className="min-h-screen bg-[#F8F9FC] flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-10 h-10 text-indigo-600 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-10 h-10 text-orange-600 animate-spin mx-auto mb-4" />
           <p className="text-slate-500 font-medium">
             {isQuiz ? "Подбираем вопросы..." : "Подбираем карточки..."}
           </p>
@@ -426,7 +426,7 @@ export default function StudyPage() {
           <div className="flex gap-3">
             <button 
               onClick={() => { setLoading(true); setError(null); fetchDeckInfo(); }}
-              className="flex-1 bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-indigo-700 transition"
+              className="flex-1 bg-orange-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-orange-700 transition"
             >
               Повторить
             </button>
@@ -461,7 +461,7 @@ export default function StudyPage() {
           </p>
           <button 
             onClick={() => router.push("/dashboard")} 
-            className="bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold w-full hover:bg-indigo-700 transition"
+            className="bg-orange-600 text-white px-6 py-3 rounded-xl font-bold w-full hover:bg-orange-700 transition"
           >
             На главную
           </button>
@@ -488,7 +488,7 @@ export default function StudyPage() {
             <div className={clsx(
               "w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl",
               isSpaced 
-                ? "bg-gradient-to-br from-indigo-500 to-blue-600 shadow-indigo-200" 
+                ? "bg-gradient-to-br from-orange-500 to-blue-600 shadow-orange-200" 
                 : "bg-gradient-to-br from-green-500 to-emerald-600 shadow-green-200"
             )}>
               {isSpaced ? (
@@ -549,10 +549,10 @@ export default function StudyPage() {
               transition={{ delay: 0.2 }}
               className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-2xl p-6 text-center"
             >
-              <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center mx-auto mb-3">
-                <BookOpen className="w-6 h-6 text-indigo-600" />
+              <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center mx-auto mb-3">
+                <BookOpen className="w-6 h-6 text-orange-600" />
               </div>
-              <p className="text-3xl font-black text-indigo-600 mb-1">{deckStats.total_cards}</p>
+              <p className="text-3xl font-black text-orange-600 mb-1">{deckStats.total_cards}</p>
               <p className="text-sm text-slate-500 font-bold uppercase">
                 {isQuiz ? "Всего вопросов" : "Всего карточек"}
               </p>
@@ -580,7 +580,7 @@ export default function StudyPage() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push("/dashboard")}
-              className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-200 flex items-center justify-center gap-2 transition-all"
+              className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-200 flex items-center justify-center gap-2 transition-all"
             >
               <BookOpen className="w-5 h-5" />
               Вернуться в дашборд
@@ -623,7 +623,7 @@ export default function StudyPage() {
       performanceColor = "text-green-600";
     } else if (accuracy >= 70) {
       performance = "Хорошая работа! 💪";
-      performanceColor = "text-indigo-600";
+      performanceColor = "text-orange-600";
     } else if (accuracy >= 50) {
       performance = "Неплохо, продолжай! 👍";
       performanceColor = "text-orange-600";
@@ -644,7 +644,7 @@ export default function StudyPage() {
             animate={{ opacity: 1, scale: 1 }}
             className="text-center mb-12"
           >
-            <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-indigo-200">
+            <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-orange-200">
               <Award className="w-12 h-12 text-white" />
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-3">
@@ -672,7 +672,7 @@ export default function StudyPage() {
             />
             <StatsCard
               icon={Brain}
-              color="indigo"
+              color="orange"
               value={`${accuracy}%`}
               label="Точность"
               delay={0.2}
@@ -693,7 +693,7 @@ export default function StudyPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={resetStudy}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-200 flex items-center justify-center gap-2 transition-all"
+                className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-200 flex items-center justify-center gap-2 transition-all"
               >
                 <RotateCcw className="w-5 h-5" />
                 {isQuiz ? "Пройти заново" : "Учить еще"}
@@ -707,7 +707,7 @@ export default function StudyPage() {
               className={clsx(
                 "flex-1 font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all",
                 isSpaced 
-                  ? "bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-200"
+                  ? "bg-orange-600 hover:bg-orange-700 text-white shadow-lg shadow-orange-200"
                   : "bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-200"
               )}
             >
@@ -738,7 +738,7 @@ export default function StudyPage() {
     return (
       <div className="min-h-screen bg-[#F8F9FC] flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-10 h-10 text-indigo-600 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-10 h-10 text-orange-600 animate-spin mx-auto mb-4" />
           <p className="text-slate-500 font-medium">Подождите, сессия завершается...</p>
         </div>
       </div>
@@ -763,7 +763,7 @@ export default function StudyPage() {
           <div className="flex items-center justify-between mb-3">
             <button
               onClick={() => router.push("/dashboard")}
-              className="flex items-center gap-2 text-slate-600 hover:text-indigo-600 font-bold transition-colors"
+              className="flex items-center gap-2 text-slate-600 hover:text-orange-600 font-bold transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
               <span className="hidden sm:inline">Выход</span>
@@ -773,7 +773,7 @@ export default function StudyPage() {
               <span className={clsx(
                 "hidden sm:inline-block px-2 py-0.5 rounded text-xs uppercase tracking-wide",
                 isQuiz ? "bg-purple-100 text-purple-700" : 
-                isSpaced ? "bg-indigo-100 text-indigo-700" : "bg-emerald-100 text-emerald-700"
+                isSpaced ? "bg-orange-100 text-orange-700" : "bg-emerald-100 text-emerald-700"
               )}>
                 {isQuiz ? "Квиз" : isSpaced ? "Интервал" : "Колода"}
               </span>
@@ -797,7 +797,7 @@ export default function StudyPage() {
               className={clsx(
                 "h-full",
                 isQuiz ? "bg-gradient-to-r from-purple-500 to-pink-500" :
-                isSpaced ? "bg-gradient-to-r from-indigo-500 to-purple-600" :
+                isSpaced ? "bg-gradient-to-r from-orange-500 to-purple-600" :
                 "bg-gradient-to-r from-emerald-500 to-green-500"
               )}
             />
@@ -921,13 +921,13 @@ export default function StudyPage() {
                   <div
                     className={clsx(
                       "absolute inset-0 bg-white border-2 border-slate-200 rounded-3xl p-8 md:p-12 flex flex-col items-center justify-center text-center shadow-xl shadow-slate-200/50 backface-hidden",
-                      "group-hover:border-indigo-200 transition-colors"
+                      "group-hover:border-orange-200 transition-colors"
                     )}
                     style={{ backfaceVisibility: "hidden" }}
                   >
                     <div className={clsx(
                       "w-14 h-14 rounded-2xl flex items-center justify-center mb-6",
-                      isSpaced ? "bg-indigo-50 text-indigo-600" : "bg-emerald-50 text-emerald-600"
+                      isSpaced ? "bg-orange-50 text-orange-600" : "bg-emerald-50 text-emerald-600"
                     )}>
                       <Brain className="w-7 h-7" />
                     </div>
@@ -1039,7 +1039,7 @@ function StatsCard({ icon: Icon, color, value, label, delay }: any) {
     green: "bg-green-50 text-green-600",
     red: "bg-red-50 text-red-600",
     orange: "bg-orange-50 text-orange-600",
-    indigo: "bg-indigo-50 text-indigo-600",
+    orange: "bg-orange-50 text-orange-600",
     purple: "bg-purple-50 text-purple-600"
   };
 

@@ -4,12 +4,25 @@ import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { 
-  Brain, Lock, Mail, User, Loader2, ArrowLeft, Sparkles, 
-  GraduationCap, School, CheckCircle2, XCircle 
+import {
+  Brain, Lock, Mail, User, Loader2, ArrowLeft, Sparkles,
+  GraduationCap, School, CheckCircle2, XCircle, BookOpen, Trophy
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
+
+// Animated blob shape component
+const BlobShape = ({ className = "", color = "rgba(255,200,87,0.3)" }: { className?: string; color?: string }) => (
+  <motion.div
+    animate={{
+      scale: [1, 1.1, 1],
+      rotate: [0, 10, 0],
+    }}
+    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+    className={`absolute rounded-[40%_60%_70%_30%/40%_50%_60%_50%] blur-3xl ${className}`}
+    style={{ background: color }}
+  />
+);
 
 function AuthForm() {
   const searchParams = useSearchParams();
@@ -73,36 +86,69 @@ function AuthForm() {
     }
   };
 
-  const inputClasses = "w-full bg-white border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 text-slate-900 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-400 font-medium shadow-sm hover:border-indigo-200";
-  const labelClasses = "block text-xs font-bold text-slate-500 mb-1.5 ml-1 uppercase tracking-wide";
+  const inputClasses = "w-full bg-white border border-orange-200 rounded-xl py-3.5 pl-11 pr-4 text-slate-900 focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 outline-none transition-all placeholder:text-slate-400 font-medium shadow-sm hover:border-orange-300";
+  const labelClasses = "block text-xs font-bold text-slate-600 mb-1.5 ml-1 uppercase tracking-wide";
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-[#F8F9FC]">
-      <div className="absolute inset-0 pointer-events-none">
-         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px]" />
-         <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-white rounded-full blur-3xl opacity-80" />
-         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-indigo-50 blur-[100px] rounded-full mix-blend-multiply" />
-         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-50 blur-[100px] rounded-full mix-blend-multiply" />
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-gradient-to-br from-amber-300 via-orange-400 to-red-400">
+      {/* Animated background blobs */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+         <BlobShape className="w-[500px] h-[500px] top-[-100px] left-[-100px]" color="rgba(255,255,255,0.2)" />
+         <BlobShape className="w-[400px] h-[400px] top-[20%] right-[-50px]" color="rgba(255,220,100,0.3)" />
+         <BlobShape className="w-[300px] h-[300px] bottom-[20%] left-[10%]" color="rgba(255,100,100,0.2)" />
       </div>
-      
-      <Link href="/" className="absolute top-8 left-8 flex items-center gap-2 text-slate-500 hover:text-indigo-600 transition-colors z-20 font-bold text-sm bg-white/50 px-4 py-2 rounded-full backdrop-blur-sm border border-slate-200/50 hover:border-indigo-200">
+
+      {/* Floating elements */}
+      <motion.div
+        animate={{ y: [0, -15, 0], rotate: [0, 10, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-32 left-[15%] w-16 h-16 bg-white/90 rounded-2xl shadow-xl flex items-center justify-center z-0"
+      >
+        <BookOpen className="w-8 h-8 text-orange-500" />
+      </motion.div>
+
+      <motion.div
+        animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute top-48 right-[12%] w-14 h-14 bg-white/90 rounded-2xl shadow-xl flex items-center justify-center z-0"
+      >
+        <Trophy className="w-7 h-7 text-amber-500" />
+      </motion.div>
+
+      <motion.div
+        animate={{ y: [0, 12, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        className="absolute bottom-[35%] right-[20%] w-12 h-12 bg-white/90 rounded-xl shadow-xl flex items-center justify-center z-0"
+      >
+        <Sparkles className="w-6 h-6 text-red-400" />
+      </motion.div>
+
+      <motion.div
+        animate={{ y: [0, -10, 0], x: [0, 5, 0] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-[30%] left-[8%] w-20 h-20 bg-white/90 rounded-3xl shadow-xl flex items-center justify-center z-0"
+      >
+        <Brain className="w-10 h-10 text-orange-600" />
+      </motion.div>
+
+      <Link href="/" className="absolute top-8 left-8 flex items-center gap-2 text-white/90 hover:text-white transition-colors z-20 font-bold text-sm bg-white/20 px-4 py-2 rounded-full backdrop-blur-sm border border-white/30 hover:border-white/50 hover:bg-white/30">
         <ArrowLeft className="w-4 h-4" /> На главную
       </Link>
 
-      <motion.div 
+      <motion.div
         layout
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-[440px] bg-white/80 backdrop-blur-xl border border-white shadow-[0_20px_50px_rgba(8,112,184,0.07)] p-8 md:p-10 rounded-[2rem] relative z-10"
+        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        className="w-full max-w-[440px] bg-white/95 backdrop-blur-xl border border-white/50 shadow-2xl shadow-orange-200/50 p-8 md:p-10 rounded-[2rem] relative z-10"
       >
         <div className="flex flex-col items-center mb-8">
-           <div className="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mb-5 border border-indigo-100 shadow-sm">
-             <Brain className="w-8 h-8 text-indigo-600" />
+           <div className="w-16 h-16 bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-orange-200 transform hover:scale-110 hover:rotate-6 transition-all">
+             <Brain className="w-8 h-8 text-white" />
            </div>
            <h2 className="text-3xl font-black text-center text-slate-900 tracking-tight">
               {isLogin ? "С возвращением!" : "Создать аккаунт"}
            </h2>
-           <p className="text-center text-slate-500 text-sm mt-2 font-medium max-w-[280px]">
+           <p className="text-center text-slate-600 text-sm mt-2 font-medium max-w-[280px]">
               {isLogin ? "Введите данные для входа" : "Выберите роль и заполните данные"}
            </p>
         </div>
@@ -149,13 +195,13 @@ function AuthForm() {
                         type="button"
                         onClick={() => setRole("student")}
                         className={clsx(
-                          "flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all duration-200",
-                          role === "student" 
-                            ? "border-indigo-600 bg-indigo-50/50 text-indigo-700" 
-                            : "border-slate-100 bg-white text-slate-400 hover:border-slate-300"
+                          "flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-200 shadow-sm hover:shadow-md",
+                          role === "student"
+                            ? "border-orange-500 bg-gradient-to-br from-amber-50 to-orange-50 text-orange-700"
+                            : "border-slate-200 bg-white text-slate-400 hover:border-orange-200"
                         )}
                       >
-                        <GraduationCap className={clsx("w-6 h-6 mb-1", role === "student" && "text-indigo-600")} />
+                        <GraduationCap className={clsx("w-7 h-7 mb-1.5", role === "student" && "text-orange-600")} />
                         <span className="text-xs font-bold">Ученик</span>
                       </button>
 
@@ -163,13 +209,13 @@ function AuthForm() {
                         type="button"
                         onClick={() => setRole("teacher")}
                         className={clsx(
-                          "flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all duration-200",
-                          role === "teacher" 
-                            ? "border-indigo-600 bg-indigo-50/50 text-indigo-700" 
-                            : "border-slate-100 bg-white text-slate-400 hover:border-slate-300"
+                          "flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-200 shadow-sm hover:shadow-md",
+                          role === "teacher"
+                            ? "border-orange-500 bg-gradient-to-br from-amber-50 to-orange-50 text-orange-700"
+                            : "border-slate-200 bg-white text-slate-400 hover:border-orange-200"
                         )}
                       >
-                        <School className={clsx("w-6 h-6 mb-1", role === "teacher" && "text-indigo-600")} />
+                        <School className={clsx("w-7 h-7 mb-1.5", role === "teacher" && "text-orange-600")} />
                         <span className="text-xs font-bold">Учитель</span>
                       </button>
                    </div>
@@ -224,31 +270,31 @@ function AuthForm() {
           </div>
 
           <motion.button
-            whileHover={{ scale: 1.01 }}
-            whileTap={{ scale: 0.99 }}
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
             disabled={loading}
             className={clsx(
-              "w-full font-bold py-4 rounded-xl transition-all shadow-lg shadow-indigo-200 flex justify-center items-center gap-2 mt-2 text-white text-base",
-              "bg-indigo-600 hover:bg-indigo-700"
+              "w-full font-bold py-4 rounded-xl transition-all shadow-lg shadow-orange-200 hover:shadow-xl hover:shadow-orange-300 flex justify-center items-center gap-2 mt-2 text-white text-base",
+              "bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 hover:from-amber-500 hover:via-orange-600 hover:to-red-600"
             )}
           >
             {loading ? <Loader2 className="animate-spin w-5 h-5" /> : (
               <>
                 {isLogin ? "Войти" : "Создать аккаунт"}
-                {!loading && <Sparkles className="w-4 h-4 opacity-70" />}
+                {!loading && <Sparkles className="w-4 h-4 opacity-80" />}
               </>
             )}
           </motion.button>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-slate-100 text-center text-sm text-slate-500 font-medium">
-          <button 
+        <div className="mt-8 pt-6 border-t border-slate-100 text-center text-sm text-slate-600 font-medium">
+          <button
             onClick={toggleMode}
-            className="hover:text-indigo-600 transition-colors"
+            className="hover:text-orange-600 transition-colors"
           >
             {isLogin ? "Впервые здесь? " : "Уже есть аккаунт? "}
-            <span className="text-indigo-600 font-bold underline decoration-2 underline-offset-4 decoration-indigo-100 hover:decoration-indigo-600 transition-all">
+            <span className="text-orange-600 font-bold underline decoration-2 underline-offset-4 decoration-orange-100 hover:decoration-orange-600 transition-all">
               {isLogin ? "Регистрация" : "Войти"}
             </span>
           </button>
@@ -260,8 +306,22 @@ function AuthForm() {
 
 export default function Page() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#F8F9FC]" />}>
-      <AuthForm />
-    </Suspense>
+    <>
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        * {
+          font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        ::selection {
+          background-color: #f97316;
+          color: white;
+        }
+      `}</style>
+      <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-amber-300 via-orange-400 to-red-400" />}>
+        <AuthForm />
+      </Suspense>
+    </>
   );
 }

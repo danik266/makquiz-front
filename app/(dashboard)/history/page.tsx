@@ -31,7 +31,13 @@ export default function HistoryPage() {
     }
     loadData();
   }, [token]);
-
+ const parseDate = (dateStr: string) => {
+    if (!dateStr) return new Date();
+    if (!dateStr.endsWith('Z') && !dateStr.includes('+') && !/\d{2}:\d{2}:\d{2}-/.test(dateStr)) {
+      return new Date(dateStr + 'Z');
+    }
+    return new Date(dateStr);
+  };
   const loadData = async () => {
     try {
       const sessionsRes = await fetch(
@@ -81,16 +87,16 @@ export default function HistoryPage() {
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       console.log("Today date:", today);
       filtered = filtered.filter(s => {
-        const sessionDate = new Date(s.completed_at);
+        const sessionDate = parseDate(s.completed_at);
         console.log("Session date:", sessionDate, ">=", today, "?", sessionDate >= today);
         return sessionDate >= today;
       });
     } else if (timeFilter === "week") {
       const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-      filtered = filtered.filter(s => new Date(s.completed_at) >= weekAgo);
+      filtered = filtered.filter(s => parseDate(s.completed_at) >= weekAgo);
     } else if (timeFilter === "month") {
       const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-      filtered = filtered.filter(s => new Date(s.completed_at) >= monthAgo);
+      filtered = filtered.filter(s => parseDate(s.completed_at) >= monthAgo);
     }
 
     console.log("After time filter:", filtered.length);
@@ -130,7 +136,7 @@ export default function HistoryPage() {
     console.log("Creating chart from", filteredSessions.length, "sessions");
     
     filteredSessions.forEach(session => {
-      const date = new Date(session.completed_at);
+      const date = new Date(session.completed_at.endsWith('Z') ? session.completed_at : session.completed_at + 'Z')
       let key: string;
       
       if (timeFilter === "today") {
@@ -188,7 +194,7 @@ export default function HistoryPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F8F9FC]">
-        <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
+        <Loader2 className="w-8 h-8 text-orange-600 animate-spin" />
       </div>
     );
   }
@@ -196,24 +202,27 @@ export default function HistoryPage() {
   return (
     <div className="min-h-screen bg-[#F8F9FC]">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
-          <button
-            onClick={() => router.push("/dashboard")}
-            className="p-2 hover:bg-slate-100 rounded-full transition"
-          >
-            <ArrowLeft className="w-6 h-6 text-slate-600" />
-          </button>
-          <div className="flex-1">
-            <h1 className="text-2xl font-black text-slate-900">
-              Моя статистика
-            </h1>
-            <p className="text-sm text-slate-500 font-medium">
-              История обучения и прогресс
-            </p>
-          </div>
-        </div>
-      </header>
+      <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200 sticky top-0 z-40">
+  <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+    <div className="flex items-center gap-4">
+      {/* Стрелка назад только на десктопе */}
+      <button
+        onClick={() => router.push("/dashboard")}
+        className="hidden md:flex p-2 hover:bg-slate-100 rounded-full transition"
+      >
+        <ArrowLeft className="w-6 h-6 text-slate-600" />
+      </button>
+      <div className="flex-1">
+        <h1 className="text-xl sm:text-2xl font-black text-slate-900">
+          Моя статистика
+        </h1>
+        <p className="text-sm text-slate-500 font-medium">
+          История обучения и прогресс
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
 
       <main className="max-w-6xl mx-auto px-6 py-8">
         {/* Filters */}
@@ -231,7 +240,7 @@ export default function HistoryPage() {
                 onClick={() => setTimeFilter(filter.value as TimeFilter)}
                 className={`px-4 py-2 rounded-xl font-bold text-sm transition-all ${
                   timeFilter === filter.value
-                    ? "bg-indigo-600 text-white shadow-lg shadow-indigo-200"
+                    ? "bg-orange-600 text-white shadow-lg shadow-orange-200"
                     : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200"
                 }`}
               >
@@ -247,7 +256,7 @@ export default function HistoryPage() {
                 onClick={() => setShowDeckFilter(!showDeckFilter)}
                 className={`px-4 py-2 rounded-xl font-bold text-sm transition-all flex items-center gap-2 ${
                   selectedDeck !== "all"
-                    ? "bg-indigo-600 text-white shadow-lg shadow-indigo-200"
+                    ? "bg-orange-600 text-white shadow-lg shadow-orange-200"
                     : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200"
                 }`}
               >
@@ -271,7 +280,7 @@ export default function HistoryPage() {
                       }}
                       className={`w-full px-4 py-2 text-left text-sm font-medium transition-colors ${
                         selectedDeck === "all"
-                          ? "bg-indigo-50 text-indigo-600"
+                          ? "bg-orange-50 text-orange-600"
                           : "text-slate-700 hover:bg-slate-50"
                       }`}
                     >
@@ -286,7 +295,7 @@ export default function HistoryPage() {
                         }}
                         className={`w-full px-4 py-2 text-left text-sm font-medium transition-colors ${
                           selectedDeck === deck
-                            ? "bg-indigo-50 text-indigo-600"
+                            ? "bg-orange-50 text-orange-600"
                             : "text-slate-700 hover:bg-slate-50"
                         }`}
                       >
@@ -303,11 +312,11 @@ export default function HistoryPage() {
         {/* Statistics Summary */}
         <div className="mb-8">
           <h2 className="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-indigo-600" />
+            <Calendar className="w-5 h-5 text-orange-600" />
             Общая статистика
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <div className="bg-gradient-to-br from-indigo-500 to-indigo-600 p-6 rounded-2xl text-white shadow-lg shadow-indigo-200">
+            <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-6 rounded-2xl text-white shadow-lg shadow-orange-200">
               <div className="flex items-center justify-between mb-2">
                 <Award className="w-5 h-5 opacity-80" />
               </div>
@@ -321,7 +330,7 @@ export default function HistoryPage() {
 
             <div className="bg-white p-6 rounded-2xl border border-slate-200">
               <div className="flex items-center justify-between mb-2">
-                <Target className="w-5 h-5 text-indigo-600" />
+                <Target className="w-5 h-5 text-orange-600" />
               </div>
               <p className="text-3xl font-black text-slate-900 mb-1">
                 {stats.total_cards}
@@ -357,7 +366,7 @@ export default function HistoryPage() {
 
             <div className="bg-white p-6 rounded-2xl border border-slate-200">
               <div className="flex items-center justify-between mb-2">
-                <Clock className="w-5 h-5 text-indigo-600" />
+                <Clock className="w-5 h-5 text-orange-600" />
               </div>
               <p className="text-3xl font-black text-slate-900 mb-1">
                 {formatDuration(stats.total_time)}
@@ -373,14 +382,14 @@ export default function HistoryPage() {
         {chartData.length > 0 && (
           <div className="mb-8">
             <h2 className="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
-              <BarChart3 className="w-5 h-5 text-indigo-600" />
+              <BarChart3 className="w-5 h-5 text-orange-600" />
               Активность
             </h2>
             <div className="bg-white p-6 rounded-2xl border border-slate-200">
               {/* Stats Row */}
               <div className="grid grid-cols-3 gap-4 mb-6 pb-6 border-b border-slate-100">
                 <div className="text-center">
-                  <p className="text-2xl font-black text-indigo-600">
+                  <p className="text-2xl font-black text-orange-600">
                     {Math.round(stats.avg_accuracy)}%
                   </p>
                   <p className="text-xs font-bold text-slate-400 uppercase mt-1">
@@ -455,7 +464,7 @@ export default function HistoryPage() {
         {/* Sessions History */}
         <div>
           <h2 className="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
-            <Award className="w-5 h-5 text-indigo-600" />
+            <Award className="w-5 h-5 text-orange-600" />
             История прохождений
             <span className="text-sm font-medium text-slate-400">
               ({filteredSessions.length})
@@ -486,7 +495,7 @@ export default function HistoryPage() {
                         {session.deck_name || "Без названия"}
                       </h3>
                       <p className="text-sm text-slate-500 font-medium">
-                        {new Date(session.completed_at).toLocaleString("ru", {
+                        {parseDate(session.completed_at).toLocaleString("ru", {
                           day: "numeric",
                           month: "long",
                           hour: "2-digit",

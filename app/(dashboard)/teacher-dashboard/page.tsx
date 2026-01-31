@@ -77,7 +77,7 @@ export default function TeacherDashboard() {
     }
   };
 
-  if (loading) return <div className="h-full flex items-center justify-center"><Loader2 className="animate-spin text-indigo-600" /></div>;
+  if (loading) return <div className="h-full flex items-center justify-center"><Loader2 className="animate-spin text-orange-600" /></div>;
 
   return (
     <div className="p-6 md:p-10 max-w-7xl mx-auto">
@@ -86,7 +86,7 @@ export default function TeacherDashboard() {
           <h1 className="text-3xl font-black text-slate-900">Панель учителя 👨‍🏫</h1>
           <p className="text-slate-500 font-medium mt-1">Управляйте материалами и проводите живые сессии</p>
         </div>
-        <button onClick={() => router.push("/create")} className="bg-white border-2 border-indigo-100 text-indigo-600 px-6 py-3 rounded-xl font-bold hover:bg-indigo-50 transition flex items-center gap-2">
+        <button onClick={() => router.push("/create")} className="bg-white border-2 border-orange-100 text-orange-600 px-6 py-3 rounded-xl font-bold hover:bg-orange-50 transition flex items-center gap-2">
           <Plus className="w-5 h-5" /> Создать материал
         </button>
       </header>
@@ -94,14 +94,14 @@ export default function TeacherDashboard() {
       {/* Секция материалов */}
       <div className="mb-12">
         <h2 className="text-xl font-black text-slate-900 mb-6 flex items-center gap-2">
-          <Award className="w-5 h-5 text-indigo-600" /> Библиотека материалов
+          <Award className="w-5 h-5 text-orange-600" /> Библиотека материалов
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {decks.map((deck) => (
             <motion.div key={deck.id} whileHover={{ y: -4 }} className="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                   <span className={clsx("text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wide flex w-fit items-center gap-1 mb-2", deck.content_type === "quiz" ? "bg-purple-100 text-purple-700" : "bg-indigo-100 text-indigo-700")}>
+                   <span className={clsx("text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wide flex w-fit items-center gap-1 mb-2", deck.content_type === "quiz" ? "bg-purple-100 text-purple-700" : "bg-orange-100 text-orange-700")}>
                       {deck.content_type === "quiz" ? <Sparkles className="w-3 h-3" /> : <Brain className="w-3 h-3" />}
                       {deck.content_type === "quiz" ? "Квиз" : "Колода"}
                    </span>
@@ -113,7 +113,7 @@ export default function TeacherDashboard() {
               </div>
               <button 
                 onClick={() => { setSelectedDeckForSession(deck); setShowStartModal(true); }}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-bold transition flex items-center justify-center gap-2"
+                className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-xl font-bold transition flex items-center justify-center gap-2"
               >
                 <MonitorPlay className="w-5 h-5" /> Запустить сессию
               </button>
@@ -125,7 +125,7 @@ export default function TeacherDashboard() {
       {/* История сессий (Вместо списка студентов) */}
       <div>
         <h2 className="text-xl font-black text-slate-900 mb-6 flex items-center gap-2">
-          <Clock className="w-5 h-5 text-indigo-600" /> История проведенных сессий
+          <Clock className="w-5 h-5 text-orange-600" /> История проведенных сессий
         </h2>
         <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
           <table className="w-full">
@@ -143,7 +143,7 @@ export default function TeacherDashboard() {
                   <td className="py-4 px-6 text-sm font-bold text-slate-700">
                     {new Date(s.date).toLocaleDateString()} {new Date(s.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                   </td>
-                  <td className="py-4 px-6 font-medium text-indigo-600">{s.deck_name}</td>
+                  <td className="py-4 px-6 font-medium text-orange-600">{s.deck_name}</td>
                   <td className="py-4 px-6 font-bold text-slate-900">{s.participants}</td>
                   <td className="py-4 px-6">
                     <span className={clsx("px-2 py-1 rounded-md text-xs font-bold uppercase", s.status === "completed" ? "bg-slate-100 text-slate-500" : "bg-green-100 text-green-700 animate-pulse")}>
@@ -175,7 +175,7 @@ export default function TeacherDashboard() {
 
               <div className="flex gap-3">
                 <button onClick={() => setShowStartModal(false)} className="flex-1 bg-slate-100 text-slate-700 py-3 rounded-xl font-bold">Отмена</button>
-                <button onClick={handleStartSession} disabled={startingSession} className="flex-1 bg-indigo-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2">
+                <button onClick={handleStartSession} disabled={startingSession} className="flex-1 bg-orange-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2">
                   {startingSession ? <Loader2 className="animate-spin w-5 h-5" /> : <Play className="w-5 h-5" />} Начать
                 </button>
               </div>

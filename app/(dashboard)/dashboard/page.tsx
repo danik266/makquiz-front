@@ -116,7 +116,7 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="h-full flex items-center justify-center">
-        <Loader2 className="animate-spin text-indigo-600 w-10 h-10" />
+        <Loader2 className="animate-spin text-orange-500 w-10 h-10" />
       </div>
     );
   }
@@ -163,17 +163,17 @@ export default function Dashboard() {
           </p>
         </div>
 
-        <div 
-          onClick={() => router.push("/history")} 
-          className="flex items-center gap-3 bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm cursor-pointer hover:border-indigo-200 transition group"
+        <div
+          onClick={() => router.push("/history")}
+          className="flex items-center gap-3 bg-white px-4 py-2 rounded-full border border-orange-200 shadow-sm shadow-orange-100 cursor-pointer hover:border-orange-300 hover:shadow-md hover:shadow-orange-200 transition-all group"
         >
           <div className="flex flex-col items-end">
             <span className="text-[10px] font-bold text-slate-400 uppercase">Изучено сегодня</span>
-            <span className="text-lg font-black text-indigo-600 group-hover:scale-105 transition-transform">
+            <span className="text-lg font-black text-orange-600 group-hover:scale-105 transition-transform">
               {(stats?.new_cards_learned || 0) + (stats?.cards_reviewed || 0)}
             </span>
           </div>
-          <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center font-bold text-indigo-600 border-2 border-white shadow-sm">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center font-bold text-orange-600 border-2 border-white shadow-sm">
             <TrendingUp className="w-5 h-5" />
           </div>
         </div>
@@ -181,22 +181,22 @@ export default function Dashboard() {
 
       {/* ПУСТОЙ ЭКРАН */}
       {decks.length === 0 && (
-        <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-slate-200 mb-10">
-          <div className="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Plus className="w-8 h-8 text-indigo-600" />
+        <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-orange-200 mb-10">
+          <div className="w-16 h-16 bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-orange-200">
+            <Plus className="w-8 h-8 text-white" />
           </div>
           <h3 className="text-xl font-black text-slate-900 mb-2">Добро пожаловать!</h3>
-          <p className="text-slate-500 mb-6">У вас пока нет курсов. Создайте свою колоду или присоединитесь к колоде учителя по коду.</p>
+          <p className="text-slate-600 mb-6">У вас пока нет курсов. Создайте свою колоду или присоединитесь к колоде учителя по коду.</p>
           <div className="flex gap-3 justify-center">
             <button
               onClick={() => router.push("/create")}
-              className="bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-indigo-700 transition"
+              className="bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-orange-200 hover:-translate-y-0.5 transition-all"
             >
               Создать колоду
             </button>
             <button
               onClick={() => router.push("/join")}
-              className="bg-white border-2 border-indigo-200 text-indigo-600 px-6 py-3 rounded-xl font-bold hover:bg-indigo-50 transition"
+              className="bg-white border-2 border-orange-200 text-orange-600 px-6 py-3 rounded-xl font-bold hover:bg-orange-50 hover:border-orange-300 transition-all"
             >
               Присоединиться по коду
             </button>
@@ -209,7 +209,7 @@ export default function Dashboard() {
         <div className="mb-12">
           <div className="flex justify-between items-end mb-6">
             <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
-              <Clock className="w-5 h-5 text-indigo-600" />
+              <Clock className="w-5 h-5 text-orange-600" />
               Интервальное обучение
             </h2>
             <span className="text-sm text-slate-400 font-medium">
@@ -255,7 +255,7 @@ export default function Dashboard() {
         <div className="mb-12">
           <div className="flex justify-between items-end mb-6">
             <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-emerald-600" />
+              <BookOpen className="w-5 h-5 text-amber-600" />
               Ваши материалы
             </h2>
           </div>
@@ -293,23 +293,23 @@ export default function Dashboard() {
 function SpacedDeckCard({ deck, router, isActive }: { deck: DeckType, router: any, isActive: boolean }) {
   return (
     <motion.div
-      whileHover={{ y: -2 }}
+      whileHover={{ y: -4, scale: 1.01 }}
       onClick={() => router.push(`/study/${deck.id}`)}
       className={clsx(
-        "bg-white border p-5 rounded-2xl shadow-sm hover:shadow-md transition-all cursor-pointer relative overflow-hidden",
-        isActive 
-          ? "border-indigo-200 hover:border-indigo-400" 
+        "bg-white border p-5 rounded-2xl shadow-sm hover:shadow-lg transition-all cursor-pointer relative overflow-hidden",
+        isActive
+          ? "border-orange-200 hover:border-orange-400 hover:shadow-orange-100"
           : "border-slate-200 opacity-80"
       )}
     >
       {/* Индикатор активности */}
       {isActive && (
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500" />
       )}
 
       <div className="flex justify-between items-start mb-3">
         <div className="flex gap-2 flex-wrap">
-          <span className="bg-indigo-100 text-indigo-700 text-[10px] font-bold px-2 py-1 rounded-md uppercase flex items-center gap-1">
+          <span className="bg-gradient-to-r from-amber-100 to-orange-100 text-orange-700 text-[10px] font-bold px-2 py-1 rounded-md uppercase flex items-center gap-1">
             <Clock className="w-3 h-3" /> Интервал
           </span>
           {deck.is_assigned && (
@@ -330,26 +330,26 @@ function SpacedDeckCard({ deck, router, isActive }: { deck: DeckType, router: an
       </h3>
 
       {isActive && deck.description && (
-        <p className="text-xs text-slate-400 line-clamp-1 mb-3">{deck.description}</p>
+        <p className="text-xs text-slate-500 line-clamp-1 mb-3">{deck.description}</p>
       )}
 
       <div className="mt-3">
         <div className="flex justify-between text-xs font-bold mb-1">
-          <span className={isActive ? "text-slate-400" : "text-green-600"}>
+          <span className={isActive ? "text-slate-500" : "text-green-600"}>
             {isActive ? "Прогресс" : "Ждем завтра"}
           </span>
-          <span className="text-slate-400">{deck.progress}%</span>
+          <span className="text-slate-500">{deck.progress}%</span>
         </div>
         <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-          <div 
+          <div
             className={clsx(
               "h-full rounded-full transition-all",
-              isActive ? "bg-indigo-500" : "bg-green-500"
+              isActive ? "bg-gradient-to-r from-amber-400 via-orange-500 to-red-500" : "bg-green-500"
             )}
             style={{ width: `${deck.progress}%` }}
           />
         </div>
-        <p className="text-[10px] text-slate-400 mt-1 text-right">
+        <p className="text-[10px] text-slate-500 mt-1 text-right">
           {deck.learned_cards} из {deck.total_cards} выучено
         </p>
       </div>
@@ -364,16 +364,16 @@ function MaterialCard({ deck, router }: { deck: DeckType, router: any }) {
 
   return (
     <motion.div
-      whileHover={{ y: -4 }}
+      whileHover={{ y: -4, scale: 1.01 }}
       onClick={() => router.push(`/study/${deck.id}`)}
-      className="bg-white border-2 border-slate-200 hover:border-indigo-300 p-5 rounded-2xl shadow-sm hover:shadow-lg transition-all cursor-pointer relative overflow-hidden min-h-[180px] flex flex-col justify-between"
+      className="bg-white border-2 border-slate-200 hover:border-orange-300 hover:shadow-lg hover:shadow-orange-100 p-5 rounded-2xl shadow-sm transition-all cursor-pointer relative overflow-hidden min-h-[180px] flex flex-col justify-between"
     >
       <div>
         <div className="flex justify-between items-start mb-3">
           <div className="flex gap-2 flex-wrap">
             <span className={clsx(
               "text-[10px] font-bold px-2 py-1 rounded-md uppercase flex items-center gap-1",
-              isQuiz ? "bg-purple-100 text-purple-700" : "bg-emerald-100 text-emerald-700"
+              isQuiz ? "bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700" : "bg-gradient-to-r from-amber-100 to-orange-100 text-orange-700"
             )}>
               {isQuiz ? <Sparkles className="w-3 h-3" /> : <Brain className="w-3 h-3" />}
               {isQuiz ? "Тест" : "Колода"}
@@ -385,7 +385,7 @@ function MaterialCard({ deck, router }: { deck: DeckType, router: any }) {
             )}
           </div>
           {isStarted && (
-            <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md">
+            <span className="text-[10px] font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded-md">
               В процессе
             </span>
           )}
@@ -393,25 +393,25 @@ function MaterialCard({ deck, router }: { deck: DeckType, router: any }) {
 
         <h3 className="font-bold text-lg text-slate-900 mb-1 line-clamp-2">{deck.name}</h3>
         {deck.description && (
-          <p className="text-xs text-slate-400 line-clamp-1">{deck.description}</p>
+          <p className="text-xs text-slate-500 line-clamp-1">{deck.description}</p>
         )}
       </div>
 
       <div className="mt-4">
-        <div className="flex justify-between text-xs font-bold text-slate-400 mb-1">
+        <div className="flex justify-between text-xs font-bold text-slate-500 mb-1">
           <span>Прогресс</span>
           <span>{deck.progress}%</span>
         </div>
         <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-          <div 
+          <div
             className={clsx(
               "h-full rounded-full transition-all",
-              isQuiz ? "bg-purple-500" : "bg-emerald-500"
+              isQuiz ? "bg-gradient-to-r from-purple-500 to-pink-500" : "bg-gradient-to-r from-amber-400 via-orange-500 to-red-500"
             )}
             style={{ width: `${deck.progress}%` }}
           />
         </div>
-        <p className="text-[10px] text-slate-400 mt-1 text-right">
+        <p className="text-[10px] text-slate-500 mt-1 text-right">
           {deck.learned_cards} из {deck.total_cards} {isQuiz ? "отвечено" : "выучено"}
         </p>
       </div>
@@ -425,29 +425,29 @@ function CompletedMaterialCard({ deck, router }: { deck: DeckType, router: any }
 
   return (
     <motion.div
-      whileHover={{ y: -2 }}
+      whileHover={{ y: -2, scale: 1.02 }}
       onClick={() => router.push(`/study/${deck.id}`)}
-      className="bg-white border border-slate-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer opacity-90"
+      className="bg-white border border-slate-200 hover:border-orange-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer opacity-90 hover:opacity-100"
     >
       <div className="flex items-center gap-2 mb-2">
         <div className={clsx(
           "w-8 h-8 rounded-lg flex items-center justify-center",
-          isQuiz ? "bg-purple-50" : "bg-emerald-50"
+          isQuiz ? "bg-gradient-to-br from-purple-100 to-pink-100" : "bg-gradient-to-br from-amber-100 to-orange-100"
         )}>
           {isQuiz ? (
             <Sparkles className="w-4 h-4 text-purple-500" />
           ) : (
-            <Brain className="w-4 h-4 text-emerald-500" />
+            <Brain className="w-4 h-4 text-orange-500" />
           )}
         </div>
-        <Trophy className="w-4 h-4 text-yellow-500" />
+        <Trophy className="w-4 h-4 text-amber-500" />
       </div>
 
       <h3 className="font-bold text-sm text-slate-900 line-clamp-2 mb-2">{deck.name}</h3>
 
       <div className="flex justify-between items-center">
         <span className="text-[10px] font-bold text-green-600 uppercase">Пройдено</span>
-        <span className="text-xs font-bold text-slate-400">{deck.total_cards} {isQuiz ? "вопр." : "карт"}</span>
+        <span className="text-xs font-bold text-slate-500">{deck.total_cards} {isQuiz ? "вопр." : "карт"}</span>
       </div>
     </motion.div>
   );

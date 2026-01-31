@@ -30,21 +30,28 @@ export default function BrowsePage() {
   }, [sortBy, skip]);
 
   const loadDecks = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch(
-        `https://makquiz-back.onrender.com/api/decks/public?skip=${skip}&limit=${limit}&sort_by=${sortBy}`,
-        { headers: token ? { Authorization: `Bearer ${token}` } : {} }
-      );
-      const data = await res.json();
+  setLoading(true);
+  try {
+    const res = await fetch(
+      `https://makquiz-back.onrender.com/api/decks/public?skip=${skip}&limit=${limit}&sort_by=${sortBy}`,
+      { headers: token ? { Authorization: `Bearer ${token}` } : {} }
+    );
+    const data = await res.json();
+    
+    // Исправление: проверяем формат ответа
+    if (Array.isArray(data)) {
+      setDecks(data);
+      setTotal(data.length);
+    } else {
       setDecks(data.decks || []);
       setTotal(data.total || 0);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
     }
-  };
+  } catch (e) {
+    console.error(e);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,12 +113,12 @@ export default function BrowsePage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Поиск по названию, автору или теме..."
-                className="w-full h-12 pl-12 pr-24 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none font-medium"
+                className="w-full h-12 pl-12 pr-24 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none font-medium"
               />
               <Search className="absolute left-4 top-3.5 w-5 h-5 text-slate-400" />
               <button
                 type="submit"
-                className="absolute right-2 top-2 bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700 transition"
+                className="absolute right-2 top-2 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 text-white px-4 py-2 rounded-lg font-bold hover:from-amber-500 hover:via-orange-600 hover:to-red-600 transition shadow-md shadow-orange-200"
               >
                 Найти
               </button>
@@ -120,7 +127,7 @@ export default function BrowsePage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortBy)}
-              className="h-12 px-4 rounded-xl border border-slate-200 font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none bg-white"
+              className="h-12 px-4 rounded-xl border border-slate-200 font-bold text-slate-700 focus:ring-2 focus:ring-orange-500 outline-none bg-white"
             >
               <option value="created_at">Недавние</option>
               <option value="plays_count">Популярные</option>
@@ -134,7 +141,7 @@ export default function BrowsePage() {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {loading ? (
           <div className="flex justify-center items-center py-20">
-            <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
+            <Loader2 className="w-8 h-8 text-orange-600 animate-spin" />
           </div>
         ) : decks.length === 0 ? (
           <div className="text-center py-20">
@@ -161,7 +168,7 @@ export default function BrowsePage() {
                     animate={{ opacity: 1, y: 0 }}
                     whileHover={{ y: -4 }}
                     onClick={() => handleDeckClick(deckId)}
-                    className="bg-white rounded-2xl p-6 border border-slate-200 hover:border-indigo-200 hover:shadow-lg transition-all cursor-pointer"
+                    className="bg-white rounded-2xl p-6 border border-slate-200 hover:border-orange-200 hover:shadow-lg transition-all cursor-pointer"
                   >
                     {/* Header */}
                     <div className="flex items-start justify-between mb-3">
@@ -179,7 +186,7 @@ export default function BrowsePage() {
                       {/* Type badges */}
                       <div className="flex gap-1">
                         {isSpaced && (
-                          <span className="bg-indigo-50 text-indigo-600 text-[10px] font-bold px-1.5 py-0.5 rounded">
+                          <span className="bg-orange-50 text-orange-600 text-[10px] font-bold px-1.5 py-0.5 rounded">
                             <Clock className="w-3 h-3 inline" />
                           </span>
                         )}
